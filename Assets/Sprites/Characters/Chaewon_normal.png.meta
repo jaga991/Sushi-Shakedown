@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 708fe310211e31a44b49ef26702aad09
+guid: 6a78082b3a996402cb6cf577340a53e9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7935706946787026822
-    second: 95_burnt-steak_0
+      213: 1027293058523329318
+    second: Chaewon_normal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 95_burnt-steak_0
+      name: Chaewon_normal_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 7
-        width: 24
-        height: 17
+        x: 14
+        y: 1
+        width: 105
+        height: 125
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a78d82bb394bed190800000000000000
-      internalID: -7935706946787026822
+      spriteID: 623f189089da14e00800000000000000
+      internalID: 1027293058523329318
       vertices: []
       indices: 
       edges: []
@@ -147,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      95_burnt-steak_0: -7935706946787026822
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
