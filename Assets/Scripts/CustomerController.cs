@@ -22,8 +22,6 @@ public class CustomerController : MonoBehaviour
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
-
-
     public void SetOrderArea(OrderArea area)
     {
         assignedOrderArea = area;
@@ -113,11 +111,6 @@ public class CustomerController : MonoBehaviour
         int patience = maxPatience;
         for (int i = 0; i <= 100; i++)
         {
-            if (i % 10 == 0)
-            {
-                Debug.Log($"Order progress: {i}%");
-            }
-
             // Decrease patience gradually (for example, linearly)
             patience = maxPatience - (int)((maxPatience / 100f) * i);
             if (patienceBar != null)
@@ -132,8 +125,7 @@ public class CustomerController : MonoBehaviour
 
     void OrderFailed()
     {
-
-        Debug.Log("Order Failed");
+        Debug.Log("Times up! Order failed.");
         OrderBubble.SetActive(false);
         SetOffScreenTarget();
         isWalkingOffScreen = true;
@@ -167,6 +159,31 @@ public class CustomerController : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("hi");
+        if (hasArrived)
+        {
+            OrderCompleted();
+        }
+    }
+
+    void OrderCompleted()
+    {
+        Debug.Log("Order Completed!");
+
+        if (progressRoutine != null)
+        {
+            StopCoroutine(progressRoutine);
+            progressRoutine = null;
+        }
+
+        OrderBubble.SetActive(false);
+
+        SetOffScreenTarget();
+
+        isWalkingOffScreen = true;
+
+        if (assignedOrderArea != null)
+        {
+            assignedOrderArea.UpdateState(false);
+        }
     }
 }
