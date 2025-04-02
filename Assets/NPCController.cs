@@ -8,7 +8,7 @@ public class NPCController : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log($"[NPCController] {gameObject.name} initialized.");
+        // Debug.Log($"[NPCController] {gameObject.name} initialized.");
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
@@ -22,7 +22,7 @@ public class NPCController : MonoBehaviour
         // Flip sprite based on horizontal direction
         if (spriteRenderer != null)
         {
-            Debug.Log($"[NPCController] Setting direction: {moveDirection}");
+            // Debug.Log($"[NPCController] Setting direction: {moveDirection}");
             spriteRenderer.flipX = moveDirection.x > 0;
         }
         else

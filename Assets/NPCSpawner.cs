@@ -15,6 +15,8 @@ public class NPCSpawner : MonoBehaviour
 
     public SpawnZoneData spawnZone;
     public bool spawnCustomerDebug = false;
+
+    public OrderAreaGroup orderAreaGroup;
     void Start()
     {
         // Initialize the timer so that a spawn happens after the first interval.
@@ -73,6 +75,17 @@ public class NPCSpawner : MonoBehaviour
 
     void SpawnCustomer()
     {
+
+        OrderArea orderArea = orderAreaGroup.GetFreeOrderArea();
+        if (orderArea == null)
+        {
+            Debug.Log("All order areas are occupied. Customer Not Spawned !!");
+            return;
+        }
+
+        orderArea.UpdateState(true); // Mark the order area as occupied.
+
+
         bool spawnFromLeft = Random.value > 0.5f;
         Camera cam = Camera.main;
         float camHeight = 2f * cam.orthographicSize;
@@ -96,10 +109,7 @@ public class NPCSpawner : MonoBehaviour
 
         if (customer.TryGetComponent<CustomerController>(out var customerController))
         {
-            // Set the target counter position.
-            // You can modify this target as needed; here it is set to (0, spawnY).
-            Vector2 counterPosition = new Vector2(0, spawnY);
-            customerController.SetTargetCounterPosition(counterPosition);
+            customerController.SetOrderArea(orderArea); // Set the order area for the customer.
         }
     }
 
