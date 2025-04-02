@@ -22,7 +22,6 @@ public class NPCController : MonoBehaviour
         // Flip sprite based on horizontal direction
         if (spriteRenderer != null)
         {
-            // Debug.Log($"[NPCController] Setting direction: {moveDirection}");
             spriteRenderer.flipX = moveDirection.x > 0;
         }
         else

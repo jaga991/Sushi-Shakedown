@@ -1,5 +1,6 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // For Text component
+using UnityEngine.UI; // Kept for Text component on textBubble
 
 public class CustomerController : MonoBehaviour
 {
@@ -8,9 +9,20 @@ public class CustomerController : MonoBehaviour
     public GameObject textBubble;
     public GameObject OrderBubble;
 
-    private Text bubbleText;
+    public PatienceBar patienceBar;
 
+    // Maximum patience value (e.g., 100)
+    public int maxPatience = 100;
+    private Text bubbleText;
     public OrderArea assignedOrderArea; // Exposed if you still want to check later
+    private Coroutine progressRoutine;
+    private bool hasArrived = false;
+
+    // State flag for off-screen movement
+    private bool isWalkingOffScreen = false;
+    private Vector2 offScreenTarget;
+
+
 
     public void SetOrderArea(OrderArea area)
     {
@@ -37,23 +49,47 @@ public class CustomerController : MonoBehaviour
         {
             Debug.Log("OrderBubble is not active.");
         }
+
+        if (patienceBar != null)
+        {
+            patienceBar.SetMaxHealth(maxPatience);
+        }
     }
 
     void Update()
     {
-        Vector2 currentPosition = transform.position;
-        Vector2 direction = (targetPosition - currentPosition).normalized;
-        transform.Translate(direction * speed * Time.deltaTime);
-
-        if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+        // Move towards the assigned order area if not arrived.
+        if (!hasArrived && !isWalkingOffScreen)
         {
-            ArrivedAtCounter();
+            Vector2 currentPosition = transform.position;
+            Vector2 direction = (targetPosition - currentPosition).normalized;
+            transform.Translate(direction * speed * Time.deltaTime);
+
+            if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+            {
+                ArrivedAtCounter();
+                hasArrived = true;
+            }
+        }
+        // Handle off-screen movement.
+        else if (isWalkingOffScreen)
+        {
+            Vector2 currentPosition = transform.position;
+            Vector2 direction = (offScreenTarget - currentPosition).normalized;
+            transform.Translate(direction * speed * Time.deltaTime);
+
+            if (Vector2.Distance(currentPosition, offScreenTarget) < 0.1f)
+            {
+                Debug.Log("Customer has walked off screen.");
+                isWalkingOffScreen = false;
+                // Optionally, destroy the customer:
+                Destroy(gameObject);
+            }
         }
     }
 
     void ArrivedAtCounter()
     {
-        // Log arrival, optional bubble update
         if (assignedOrderArea != null)
         {
             Debug.Log($"Customer reached assigned OrderArea: {assignedOrderArea.gameObject.name}");
@@ -63,8 +99,74 @@ public class CustomerController : MonoBehaviour
         {
             bubbleText.text = "Order";
         }
-        OrderBubble.SetActive(true); // Show the order bubble
-        textBubble.SetActive(false); // Hide the text bubble
-        enabled = false;
+
+        textBubble.SetActive(false);
+        OrderBubble.SetActive(true);
+
+        // Start the fake progress count (0 to 100) over 10 seconds.
+        progressRoutine = StartCoroutine(CountTo100());
+    }
+
+    IEnumerator CountTo100()
+    {
+        // We'll decrease the patience value as progress increases.
+        int patience = maxPatience;
+        for (int i = 0; i <= 100; i++)
+        {
+            if (i % 10 == 0)
+            {
+                Debug.Log($"Order progress: {i}%");
+            }
+
+            // Decrease patience gradually (for example, linearly)
+            patience = maxPatience - (int)((maxPatience / 100f) * i);
+            if (patienceBar != null)
+            {
+                patienceBar.SetHeath(patience);
+            }
+
+            yield return new WaitForSeconds(0.1f); // 0.1s per step; 100 steps = 10s total.
+        }
+        OrderFailed();
+    }
+
+    void OrderFailed()
+    {
+
+        Debug.Log("Order Failed");
+        OrderBubble.SetActive(false);
+        SetOffScreenTarget();
+        isWalkingOffScreen = true;
+        assignedOrderArea.UpdateState(false);
+    }
+
+    // Updated method to set the off-screen target based on viewport bounds.
+    void SetOffScreenTarget()
+    {
+        Camera cam = Camera.main;
+        Vector3 viewportPos = cam.WorldToViewportPoint(transform.position);
+        Vector3 targetViewportPos;
+
+        // If the customer is in the left half, target a point off-screen to the left.
+        if (viewportPos.x < 0.5f)
+        {
+            targetViewportPos = new Vector3(-0.1f, viewportPos.y, viewportPos.z);
+        }
+        // Otherwise, target a point off-screen to the right.
+        else
+        {
+            targetViewportPos = new Vector3(1.1f, viewportPos.y, viewportPos.z);
+        }
+
+        // Convert the target viewport position back to world space.
+        Vector3 worldTarget = cam.ViewportToWorldPoint(targetViewportPos);
+        // Preserve current Z position.
+        worldTarget.z = transform.position.z;
+        offScreenTarget = worldTarget;
+    }
+
+    void OnMouseDown()
+    {
+        Debug.Log("hi");
     }
 }
