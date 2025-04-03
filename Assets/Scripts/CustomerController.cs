@@ -10,6 +10,7 @@ public class CustomerController : MonoBehaviour
     public GameObject OrderBubble;
 
     public PatienceBar patienceBar;
+    public ScoreCounter scoreCounter; // Reference to the ScoreCounter script
 
     // Maximum patience value (e.g., 100)
     public int maxPatience = 100;
@@ -125,6 +126,7 @@ public class CustomerController : MonoBehaviour
 
     void OrderFailed()
     {
+        scoreCounter.DeductScore(1);
         Debug.Log("Times up! Order failed.");
         OrderBubble.SetActive(false);
         SetOffScreenTarget();
@@ -168,6 +170,7 @@ public class CustomerController : MonoBehaviour
     void OrderCompleted()
     {
         Debug.Log("Order Completed!");
+        scoreCounter.AddScore(1);
 
         if (progressRoutine != null)
         {
