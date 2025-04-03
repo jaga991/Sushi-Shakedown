@@ -11,6 +11,14 @@ public class CustomerController : MonoBehaviour
 
     public PatienceBar patienceBar;
     public ScoreCounter scoreCounter; // Reference to the ScoreCounter script
+    public AudioClip orderCompletedSound; // Sound to play when order is completed
+    public AudioClip orderFailedSound; // Sound to play when order fails
+    public AudioSource audioSource; // Audio source for playing sounds
+
+    private SpriteRenderer spriteRenderer;
+    public Sprite happySprite;
+    public Sprite frustratedSprite;
+    public Sprite angrySprite;
 
     // Maximum patience value (e.g., 100)
     public int maxPatience = 100;
@@ -31,6 +39,11 @@ public class CustomerController : MonoBehaviour
 
     void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.Log("NPCController: No SpriteRenderer found!");
+        }
         if (textBubble != null)
         {
             bubbleText = textBubble.GetComponentInChildren<Text>();
@@ -52,6 +65,28 @@ public class CustomerController : MonoBehaviour
         if (patienceBar != null)
         {
             patienceBar.SetMaxHealth(maxPatience);
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+    }
+    public void PlayOrderSuccess()
+    {
+        if (orderCompletedSound != null)
+        {
+            audioSource.PlayOneShot(orderCompletedSound);
+        }
+    }
+
+    public void PlayOrderFailed()
+    {
+        if (orderFailedSound != null)
+        {
+            audioSource.PlayOneShot(orderFailedSound);
         }
     }
 
@@ -126,6 +161,8 @@ public class CustomerController : MonoBehaviour
 
     void OrderFailed()
     {
+        spriteRenderer.sprite = angrySprite;
+        PlayOrderFailed();
         scoreCounter.DeductScore(1);
         Debug.Log("Times up! Order failed.");
         OrderBubble.SetActive(false);
@@ -169,6 +206,18 @@ public class CustomerController : MonoBehaviour
 
     void OrderCompleted()
     {
+        // Determine customer mood based on patience level
+        int patiencePercent = (int)(patienceBar.GetHealth() * 100f / maxPatience);
+
+        spriteRenderer.sprite = patiencePercent switch
+        {
+            > 75 => happySprite,
+            < 35 => frustratedSprite,
+            _ => spriteRenderer.sprite
+        };
+
+
+        PlayOrderSuccess();
         Debug.Log("Order Completed!");
         scoreCounter.AddScore(1);
 
