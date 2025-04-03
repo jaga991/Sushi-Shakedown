@@ -15,6 +15,8 @@ public class CustomerController : MonoBehaviour
     public AudioClip orderFailedSound;
     public AudioSource audioSource;
 
+    public OrderBubble orderBubble;
+
     public FoodManager foodManager;
 
     private SpriteRenderer spriteRenderer;
@@ -122,8 +124,11 @@ public class CustomerController : MonoBehaviour
         OrderBubble.SetActive(true);
 
         // Need to move this functionality into BubbleController script 
-        Food food = foodManager.GetRandomFood(OrderBubble.transform.position + Vector3.right);
-        Debug.Log("OrderedFood is " + food.foodName);
+        // Food food = foodManager.GetRandomFood(OrderBubble.transform.position + Vector3.right);
+        orderBubble.StartOrder();
+
+
+        // Debug.Log("OrderedFood is " + food.foodName);
 
         // Start the fake progress count (0 to 100) over 10 seconds.
         progressRoutine = StartCoroutine(CountTo100());

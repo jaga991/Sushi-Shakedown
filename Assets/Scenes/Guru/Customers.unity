@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6951687}
   - component: {fileID: 6951688}
+  - component: {fileID: 6951689}
   m_Layer: 0
   m_Name: OrderBubble
   m_TagString: Untagged
@@ -207,6 +208,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6951689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6951686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a066c1fd283f1484e9d362fff05bf1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodManager: {fileID: 514482238}
 --- !u!1 &149554978
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +523,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 2080180903597282019, guid: d6f73fbb3e7274782b473e1c17173203, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -533,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a795e15ace0a4098b77d4291ff93cc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 302245137}
   foodName: 
 --- !u!4 &302245139
 Transform:
@@ -728,6 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9e8a9ba95fb4ff0b4e867d76680e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodPrefab: {fileID: 302245136}
 --- !u!4 &514482239
 Transform:
   m_ObjectHideFlags: 0
@@ -1510,6 +1525,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1194073133
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1194073134}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1194073134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194073133}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.786434, y: 14.240143, z: 0.005202134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1300867022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1684,8 @@ MonoBehaviour:
   orderCompletedSound: {fileID: 8300000, guid: 1fff219f4fef94461ab85e455767a7fe, type: 3}
   orderFailedSound: {fileID: 8300000, guid: f9672fa80ea7b4a81b1b517855ca6a31, type: 3}
   audioSource: {fileID: 1443159628}
+  orderBubble: {fileID: 6951689}
+  foodManager: {fileID: 514482238}
   happySprite: {fileID: 1865927953273470641, guid: 8c7b104719ba64fbf960cf88dd636886, type: 3}
   frustratedSprite: {fileID: -8415703017015358207, guid: 19e71244541f3485f9436b50b84486e7, type: 3}
   angrySprite: {fileID: -2857071427163950762, guid: ce362d113c3f34eef81474a77a904506, type: 3}
@@ -2655,3 +2703,4 @@ SceneRoots:
   - {fileID: 729120803}
   - {fileID: 514482239}
   - {fileID: 302245139}
+  - {fileID: 1194073134}
