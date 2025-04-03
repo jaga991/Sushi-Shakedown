@@ -109,26 +109,19 @@ public class CustomerController : MonoBehaviour
             }
         }
 
-        // getRandomFood
-        // create instance of random food in orderBubble
     }
 
     void ArrivedAtCounter()
     {
-        if (assignedOrderArea != null)
-        {
-            Debug.Log($"Customer reached assigned OrderArea: {assignedOrderArea.gameObject.name}");
-        }
+        // if (assignedOrderArea != null)
+        // {
+        //     Debug.Log($"Customer reached assigned OrderArea: {assignedOrderArea.gameObject.name}");
+        // }
 
         textBubble.SetActive(false);
         OrderBubble.SetActive(true);
 
-        // Need to move this functionality into BubbleController script 
-        // Food food = foodManager.GetRandomFood(OrderBubble.transform.position + Vector3.right);
-        orderBubble.StartOrder();
-
-
-        // Debug.Log("OrderedFood is " + food.foodName);
+        orderBubble.StartOrder(Random.Range(1, 4));
 
         // Start the fake progress count (0 to 100) over 10 seconds.
         progressRoutine = StartCoroutine(CountTo100());
@@ -233,8 +226,6 @@ public class CustomerController : MonoBehaviour
         {
             assignedOrderArea.UpdateState(false);
         }
-
-
     }
 
     public void PlayOrderSuccess()
@@ -252,5 +243,4 @@ public class CustomerController : MonoBehaviour
             audioSource.PlayOneShot(orderFailedSound);
         }
     }
-
 }
