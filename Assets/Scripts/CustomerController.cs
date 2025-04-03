@@ -219,7 +219,10 @@ public class CustomerController : MonoBehaviour
 
         PlayOrderSuccess();
         Debug.Log("Order Completed!");
-        scoreCounter.AddScore(1);
+        // Calculate score based on patience percentage (1-10)
+        int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
+        scoreCounter.AddScore(score);
+
 
         if (progressRoutine != null)
         {
