@@ -10,12 +10,11 @@ public class PatienceBar : MonoBehaviour
     public int defaultMaxHealth = 100;
     void Awake()
     {
-        // Initialize with default max health
         slider.maxValue = defaultMaxHealth;
         slider.value = defaultMaxHealth;
         fill.color = gradient.Evaluate(1f);
     }
-
+    // can be removed in next commit 
     [System.Obsolete("SetMaxHealth is deprecated. Default max health is now 100.")]
     public void SetMaxHealth(int health)
     {

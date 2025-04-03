@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 29dcf1efbdf1d4fc5b0a6fe39ec3fe32
+guid: d6f73fbb3e7274782b473e1c17173203
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8033975403568566451
-    second: desk_0
+      213: 2080180903597282019
+    second: yellow tail_imresizer 5_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: desk_0
+      name: yellow tail_imresizer 5_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 480
+        x: 32
+        y: 75
+        width: 211
+        height: 123
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b01eef401a6e7f60800000000000000
-      internalID: 8033975403568566451
+      spriteID: 3e29773b2894edc10800000000000000
+      internalID: 2080180903597282019
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      desk_0: 8033975403568566451
+      yellow tail_imresizer 5_0: 2080180903597282019
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

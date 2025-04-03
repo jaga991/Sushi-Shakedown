@@ -15,6 +15,8 @@ public class CustomerController : MonoBehaviour
     public AudioClip orderFailedSound;
     public AudioSource audioSource;
 
+    public FoodManager foodManager;
+
     private SpriteRenderer spriteRenderer;
     public Sprite happySprite;
     public Sprite frustratedSprite;
@@ -31,6 +33,8 @@ public class CustomerController : MonoBehaviour
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
+
+
     public void SetOrderArea(OrderArea area)
     {
         assignedOrderArea = area;
@@ -39,6 +43,7 @@ public class CustomerController : MonoBehaviour
 
     void Awake()
     {
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
@@ -69,21 +74,7 @@ public class CustomerController : MonoBehaviour
         }
 
     }
-    public void PlayOrderSuccess()
-    {
-        if (orderCompletedSound != null)
-        {
-            audioSource.PlayOneShot(orderCompletedSound);
-        }
-    }
 
-    public void PlayOrderFailed()
-    {
-        if (orderFailedSound != null)
-        {
-            audioSource.PlayOneShot(orderFailedSound);
-        }
-    }
 
     void Update()
     {
@@ -115,6 +106,9 @@ public class CustomerController : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        // getRandomFood
+        // create instance of random food in orderBubble
     }
 
     void ArrivedAtCounter()
@@ -124,13 +118,12 @@ public class CustomerController : MonoBehaviour
             Debug.Log($"Customer reached assigned OrderArea: {assignedOrderArea.gameObject.name}");
         }
 
-        if (bubbleText != null)
-        {
-            bubbleText.text = "Order";
-        }
-
         textBubble.SetActive(false);
         OrderBubble.SetActive(true);
+
+        // Need to move this functionality into BubbleController script 
+        Food food = foodManager.GetRandomFood(OrderBubble.transform.position + Vector3.right);
+        Debug.Log("OrderedFood is " + food.foodName);
 
         // Start the fake progress count (0 to 100) over 10 seconds.
         progressRoutine = StartCoroutine(CountTo100());
@@ -235,5 +228,24 @@ public class CustomerController : MonoBehaviour
         {
             assignedOrderArea.UpdateState(false);
         }
+
+
     }
+
+    public void PlayOrderSuccess()
+    {
+        if (orderCompletedSound != null)
+        {
+            audioSource.PlayOneShot(orderCompletedSound);
+        }
+    }
+
+    public void PlayOrderFailed()
+    {
+        if (orderFailedSound != null)
+        {
+            audioSource.PlayOneShot(orderFailedSound);
+        }
+    }
+
 }

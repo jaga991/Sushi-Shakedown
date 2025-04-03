@@ -33,7 +33,7 @@
 - [x] Add **animation/sprite change for customer mood**:
   - [x] Happy when given correct food.
   - [ ] Angry if time runs out or wrong food is given.
-  - [x] (Can spoof with `OnClick()` trigger for testing).
+  - [] (Can spoof with `OnClick()` trigger for testing).
 
 ---
 
@@ -128,5 +128,3 @@ Let me know if you’d like a diagram or prefab structure guide next!
 Audio when customer reaches counter
 Audio when customer recieves order (very good , good , default , bad)
 Audo when customer times out 
-
-
