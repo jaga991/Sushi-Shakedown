@@ -10,10 +10,10 @@ public class CustomerController : MonoBehaviour
     public GameObject OrderBubble;
 
     public PatienceBar patienceBar;
-    public ScoreCounter scoreCounter; // Reference to the ScoreCounter script
-    public AudioClip orderCompletedSound; // Sound to play when order is completed
-    public AudioClip orderFailedSound; // Sound to play when order fails
-    public AudioSource audioSource; // Audio source for playing sounds
+    public ScoreCounter scoreCounter;
+    public AudioClip orderCompletedSound;
+    public AudioClip orderFailedSound;
+    public AudioSource audioSource;
 
     private SpriteRenderer spriteRenderer;
     public Sprite happySprite;
@@ -60,11 +60,6 @@ public class CustomerController : MonoBehaviour
         else
         {
             Debug.Log("OrderBubble is not active.");
-        }
-
-        if (patienceBar != null)
-        {
-            patienceBar.SetMaxHealth(maxPatience);
         }
 
         audioSource = GetComponent<AudioSource>();
@@ -151,7 +146,7 @@ public class CustomerController : MonoBehaviour
             patience = maxPatience - (int)((maxPatience / 100f) * i);
             if (patienceBar != null)
             {
-                patienceBar.SetHeath(patience);
+                patienceBar.SetHealth(patience);
             }
 
             yield return new WaitForSeconds(0.1f); // 0.1s per step; 100 steps = 10s total.
@@ -207,7 +202,7 @@ public class CustomerController : MonoBehaviour
     void OrderCompleted()
     {
         // Determine customer mood based on patience level
-        int patiencePercent = (int)(patienceBar.GetHealth() * 100f / maxPatience);
+        int patiencePercent = patienceBar.GetHealth();
 
         spriteRenderer.sprite = patiencePercent switch
         {

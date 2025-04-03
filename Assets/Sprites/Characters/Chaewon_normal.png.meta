@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Chaewon_normal_0: 1027293058523329318
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
