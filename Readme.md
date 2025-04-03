@@ -7,13 +7,13 @@
 - [ ] Customers requesting dishes
     - [ ] Basic dish assets (default style)
     - [ ] Request display system
-- [ ] Customer patience system
-    - [ ] Timer implementation
-    - [ ] Visual indicator (text field above customer)
-- [ ] Customers leaving when patience timer expires
-- [ ] Customer states (entering, waiting, satisfied, angry)
-- [ ] Simple sound effects for key events
-- [ ] Basic scoring system
+- [x] Customer patience system
+    - [x] Timer implementation
+    - [x] Visual indicator (PatienceBar)
+- [x] Customers leaving when patience timer expires
+- [x] Customer states (entering, waiting, satisfied, angry)
+- [x] Simple sound effects for key events
+- [x] Basic scoring system
 - [ ] Game over condition
 - [ ] Customer variety (different sprites or colors)
 - [ ] Tutorial/instructions screen
@@ -21,19 +21,19 @@
 
 ### 🧾 **Checkpoint 2 priority**
 
-- [ ] Convert text bubble from `...` to show food order when customer reaches their `OrderArea`.
-- [ ] Implement a **patience timer**:
-  - [ ] Customer leaves when timer runs out.
-  - [ ] Score is reduced when customer leaves angrily.
+- [] Convert text bubble from `...` to show food order when customer reaches their `OrderArea`.
+- [x] Implement a **patience timer**:
+  - [x] Customer leaves when timer runs out.
+  - [x] Score is reduced when customer leaves angrily.
 - [ ] Add a **BoxCollider2D** to the food bubble (for interaction detection).
 - [ ] Implement a **data structure** for food orders (e.g., ScriptableObject or class with food type, ID, sprite).
 - [ ] Implement **drag-and-drop** for food items:
   - [ ] Drag food from prep area.
   - [ ] Drop onto customer or their order bubble.
-- [ ] Add **animation/sprite change for customer mood**:
-  - [ ] Happy when given correct food.
+- [x] Add **animation/sprite change for customer mood**:
+  - [x] Happy when given correct food.
   - [ ] Angry if time runs out or wrong food is given.
-  - [ ] (Can spoof with `OnClick()` trigger for testing).
+  - [x] (Can spoof with `OnClick()` trigger for testing).
 
 ---
 
