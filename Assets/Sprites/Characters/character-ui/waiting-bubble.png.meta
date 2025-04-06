@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba303954d70904d839b9012a3c79add5
+guid: b05fe195f66f64992bb6d6768cd0308f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8159272815874631287
-    second: speechBubble_0
+      213: -2872582314627565506
+    second: waiting-bubble_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: speechBubble_0
+      name: waiting-bubble_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 21
-        width: 71
-        height: 86
+        x: 197
+        y: 1007
+        width: 623
+        height: 312
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9899a488a9074ce80800000000000000
-      internalID: -8159272815874631287
+      spriteID: e38fd8cba998228d0800000000000000
+      internalID: -2872582314627565506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waiting-bubble_1
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 626
+        width: 614
+        height: 306
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0ae06de7d47d4abeb482ffb809370e4
+      internalID: 1950399088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waiting-bubble_2
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 240
+        width: 614
+        height: 308
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c60f5f1a3088c48bbbfe206f0967a6c8
+      internalID: 2086302008
       vertices: []
       indices: 
       edges: []
@@ -125,7 +169,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: babc0f0c07ab640ff94601af620b1245
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +179,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      speechBubble_0: -8159272815874631287
+      waiting-bubble_0: -2872582314627565506
+      waiting-bubble_1: 1950399088
+      waiting-bubble_2: 2086302008
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ba303954d70904d839b9012a3c79add5
+guid: d1e3756cca3c84b73b608b69eebfabee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8159272815874631287
-    second: speechBubble_0
+      213: 302666940564643630
+    second: dotsbubble-3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,12 +37,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: speechBubble_0
+      name: dotsbubble-3_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 21
-        width: 71
-        height: 86
+        x: 0
+        y: 0
+        width: 616
+        height: 308
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9899a488a9074ce80800000000000000
-      internalID: -8159272815874631287
+      spriteID: e2f1c959af9433400800000000000000
+      internalID: 302666940564643630
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      speechBubble_0: -8159272815874631287
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
