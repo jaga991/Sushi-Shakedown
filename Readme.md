@@ -4,9 +4,9 @@
 
 ### Features Checklist
 - [x] NPC Customers moving around (similar to Pixel Cafe)
-- [ ] Customers requesting dishes
-    - [ ] Basic dish assets (default style)
-    - [ ] Request display system
+- [x] Customers requesting dishes
+    - [x] Basic dish assets (default style)
+    - [x] Request display system
 - [x] Customer patience system
     - [x] Timer implementation
     - [x] Visual indicator (PatienceBar)
@@ -21,34 +21,22 @@
 
 ### 🧾 **Checkpoint 2 priority**
 
-- [] Convert text bubble from `...` to show food order when customer reaches their `OrderArea`.
+- [x] Convert text bubble from `...` to show food order when customer reaches their `OrderArea`.
 - [x] Implement a **patience timer**:
   - [x] Customer leaves when timer runs out.
   - [x] Score is reduced when customer leaves angrily.
-- [ ] Add a **BoxCollider2D** to the food bubble (for interaction detection).
-- [ ] Implement a **data structure** for food orders (e.g., ScriptableObject or class with food type, ID, sprite).
-- [ ] Implement **drag-and-drop** for food items:
-  - [ ] Drag food from prep area.
-  - [ ] Drop onto customer or their order bubble.
+- [x] Add a **BoxCollider2D** to the food bubble (for interaction detection).
+- [x] Implement a **data structure** for food orders (e.g., ScriptableObject or class with food type, ID, sprite).
+- [x] Implement **drag-and-drop** for food items:
+  - [x] Drag food from prep area.
+  - [x] Drop onto customer or their order bubble.
 - [x] Add **animation/sprite change for customer mood**:
   - [x] Happy when given correct food.
-  - [ ] Angry if time runs out or wrong food is given.
-  - [] (Can spoof with `OnClick()` trigger for testing).
+  - [x] Angry if time runs out or wrong food is given.
+  - [x] (Can spoof with `OnClick()` trigger for testing).
 
 ---
-
-Let me know if you want these tied to specific files, scenes, or given deadlines for task tracking!
-
-### Code References 
-
-Here’s your **updated README documentation** based on the most recent changes in functionality across your files:
-
----
-
-### Code References
-
-#### Files
-
+### Documentation 
 ---
 
 ### NPCController.cs
