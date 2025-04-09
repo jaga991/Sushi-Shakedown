@@ -2,108 +2,114 @@ using UnityEngine;
 
 public class DraggableObject : MonoBehaviour
 {
-    private static DraggableObject currentlyDragging = null; // Prevents multiple objects from being dragged at the same time
-
     private bool isDragging = false;
     private Vector3 offset;
-    private Camera mainCamera;
+    private bool isColliding = false;
+
+    [SerializeField] private BaseContainer parentContainer;
+
+    [SerializeField] private GameDataSO gameDataSO;
 
     private void Start()
     {
-        mainCamera = Camera.main;
-        Debug.Log($"[DraggableObject] {gameObject.name} initialized.");
+
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        //check if other GameObject is BaseContainer
+        BaseContainer container = other.GetComponent<BaseContainer>();
+        if (container != null)
+        {
+            //set isColliding to true
+            isColliding = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isColliding = false;
+    }
+
+
+    private void UpdatePosition()
+    {
+        Vector3 newPosition = gameDataSO.mousePosition + offset;
+        transform.position = newPosition; // Follow the mouse smoothly
+    }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Left-click
+        if (isDragging) 
         {
-            TryPickUpObject();
-        }
+            //continuous position updating
+            UpdatePosition();
 
-        if (isDragging)
-        {
-            Vector3 newPosition = GetMouseWorldPosition() + offset;
-            transform.position = newPosition; // Follow the mouse smoothly
-        }
-
-        if (Input.GetMouseButtonUp(0)) // Release mouse button
-        {
-            if (isDragging)
-            {
-                isDragging = false;
-                currentlyDragging = null; // Allow another object to be picked up
-                Debug.Log($"[DraggableObject] {gameObject.name} dropped at {transform.position}");
-            }
-        }
-    }
-
-    private void TryPickUpObject()
-    {
-        if (currentlyDragging != null) return; // Prevents multiple objects from being dragged
-
-        RaycastHit2D[] hits = Physics2D.RaycastAll(GetMouseWorldPosition(), Vector2.zero);
-
-        if (hits.Length > 0)
-        {
-            DraggableObject topObject = null;
-            int highestLayerPriority = int.MinValue;
-
-            foreach (RaycastHit2D hit in hits)
-            {
-                DraggableObject obj = hit.collider.GetComponentInParent<DraggableObject>(); // Get Parent Object if Available
-                if (obj != null)
-                {
-                    // PRIORITIZE PARENT OBJECT FIRST
-                    DraggableObject parentObj = obj.transform.parent != null ? obj.transform.parent.GetComponent<DraggableObject>() : obj;
-
-                    BoxCollider2D col = obj.GetComponent<BoxCollider2D>();
-                    int layerPriority = col ? col.layerOverridePriority : 0;
-
-                    if (topObject == null || layerPriority > highestLayerPriority)
-                    {
-                        topObject = parentObj; // Select the Parent Object for dragging
-                        highestLayerPriority = layerPriority;
-                    }
-                }
-            }
-
-            if (topObject != null)
-            {
-                currentlyDragging = topObject;
-                topObject.PickUp();
-            }
         }
     }
 
 
-    private void PickUp()
+    public void TryPickUpThis()
     {
+        offset = transform.position - gameDataSO.mousePosition;
         isDragging = true;
-        offset = transform.position - GetMouseWorldPosition();
+
+        GameManager.Instance.currentlyDragging = this;
+
         Debug.Log($"[DraggableObject] {gameObject.name} picked up.");
-    }
-
-    private Vector3 GetMouseWorldPosition()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = -mainCamera.transform.position.z; // Adjust depth for 2D
-        return mainCamera.ScreenToWorldPoint(mousePos);
-    }
-
-    public void ForcePickUp()
-    {
-        if (currentlyDragging != null) return;
-
-        currentlyDragging = this;
-        isDragging = true;
-        offset = transform.position - GetMouseWorldPosition();
-        Debug.Log($"[DraggableObject] {gameObject.name} force picked up at spawn.");
     }
 
     public bool IsBeingDragged()
     {
         return isDragging;
     }
+
+    public void ReturnToParentContainer()
+    {
+        if (parentContainer != null)
+        {
+            transform.position = parentContainer.transform.position;
+            Debug.Log($"[DraggableObject] {gameObject.name} returned to {parentContainer.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"[DraggableObject] {gameObject.name} has no parentContainer assigned!");
+        }
+    }
+
+    public BaseContainer GetParentContainer()
+    {
+        return parentContainer;
+    }
+
+    public void SetParentContainer(BaseContainer container)
+    {
+        parentContainer = container;
+    }
+
+    public void HandleRelease()
+    {
+        Debug.Log($"[DraggableObject] {gameObject.name} released. isColliding = {isColliding}");
+
+        if (!isColliding)
+        {
+            Debug.Log($"[DraggableObject] {gameObject.name} is not colliding with any valid container.");
+
+            if (parentContainer)
+            {
+                Debug.Log($"[DraggableObject] Returning {gameObject.name} to its parent container: {parentContainer.name}");
+                ReturnToParentContainer();
+            }
+            else
+            {
+                Debug.LogWarning($"[DraggableObject] {gameObject.name} has no parent container and was dropped in an invalid area. Destroying...");
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. No action taken.");
+        }
+    }
+
 
 }

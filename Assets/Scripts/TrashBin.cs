@@ -6,7 +6,7 @@ public class TrashBin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<DraggableObject>() != null)
+        if (other.GetComponent<DraggableObject>() != null) //might need to change to prevent condiments and drink source from being trashed
         {
             draggableInZone = other.GetComponent<DraggableObject>();
             Debug.Log($"[TrashBin] {other.name} entered trash zone.");
@@ -25,9 +25,9 @@ public class TrashBin : MonoBehaviour
     private void Update()
     {
         // On mouse release, check if draggable is inside and was just dropped
-        if (draggableInZone != null)
+        if (draggableInZone != null) //Condition: if a draggable in trashbin collider
         {
-            if (!draggableInZone.IsBeingDragged())
+            if (!draggableInZone.IsBeingDragged()) //
             {
                 Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
                 Destroy(draggableInZone.gameObject);
