@@ -35,7 +35,29 @@ public class CustomerController : MonoBehaviour
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
+    /// <summary>
+    /// Called by OrderBubble when the player delivers the right item.
+    /// </summary>
+    public void OnCorrectDelivery()
+    {
+        Debug.Log("CustomerController: Correct delivery! , boosted patience.");
 
+        int current = patienceBar.GetHealth();
+        int boosted = Mathf.Min(maxPatience, current + 10);
+        patienceBar.SetHealth(boosted);
+        // Optionally, you can also play a sound or show feedback here.
+
+    }
+
+    /// <summary>
+    /// Called by OrderBubble when the player delivers the wrong item.
+    /// Shows feedback, deducts a bit of patience, then reverts.
+    /// </summary>
+    public void OnWrongDelivery(string foodName)
+    {
+        Debug.Log($"CustomerController: Wrong delivery of {foodName}!");
+        OrderFailed();
+    }
 
     public void SetOrderArea(OrderArea area)
     {
@@ -145,6 +167,16 @@ public class CustomerController : MonoBehaviour
         OrderFailed();
     }
 
+    public void OnAllOrdersFulfilled()
+    {
+        // 1) stop patience timer
+        if (progressRoutine != null)
+            StopCoroutine(progressRoutine);
+
+        OrderCompleted();
+    }
+
+
     void OrderFailed()
     {
         spriteRenderer.sprite = angrySprite;
@@ -184,6 +216,22 @@ public class CustomerController : MonoBehaviour
 
     void OnMouseDown()
     {
+        // if (orderBubble != null)
+        // {
+        //     var orders = orderBubble.GetOrders();
+        //     string orderSummary = "Orders: ";
+        //     for (int i = 0; i < orders.Count; i++)
+        //     {
+        //         var food = orders[i];
+        //         orderSummary += $"[{i}]{food.foodName} ";
+        //     }
+        //     Debug.Log(orderSummary);
+        // }
+        // else
+        // {
+        //     Debug.Log("OrderBubble is null.");
+        // }
+
         if (hasArrived)
         {
             OrderCompleted();

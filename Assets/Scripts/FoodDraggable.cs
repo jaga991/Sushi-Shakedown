@@ -37,7 +37,7 @@ public class FoodDraggable : Food
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         offset = transform.position - mouseWorldPos;
         isDragging = true;
-        Debug.Log("Clicking on food item " + foodName);
+        // Debug.Log("Clicking on food item " + foodName);
     }
 
     void OnMouseDrag()

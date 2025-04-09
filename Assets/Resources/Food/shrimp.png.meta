@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shrimp_imresizer 6_0
+      name: shrimp
       rect:
         serializedVersion: 2
         x: 50
@@ -108,7 +108,7 @@ TextureImporter:
         width: 181
         height: 142
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0346d64ee80414409bfe0287e4ed0ad9
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shrimp_imresizer 6_0: 3984673303792559502
+      shrimp: 3984673303792559502
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
