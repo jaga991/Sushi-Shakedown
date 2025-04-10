@@ -225,6 +225,7 @@ MonoBehaviour:
   foodManager: {fileID: 514482238}
   slotSpacing: 0
   deliveryAnimationDuration: 0.5
+  customerController: {fileID: 0}
 --- !u!61 &6951690
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -422,9 +423,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 729120803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 543, y: 312}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -53, y: -25}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &173149115
@@ -823,6 +824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 373605503}
   foodName: white_thing
+  spawner: {fileID: 0}
 --- !u!212 &373605503
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -886,12 +888,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373605501}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.1, y: -2.13, z: 0.009657005}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -660.6, y: -369.63, z: 0.009657005}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 520904987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &373605506
 BoxCollider2D:
@@ -1018,6 +1020,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 504781230}
   foodName: bad_food
+  spawner: {fileID: 0}
 --- !u!212 &504781230
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1131,6 +1134,52 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &520904985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 520904987}
+  - component: {fileID: 520904986}
+  m_Layer: 0
+  m_Name: FoodSpawner1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &520904986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520904985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12c49d4ed34447b8a69767d1fff1616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFoodCount: 1
+--- !u!4 &520904987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520904985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 653.5, y: 367.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 373605505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &657353900
@@ -1448,6 +1497,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795104108}
   m_CullTransparentMesh: 1
+--- !u!1 &894589898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894589899}
+  - component: {fileID: 894589900}
+  m_Layer: 0
+  m_Name: FoodSpawner2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &894589899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894589898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.314031, y: -1.6646023, z: -0.030111484}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1531519982}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894589900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894589898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12c49d4ed34447b8a69767d1fff1616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFoodCount: 1
 --- !u!1 &986831627
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,6 +2184,7 @@ MonoBehaviour:
   angrySprite: {fileID: -2857071427163950762, guid: ce362d113c3f34eef81474a77a904506, type: 3}
   maxPatience: 100
   assignedOrderArea: {fileID: 0}
+  patienceBoostOnCorrect: 10
 --- !u!212 &1443159625
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2396,7 +2492,7 @@ GameObject:
   - component: {fileID: 1531519980}
   - component: {fileID: 1531519979}
   m_Layer: 8
-  m_Name: FoodThing (1)
+  m_Name: FoodThing-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2462,6 +2558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1531519981}
   foodName: shrimp
+  spawner: {fileID: 0}
 --- !u!212 &1531519981
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2525,12 +2622,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531519978}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.62, y: -2.12, z: 0.009657005}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.305969, y: -0.4553976, z: 0.039768487}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 894589899}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1606393449
 GameObject:
@@ -3250,7 +3347,7 @@ SceneRoots:
   - {fileID: 729120803}
   - {fileID: 514482239}
   - {fileID: 302245139}
-  - {fileID: 373605505}
-  - {fileID: 1531519982}
   - {fileID: 504781231}
   - {fileID: 1194073134}
+  - {fileID: 520904987}
+  - {fileID: 894589899}

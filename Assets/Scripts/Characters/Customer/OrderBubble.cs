@@ -60,7 +60,8 @@ public class OrderBubble : MonoBehaviour
         }
     }
 
-    private Vector3 CalculateOrderPosition(int slotIndex){
+    private Vector3 CalculateOrderPosition(int slotIndex)
+    {
         Vector3 spawnPosition = transform.position;
         // Adjust the x position as before.
         spawnPosition.x -= selfSpriteRenderer.bounds.size.x * 1.5f / 10;
@@ -107,37 +108,36 @@ public class OrderBubble : MonoBehaviour
     }
 
 
-    
+
     private void ProcessFoodDelivery(FoodDraggable delivered)
     {
-        string name    = delivered.foodName;
-        bool   isFinal = (orderedFoods.Count == 1);
+        string name = delivered.foodName;
+        bool isFinal = (orderedFoods.Count == 1);
 
         // 1) validation/extraction
         if (ValidateOrder(name, out var matchedFood, out var idx))
         {
             // 2) remove from list & reposition
             orderedFoods.RemoveAt(idx);
-
+            // delivered.CancelDrag();
             // 3) animate & cleanup
-            StartCoroutine(AnimateDeliveryAndCleanup(delivered.gameObject, matchedFood.gameObject));
+            StartCoroutine(AnimateDeliveryAndCleanup(delivered.gameObject, matchedFood.gameObject, isFinal));
+
+            delivered.InformSpawner();
 
             // 5) if it was the last order, fire final callback
-            if (isFinal)
-                customerController?.OnAllOrdersFulfilled();
-            else
-                customerController?.OnCorrectDelivery();
+
         }
         else
         {
             // wrong item
             Debug.Log($"OrderBubble: No matching order found for '{name}'");
-            customerController?.OnWrongDelivery(name);
+            customerController.OnWrongDelivery(name);
         }
     }
 
 
-    private IEnumerator AnimateDeliveryAndCleanup(GameObject deliveredObj, GameObject iconObj)
+    private IEnumerator AnimateDeliveryAndCleanup(GameObject deliveredObj, GameObject iconObj, bool isFinal)
     {
         Vector3 startPos = deliveredObj.transform.position;
         Vector3 endPos = iconObj.transform.position;
@@ -161,7 +161,12 @@ public class OrderBubble : MonoBehaviour
         // cleanup
         Destroy(iconObj);
         Destroy(deliveredObj);
+
+
+
+        if (isFinal)
+            customerController.OnAllOrdersFulfilled();
+        else
+            customerController.OnCorrectDelivery();
     }
-
-
 }

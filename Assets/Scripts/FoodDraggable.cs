@@ -1,19 +1,3 @@
-// using UnityEngine;
-
-// public class FoodDraggable : Food
-// {
-//     // Start is called once before the first execution of Update after the MonoBehaviour is created
-//     void OnMouseDown()
-//     {
-//         Debug.Log("Clicking on food item " + foodName);
-//     }
-//     private void OnTriggerEnter2D(Collider2D other)
-//     {
-//         Debug.Log("Triggered with " + other.gameObject.name);
-//     }
-// }
-
-
 using UnityEngine;
 using System.Collections;
 
@@ -22,6 +6,19 @@ public class FoodDraggable : Food
     private Vector3 originalPosition;
     private Vector3 offset;
     private bool isDragging = false;
+
+    public FoodSpawner spawner;  // set by the spawner at Instantiate()
+    public void CancelDrag()
+    {
+        isDragging = false;
+        // disable the collider so we don’t retrigger anything
+        var col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+        // disable this script so OnMouseDrag/OnMouseUp no longer fire
+        enabled = false;
+        // if you have any SmoothReturn coroutines running, you might want to stop them:
+        StopAllCoroutines();
+    }
 
     void Start()
     {
@@ -88,4 +85,14 @@ public class FoodDraggable : Food
     {
         Debug.Log("Triggered with " + other.gameObject.name);
     }
+
+    public void InformSpawner()
+    {
+        // Inform the spawner that this food item has been delivered
+        if (spawner != null)
+        {
+            spawner.OnFoodDestroyed(this);
+        }
+    }
+
 }

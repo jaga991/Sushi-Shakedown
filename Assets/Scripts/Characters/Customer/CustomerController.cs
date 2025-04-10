@@ -29,6 +29,11 @@ public class CustomerController : MonoBehaviour
     private Text bubbleText;
     public OrderArea assignedOrderArea; // Exposed if you still want to check later
     private Coroutine progressRoutine;
+
+    public int patienceBoostOnCorrect = 10;
+
+    // internal tracker
+    private int currentPatience;
     private bool hasArrived = false;
 
     // State flag for off-screen movement
@@ -42,9 +47,10 @@ public class CustomerController : MonoBehaviour
     {
         Debug.Log("CustomerController: Correct delivery! , boosted patience.");
 
-        int current = patienceBar.GetHealth();
-        int boosted = Mathf.Min(maxPatience, current + 10);
-        patienceBar.SetHealth(boosted);
+        currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
+
+        // reflect immediately in the UI
+        patienceBar.SetHealth(currentPatience);
         // Optionally, you can also play a sound or show feedback here.
 
     }
@@ -145,25 +151,29 @@ public class CustomerController : MonoBehaviour
 
         orderBubble.StartOrder(Random.Range(1, 4));
 
-        // Start the fake progress count (0 to 100) over 10 seconds.
-        progressRoutine = StartCoroutine(CountTo100());
+        currentPatience = maxPatience;
+
+        // Start the fake progress count (0 to 100) over 10 seconds.\
+        if (progressRoutine != null) StopCoroutine(progressRoutine);
+        progressRoutine = StartCoroutine(PatienceCountdown());
     }
 
-    IEnumerator CountTo100()
+    private IEnumerator PatienceCountdown()
     {
-        // We'll decrease the patience value as progress increases.
-        int patience = maxPatience;
-        for (int i = 0; i <= 100; i++)
+        // keep ticking down until zero
+        while (currentPatience > 0)
         {
-            // Decrease patience gradually (for example, linearly)
-            patience = maxPatience - (int)((maxPatience / 100f) * i);
-            if (patienceBar != null)
-            {
-                patienceBar.SetHealth(patience);
-            }
+            // update the bar
+            patienceBar.SetHealth(currentPatience);
 
-            yield return new WaitForSeconds(0.1f); // 0.1s per step; 100 steps = 10s total.
+            // wait
+            yield return new WaitForSeconds(0.1f);
+
+            // decrement
+            currentPatience--;
         }
+
+        // out of patience!
         OrderFailed();
     }
 
