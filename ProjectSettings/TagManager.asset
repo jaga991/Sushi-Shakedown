@@ -14,6 +14,9 @@ TagManager:
   - spawn
   - baseContainer
   - draggable
+  - Background
+  - Customer
+  - Food
   - 
   - 
   - 
