@@ -11,6 +11,9 @@ TagManager:
   - 
   - Water
   - UI
+  - spawn
+  - baseContainer
+  - draggable
   - Background
   - Customer
   - Food
