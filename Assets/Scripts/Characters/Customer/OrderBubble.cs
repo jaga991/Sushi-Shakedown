@@ -60,8 +60,7 @@ public class OrderBubble : MonoBehaviour
         }
     }
 
-    private Vector3 CalculateOrderPosition(int slotIndex)
-    {
+    private Vector3 CalculateOrderPosition(int slotIndex){
         Vector3 spawnPosition = transform.position;
         // Adjust the x position as before.
         spawnPosition.x -= selfSpriteRenderer.bounds.size.x * 1.5f / 10;
@@ -93,41 +92,48 @@ public class OrderBubble : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Checks for a matching ordered food by name, removes it from the bubble,
-    /// destroys its icon, repositions the rest, and optionally destroys the delivered object.
-    /// </summary>
-    private void ProcessFoodDelivery(FoodDraggable delivered)
+    private bool ValidateOrder(string foodName, out Food matchedFood, out int index)
     {
-        string name = delivered.foodName;
-        bool isFinal = (orderedFoods.Count == 1);
-        // Debug.Log("Checking for matching order: " + name);
-
-        for (int i = 0; i < orderedFoods.Count; i++)
+        for (index = 0; index < orderedFoods.Count; index++)
         {
-            if (orderedFoods[i].foodName == name)
+            if (orderedFoods[index].foodName == foodName)
             {
-
-                Food matchedFood = orderedFoods[i];
-                GameObject iconObj = matchedFood.gameObject;
-                GameObject foodObj = delivered.gameObject;
-                orderedFoods.RemoveAt(i);
-
-                Debug.Log($"OrderBubble: Fulfilled and removed order '{name}'");
-                StartCoroutine(AnimateDeliveryAndCleanup(foodObj, iconObj));
-
-
-                customerController?.OnCorrectDelivery();
-
-
-                if (isFinal)
-                    customerController?.OnAllOrdersFulfilled();
-                return; // only one match per delivery
+                matchedFood = orderedFoods[index];
+                return true;
             }
         }
+        matchedFood = null;
+        return false;
+    }
 
-        Debug.Log($"OrderBubble: No matching order found for '{name}'");
-        customerController?.OnWrongDelivery(name);
+
+    
+    private void ProcessFoodDelivery(FoodDraggable delivered)
+    {
+        string name    = delivered.foodName;
+        bool   isFinal = (orderedFoods.Count == 1);
+
+        // 1) validation/extraction
+        if (ValidateOrder(name, out var matchedFood, out var idx))
+        {
+            // 2) remove from list & reposition
+            orderedFoods.RemoveAt(idx);
+
+            // 3) animate & cleanup
+            StartCoroutine(AnimateDeliveryAndCleanup(delivered.gameObject, matchedFood.gameObject));
+
+            // 5) if it was the last order, fire final callback
+            if (isFinal)
+                customerController?.OnAllOrdersFulfilled();
+            else
+                customerController?.OnCorrectDelivery();
+        }
+        else
+        {
+            // wrong item
+            Debug.Log($"OrderBubble: No matching order found for '{name}'");
+            customerController?.OnWrongDelivery(name);
+        }
     }
 
 
