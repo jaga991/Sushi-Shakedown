@@ -15,11 +15,7 @@ public class NPCSpawner : MonoBehaviour
 
     public SpawnZoneData spawnZone;
 
-    public float minScale = 0.7f;
-    [Tooltip("Sprite scale at the closest spawn Y")]
-    public float maxScale = 0.9f;
 
-    public float Normal = 3f;
     public bool spawnCustomerDebug = false;
 
     public OrderAreaGroup orderAreaGroup;
@@ -46,38 +42,25 @@ public class NPCSpawner : MonoBehaviour
     }
     void SpawnNPC()
     {
-        bool spawnFromLeft = Random.value > 0.5f;
+        bool fromLeft = Random.value > 0.5f;
         Camera cam = Camera.main;
-        float camHeight = 2f * cam.orthographicSize;
-        float camWidth = camHeight * cam.aspect;
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
 
-        float spawnX = spawnFromLeft
-            ? cam.transform.position.x - (camWidth / 2) - spawnMargin
-            : cam.transform.position.x + (camWidth / 2) + spawnMargin;
+        float x = cam.transform.position.x + (fromLeft ? -1 : 1) * (width / 2 + spawnMargin);
+        float y = Random.Range(spawnZone.MinY, spawnZone.MaxY);
 
-        // pick a Y within the zone
-        float spawnY = Random.Range(spawnZone.MinY, spawnZone.MaxY);
-        Vector3 spawnPosition = new(spawnX, spawnY, 0f);
+        var npcObj = Instantiate(npcTemplate, new Vector3(x, y, 0), Quaternion.identity);
+        npcObj.SetActive(true);
 
-        // instantiate
-        GameObject npc = Instantiate(npcTemplate, spawnPosition, Quaternion.identity, transform);
-        npc.SetActive(true);
-
-        // 1) compute depth factor
-        float t = Mathf.InverseLerp(spawnZone.MinY, spawnZone.MaxY, spawnY);
-
-        // 2) interpolate scale (closest= maxScale, furthest= minScale)
-        float scale = Mathf.Lerp(maxScale * Normal, minScale * Normal, t);
-        npc.transform.localScale = new Vector3(scale, scale, 1f);
-
-        // 3) set movement & align bottom
-        if (npc.TryGetComponent<NPCController>(out var controller))
-        {
-            controller.SetDirection(new Vector2(spawnFromLeft ? 1f : -1f, 0f));
-            controller.AlignBottomToY(spawnY);
-        }
+        var ctrl = npcObj.GetComponent<NPCController>();
+        ctrl.Initialize(
+            direction: fromLeft ? 1f : -1f,
+            spawnY: y,
+            minY: spawnZone.MinY,
+            maxY: spawnZone.MaxY
+        );
     }
-
 
     void SpawnCustomer()
     {

@@ -6,6 +6,11 @@ public class NPCController : MonoBehaviour
     private Vector2 moveDirection = Vector2.right; // Default movement direction.
     private SpriteRenderer spriteRenderer;
 
+    [Tooltip("Sprite scale at the closest spawn Y")]
+    private readonly float minScale = 0.6f;
+    private readonly float maxScale = 0.8f;
+    private readonly float NormalScale = 3f;
+
     void Awake()
     {
         // Debug.Log($"[NPCController] {gameObject.name} initialized.");
@@ -14,6 +19,8 @@ public class NPCController : MonoBehaviour
         {
             Debug.Log("NPCController: No SpriteRenderer found!");
         }
+        speed = Random.Range(.7f, 1.0f) * speed;
+
     }
 
     public void SetDirection(Vector2 direction)
@@ -43,6 +50,34 @@ public class NPCController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+
+    /// <summary>
+    /// Initializes this NPC: sets movement, scaling & alignment.
+    /// </summary>
+    /// <param name="direction">+1 = right, -1 = left</param>
+    /// <param name="spawnY">world Y coordinate it spawned at</param>
+    /// <param name="minY">minimum Y in your spawn zone</param>
+    /// <param name="maxY">maximum Y in your spawn zone</param>
+    public void Initialize(
+        float direction,
+        float spawnY,
+        float minY,
+        float maxY
+    )
+    {
+        // 1) Movement direction & sprite flip
+        moveDirection = new Vector2(direction, 0f);
+        spriteRenderer.flipX = direction > 0;
+
+        // 2) Depth‐based scale
+        float t = Mathf.InverseLerp(minY, maxY, spawnY);
+        float s = Mathf.Lerp(maxScale * NormalScale, NormalScale * minScale, t);
+        transform.localScale = Vector3.one * s;
+
+        // 3) Align bottom of sprite to spawnY
+        AlignBottomToY(spawnY);
     }
 
     public void AlignBottomToY(float spawnY)
