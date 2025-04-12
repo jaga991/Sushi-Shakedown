@@ -1,19 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-public class FoodDraggable : Food
+public class Guru_FoodDraggable : Food
 {
     private Vector3 originalPosition;
     private Vector3 offset;
     private bool isDragging = false;
 
-    public FoodSpawner spawner;  // set by the spawner at Instantiate()
+    public Guru_FoodSpawner spawner;  // set by the spawner at Instantiate()
     public void CancelDrag()
     {
         isDragging = false;
         // disable the collider so we don’t retrigger anything
-        var col = GetComponent<Collider2D>();
-        if (col != null) col.enabled = false;
+        if (TryGetComponent<Collider2D>(out var col)) col.enabled = false;
         // disable this script so OnMouseDrag/OnMouseUp no longer fire
         enabled = false;
         // if you have any SmoothReturn coroutines running, you might want to stop them:

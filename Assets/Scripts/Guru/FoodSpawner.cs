@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodSpawner : MonoBehaviour
+public class Guru_FoodSpawner : MonoBehaviour
 {
     [Header("How many food items to keep alive at once")]
     public int maxFoodCount = 1;
 
     // --- internal state ---
-    private FoodDraggable template;
+    private Guru_FoodDraggable template;
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
     void Awake()
     {
         // 1) find the child FoodDraggable
-        template = GetComponentInChildren<FoodDraggable>();
+        template = GetComponentInChildren<Guru_FoodDraggable>();
         if (template == null)
         {
             Debug.LogError("FoodSpawner: No FoodDraggable found as a child!");
@@ -51,7 +51,7 @@ public class FoodSpawner : MonoBehaviour
         go.SetActive(true);
 
         // wire up the spawner reference
-        var fd = go.GetComponent<FoodDraggable>();
+        var fd = go.GetComponent<Guru_FoodDraggable>();
         fd.spawner = this;
 
 
@@ -61,7 +61,7 @@ public class FoodSpawner : MonoBehaviour
     /// Called by a FoodDraggable in its OnDestroy().
     /// Removes the reference and spawns a replacement.
     /// </summary>
-    public void OnFoodDestroyed(FoodDraggable gone)
+    public void OnFoodDestroyed(Guru_FoodDraggable gone)
     {
         SpawnFood();
     }

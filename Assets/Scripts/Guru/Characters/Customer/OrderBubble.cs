@@ -86,7 +86,7 @@ public class OrderBubble : MonoBehaviour
     {
         if (other == null) return;
 
-        if (other.TryGetComponent<FoodDraggable>(out var foodDraggable))
+        if (other.TryGetComponent<Guru_FoodDraggable>(out var foodDraggable))
         {
             Debug.Log($"Food draggable entered order bubble: {foodDraggable.foodName}");
             ProcessFoodDelivery(foodDraggable);
@@ -109,7 +109,7 @@ public class OrderBubble : MonoBehaviour
 
 
 
-    private void ProcessFoodDelivery(FoodDraggable delivered)
+    private void ProcessFoodDelivery(Guru_FoodDraggable delivered)
     {
         string name = delivered.foodName;
         bool isFinal = (orderedFoods.Count == 1);
