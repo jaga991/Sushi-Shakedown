@@ -19,9 +19,15 @@ public class DraggableObject : MonoBehaviour
     {
         //check if other GameObject is BaseContainer
         BaseContainer container = other.GetComponent<BaseContainer>();
+        TrashBin trashBin = other.GetComponent<TrashBin>();
         if (container != null)
         {
             //set isColliding to true
+            isColliding = true;
+        }
+        else if (trashBin != null)
+        {
+            Debug.Log($"[DraggableObject] {gameObject.name} entered trash zone.");
             isColliding = true;
         }
     }
@@ -69,6 +75,7 @@ public class DraggableObject : MonoBehaviour
         {
             transform.position = parentContainer.transform.position;
             Debug.Log($"[DraggableObject] {gameObject.name} returned to {parentContainer.name}");
+            isDragging = false;
         }
         else
         {
@@ -107,7 +114,8 @@ public class DraggableObject : MonoBehaviour
         }
         else
         {
-            Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. No action taken.");
+            Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. set isDragging to False.");
+            this.isDragging = false;
         }
     }
 

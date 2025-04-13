@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8665398940103281823}
   - component: {fileID: -8544392020798394217}
   m_Layer: 0
-  m_Name: cup
+  m_Name: plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,6 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!61 &4600635342187005813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -138,7 +140,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0035516024, y: 0.015868425}
+  m_Offset: {x: 0.013548255, y: 0.005871743}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -148,7 +150,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5618083, y: 1.8325222}
+  m_Size: {x: 1.875037, y: 1.399334}
   m_EdgeRadius: 0
 --- !u!114 &-8665398940103281823
 MonoBehaviour:
@@ -162,6 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 0}
 --- !u!50 &-8544392020798394217
 Rigidbody2D:
   serializedVersion: 5
@@ -265,7 +269,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 9103656482713568619, guid: 8c9ec65b9fb4bdb41b7c4b0dca90b923, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c400d51f007b85439c8b5a0051ab514, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

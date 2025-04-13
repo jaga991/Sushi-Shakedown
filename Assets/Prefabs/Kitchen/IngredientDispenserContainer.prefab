@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2473798427546180556}
   - component: {fileID: 2296056223498440833}
   m_Layer: 0
-  m_Name: soysauce-placement
+  m_Name: IngredientDispenserContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

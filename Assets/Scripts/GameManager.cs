@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("HandleLeftMouseUp Triggered");
 
-        //get the currentDragging Draggable Object from gamedataso
         if (currentlyDragging != null)
         {
             currentlyDragging.HandleRelease();
@@ -96,14 +95,16 @@ public class GameManager : MonoBehaviour
             foodSpawner.SpawnFoodAtCursor(gameDataSO.mousePosition);
         }
 
-        if (baseContainer != null)
+        else if (baseContainer != null)
         {
             //container trigger pickup on its draggable object
-            baseContainer.GetDraggableToCursor(gameDataSO.mousePosition);
+            baseContainer.TryGetDraggableToCursor(gameDataSO.mousePosition);
         }
            
         else if (draggableObject != null)
+        {
             draggableObject.TryPickUpThis();
+        }
     }
 
     private Vector3 GetMousePosition()
