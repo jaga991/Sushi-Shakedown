@@ -52,8 +52,6 @@ public class DraggableObject : MonoBehaviour
 
         }
     }
-
-
     public void TryPickUpThis()
     {
         offset = transform.position - gameDataSO.mousePosition;
