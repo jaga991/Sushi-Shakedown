@@ -10,6 +10,8 @@ public class WaveManager : MonoBehaviour
     public int[] waveSizes = { 3, 5, 7 };
     private int tempWaveLimit = 1;
 
+    public event System.Action OnWavesCompleted;
+
 
     /// <summary>
     /// Starts the three waves for the day.
@@ -69,6 +71,7 @@ public class WaveManager : MonoBehaviour
         }
 
         Debug.Log("All waves for the day are complete!");
+        OnWavesCompleted?.Invoke();
     }
 
 
