@@ -1,68 +1,89 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class ScoreCounter : MonoBehaviour
 {
-    // The overall score
-    public int score { get; private set; } = 0;
-
-    // Optionally track customer counts
-    public int normalCustomersCount { get; private set; } = 0;
-    public int angryCustomersCount { get; private set; } = 0;
-
+    [Header("Data & UI")]
+    [Tooltip("Assign your CustomerData SO here")]
+    public CustomerData customerData;
+    [Tooltip("Assign the TextMeshProUGUI for showing score")]
     public TextMeshProUGUI scoreText;
+
+    void OnEnable()
+    {
+        if (customerData != null)
+            customerData.OnScoreChanged += HandleScoreChanged;
+    }
+
+    void OnDisable()
+    {
+        if (customerData != null)
+            customerData.OnScoreChanged -= HandleScoreChanged;
+    }
 
     void Start()
     {
+        // Initialize UI from existing SO value
+        UpdateScoreUI();
+    }
+
+    // Called whenever customerData.score changes
+    void HandleScoreChanged(int newScore)
+    {
         UpdateScoreUI();
     }
 
     /// <summary>
-    /// Call this method when a customer completes an order successfully.
+    /// Call this when a customer completes an order.
     /// </summary>
-    /// <param name="amount">The amount to add to the score.</param>
     public void AddScore(int amount)
     {
-        score += amount;
-        normalCustomersCount++;
-        UpdateScoreUI();
+        if (customerData != null)
+            customerData.AddScore(amount);
+        else
+            Debug.LogWarning("ScoreCounter: CustomerData is not assigned!");
     }
 
     /// <summary>
-    /// Call this method when a customer's order fails.
+    /// Call this when a customer's order fails.
     /// </summary>
-    /// <param name="amount">The amount to deduct from the score.</param>
     public void DeductScore(int amount)
     {
-        score -= amount;
-        angryCustomersCount++;
-        UpdateScoreUI();
+        if (customerData != null)
+            customerData.DeductScore(amount);
+        else
+            Debug.LogWarning("ScoreCounter: CustomerData is not assigned!");
     }
 
     /// <summary>
-    /// Resets the score and customer counts.
+    /// Resets the score in the SO (and UI).
     /// </summary>
     public void ResetScore()
     {
-        score = 0;
-        normalCustomersCount = 0;
-        angryCustomersCount = 0;
-        UpdateScoreUI();
+        if (customerData != null)
+            customerData.ResetScore();
+        else
+            Debug.LogWarning("ScoreCounter: CustomerData is not assigned!");
     }
 
     /// <summary>
-    /// Updates the score text on the UI.
+    /// Updates the on‑screen text from the SO.
     /// </summary>
     private void UpdateScoreUI()
     {
-        if (scoreText != null)
+        if (scoreText == null)
         {
-            scoreText.text = $"Score: {score}";
+            Debug.LogWarning("ScoreCounter: scoreText UI element is not assigned!");
+            return;
+        }
+
+        if (customerData != null)
+        {
+            scoreText.text = $"Score: {customerData.score}";
         }
         else
         {
-            Debug.Log("ScoreText UI element is not assigned!");
+            scoreText.text = "Score: 0";
         }
     }
 }

@@ -81,11 +81,6 @@ public class FoodDraggable : Food
         return Camera.main.ScreenToWorldPoint(screenPos);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Triggered with " + other.gameObject.name);
-    }
-
     public void InformSpawner()
     {
         // Inform the spawner that this food item has been delivered

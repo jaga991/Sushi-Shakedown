@@ -9,6 +9,8 @@ public class CustomerController : MonoBehaviour
     public GameObject textBubble;
     public GameObject OrderBubble;
 
+    public CustomerData CustomerData;
+
     public PatienceBar patienceBar;
     public ScoreCounter scoreCounter;
     public AudioClip orderCompletedSound;
@@ -62,7 +64,7 @@ public class CustomerController : MonoBehaviour
     public void OnWrongDelivery(string foodName)
     {
         Debug.Log($"CustomerController: Wrong delivery of {foodName}!");
-        OrderFailed();
+        OrderFailed(2);
     }
 
     public void SetOrderArea(OrderArea area)
@@ -149,8 +151,8 @@ public class CustomerController : MonoBehaviour
         textBubble.SetActive(false);
         OrderBubble.SetActive(true);
 
-        orderBubble.StartOrder(Random.Range(1, 4));
-
+        // orderBubble.StartOrder(Random.Range(1, 4));
+        orderBubble.StartOrder(1);
         currentPatience = maxPatience;
 
         // Start the fake progress count (0 to 100) over 10 seconds.\
@@ -174,8 +176,10 @@ public class CustomerController : MonoBehaviour
         }
 
         // out of patience!
-        OrderFailed();
+        OrderFailed(1);
     }
+
+
 
     public void OnAllOrdersFulfilled()
     {
@@ -187,12 +191,23 @@ public class CustomerController : MonoBehaviour
     }
 
 
-    void OrderFailed()
+    void OrderFailed(int reason)
     {
+        if (reason == 1)
+        {
+            // customer ran out of patience 
+            CustomerData.DeductScore(1);
+            Debug.Log("Times up! Order failed.");
+        }
+        else if (reason == 2)
+        {
+            CustomerData.DeductScore(5);
+            Debug.Log("Customer Received Wrong Order !!");
+            // on wrong delivery 
+        }
         spriteRenderer.sprite = angrySprite;
         PlayOrderFailed();
-        scoreCounter.DeductScore(1);
-        Debug.Log("Times up! Order failed.");
+
         OrderBubble.SetActive(false);
         SetOffScreenTarget();
         isWalkingOffScreen = true;
@@ -226,22 +241,6 @@ public class CustomerController : MonoBehaviour
 
     void OnMouseDown()
     {
-        // if (orderBubble != null)
-        // {
-        //     var orders = orderBubble.GetOrders();
-        //     string orderSummary = "Orders: ";
-        //     for (int i = 0; i < orders.Count; i++)
-        //     {
-        //         var food = orders[i];
-        //         orderSummary += $"[{i}]{food.foodName} ";
-        //     }
-        //     Debug.Log(orderSummary);
-        // }
-        // else
-        // {
-        //     Debug.Log("OrderBubble is null.");
-        // }
-
         if (hasArrived)
         {
             OrderCompleted();
@@ -260,12 +259,15 @@ public class CustomerController : MonoBehaviour
             _ => spriteRenderer.sprite
         };
 
-
         PlayOrderSuccess();
+
+        CustomerData.Increment();
+
         Debug.Log("Order Completed!");
         // Calculate score based on patience percentage (1-10)
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
         scoreCounter.AddScore(score);
+        Debug.Log("Added Score is " + score);
 
 
         if (progressRoutine != null)

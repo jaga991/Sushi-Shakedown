@@ -539,6 +539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9191ed6612254445da7748d1b2221913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   scoreText: {fileID: 173149115}
 --- !u!1 &302245136
 GameObject:
@@ -2172,6 +2173,7 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0}
   textBubble: {fileID: 1300867022}
   OrderBubble: {fileID: 6951686}
+  CustomerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   patienceBar: {fileID: 2028183215}
   scoreCounter: {fileID: 173149117}
   orderCompletedSound: {fileID: 8300000, guid: 1fff219f4fef94461ab85e455767a7fe, type: 3}
@@ -2893,6 +2895,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1008484981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1932379686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1932379688}
+  - component: {fileID: 1932379687}
+  - component: {fileID: 1932379689}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1932379687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932379686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9e0c62e655f64938a8c12c79313c786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customerDataSO: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
+  npcSpawner: {fileID: 657353901}
+  waveManager: {fileID: 1932379689}
+  customerWarmupThreshold: 3
+  requiredServedCount: 3
+--- !u!4 &1932379688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932379686}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1096.6738, y: 427.91882, z: -8.459123}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1932379689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932379686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5bd63487c0421388b686149c3725a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcSpawner: {fileID: 657353901}
+  waveCountdownDuration: 5
+  customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
 --- !u!1 &2009086847
 GameObject:
   m_ObjectHideFlags: 0
@@ -3351,3 +3418,4 @@ SceneRoots:
   - {fileID: 1194073134}
   - {fileID: 520904987}
   - {fileID: 894589899}
+  - {fileID: 1932379688}

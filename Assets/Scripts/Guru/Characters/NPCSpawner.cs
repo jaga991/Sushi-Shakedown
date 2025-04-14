@@ -62,14 +62,14 @@ public class NPCSpawner : MonoBehaviour
         );
     }
 
-    void SpawnCustomer()
+    public bool SpawnCustomer()
     {
 
         OrderArea orderArea = orderAreaGroup.GetFreeOrderArea();
         if (orderArea == null)
         {
             Debug.Log("All order areas are occupied. Customer Not Spawned !!");
-            return;
+            return false;
         }
 
         orderArea.UpdateState(true); // Mark the order area as occupied.
@@ -100,6 +100,7 @@ public class NPCSpawner : MonoBehaviour
         {
             customerController.SetOrderArea(orderArea); // Set the order area for the customer.
         }
+        return true;
     }
 
 }
