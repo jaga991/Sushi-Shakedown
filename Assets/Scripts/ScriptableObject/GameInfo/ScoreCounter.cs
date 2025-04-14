@@ -8,17 +8,27 @@ public class ScoreCounter : MonoBehaviour
     public CustomerData customerData;
     [Tooltip("Assign the TextMeshProUGUI for showing score")]
     public TextMeshProUGUI scoreText;
+    [Tooltip("Assign the TextMeshProUGUI for showing wave information")]
+    public TextMeshProUGUI waveInfoText;
+
+    // Add reference to the WaveManager to listen for wave events.
+    [Tooltip("Assign the WaveManager here")]
+    public WaveManager waveManager;
 
     void OnEnable()
     {
         if (customerData != null)
             customerData.OnScoreChanged += HandleScoreChanged;
+        if (waveManager != null)
+            waveManager.OnWaveStatusChanged += HandleWaveStatusChanged;
     }
 
     void OnDisable()
     {
         if (customerData != null)
             customerData.OnScoreChanged -= HandleScoreChanged;
+        if (waveManager != null)
+            waveManager.OnWaveStatusChanged -= HandleWaveStatusChanged;
     }
 
     void Start()
@@ -27,10 +37,17 @@ public class ScoreCounter : MonoBehaviour
         UpdateScoreUI();
     }
 
-    // Called whenever customerData.score changes
+    // Called whenever customerData.score changes.
     void HandleScoreChanged(int newScore)
     {
         UpdateScoreUI();
+    }
+
+    // Called whenever the WaveManager broadcasts a status message.
+    void HandleWaveStatusChanged(string message)
+    {
+        if (waveInfoText != null)
+            waveInfoText.text = message;
     }
 
     /// <summary>
@@ -67,7 +84,7 @@ public class ScoreCounter : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the on‑screen text from the SO.
+    /// Updates the on-screen score text from the SO.
     /// </summary>
     private void UpdateScoreUI()
     {
@@ -78,12 +95,8 @@ public class ScoreCounter : MonoBehaviour
         }
 
         if (customerData != null)
-        {
             scoreText.text = $"Score: {customerData.score}";
-        }
         else
-        {
             scoreText.text = "Score: 0";
-        }
     }
 }
