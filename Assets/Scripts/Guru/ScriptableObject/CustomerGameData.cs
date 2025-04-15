@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 public class CustomerData : ScriptableObject
 {
     public GameMode gameMode;
+
     // Existing
     public int customersServed;
     public event Action<int> OnCustomerServed;
@@ -29,7 +30,13 @@ public class CustomerData : ScriptableObject
     {
         // Initialize the data when the scriptable object is enabled.
         OnStartup();
-        gameMode = GameMode.Waves; // Default mode
+        // gameMode = GameMode.Waves; // Default mode
+    }
+
+    public void SetGameMode(GameMode mode)
+    {
+        gameMode = mode;
+        Debug.Log($"Game mode set to: {gameMode}");
     }
 
     public void OnStartup()

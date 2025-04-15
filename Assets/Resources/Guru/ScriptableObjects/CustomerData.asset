@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d0dd3257409143e3a519a186ac29f29, type: 3}
   m_Name: CustomerData
   m_EditorClassIdentifier: 
-  customersServed: 14
+  gameMode: 1
+  customersServed: 0
   Day: 0
   WaveCount: 0
+  score: 0
+  normalCustomersCount: 0
+  HappyCustomerCount: 0
+  angryCustomersCount: 0
