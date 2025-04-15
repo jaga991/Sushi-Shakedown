@@ -33,7 +33,16 @@ public class AssemblerContainer : BaseContainer
                 } else //container contains draggables
                 {
                     //check if its a plate or cup
-                    
+                    if(GetOwnedDraggable().GetComponent<PlateDraggable>() != null)
+                    {
+                        //if plate, trigger plate handle function
+                        PlateDraggable plate = GetOwnedDraggable().GetComponent<PlateDraggable>();  
+                        if (plate.TryHandleIngredient(trackingHoveringDraggableObject)) //if plate can handle ingredient, call plate handleIngredient Function
+                        {
+
+                        }
+
+                    } else if(true)
                     //if it is, trigger function in plate or cup that verifies if possble to add
                     trackingHoveringDraggableObject.ReturnToParentContainer();
                 }

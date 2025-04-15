@@ -235,4 +235,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc5cc84635bbe1041816823399ef2cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 2296487094403694516, guid: 5bcab9d00873e2f4388751bc6e800441, type: 3}
+  foodPrefab: {fileID: 2296487094403694516, guid: ad469d25c30f8f64784c612310e5c6e5, type: 3}

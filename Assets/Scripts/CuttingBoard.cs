@@ -31,7 +31,7 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
 
                 if (GetOwnedDraggable() == null) //if container does not contain draggables
                 {
-                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null) 
+                    if (trackingHoveringDraggableObject.GetComponent<DraggableObject>() != null) //TODO NEED TO UPDATE
                     {
                         Debug.Log($"{trackingHoveringDraggableObject.name} is a valid IngredientDraggable");
 
