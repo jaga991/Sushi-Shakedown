@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     private Camera mainCamera;
 
-    public DraggableObject currentlyDragging = null;
+    [SerializeField] public DraggableObject currentlyDragging = null;
 
     private void Awake()
     {

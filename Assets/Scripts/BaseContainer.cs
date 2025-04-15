@@ -12,27 +12,27 @@ public class BaseContainer : MonoBehaviour
     //commonality of all basecontainers
     //1.)track the draggableobject hovering in their colliders (draggableInZone)
     //2.)keep a record of what child draggables they own (ownedDraggable)
-    [SerializeField]
-    protected DraggableObject draggableInZone = null;
-    protected DraggableObject ownedDraggable= null;
+    [SerializeField] protected DraggableObject hoveringDraggableInCollider = null;
+    [SerializeField] protected DraggableObject ownedDraggable= null;
 
     private void OnTriggerEnter2D(Collider2D other) //if collision detected
     {
         if (other.GetComponent<DraggableObject>() != null) //check if other object is a draggableobject
         {
             Debug.Log($"[{gameObject.name}] {other.name} entered {gameObject.name}.");
-            //if other is draggableObject, track the hovering draggableObject 
-            draggableInZone = other.GetComponent<DraggableObject>();
+            //if other is draggableObject, track the hovering draggableObject by invoking SetHoveringDraggableObject 
+            SetHoveringDraggableObjectTracking(other.GetComponent<DraggableObject>());
+ 
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) //if collider exits
     {
-        if (draggableInZone != null && other.gameObject == draggableInZone.gameObject)
+        if (GetHoveringDraggableObjectTracking() != null && other.gameObject == GetHoveringDraggableObjectTracking().gameObject)
         {
             //if draggableInZone exist, reset to null to show no more draggable hovering in collider
             Debug.Log($"[{gameObject.name}] {other.name} left {gameObject.name}.");
-            draggableInZone = null;
+            ClearHoveringDraggableObjectTracking();
         }
     }
     public void TryGetDraggableToCursor(Vector3 mousePosition)
@@ -40,9 +40,11 @@ public class BaseContainer : MonoBehaviour
         //first check if there is draggables within itself
         //if no draggables, ignore
         //if draggables, trigger draggable trytopickup
-        if (ownedDraggable)
+        if (GetOwnedDraggable())
         {
-            ownedDraggable.TryPickUpThis();
+            GetOwnedDraggable().TryPickUpThis();
+            SetHoveringDraggableObjectTracking(GetOwnedDraggable());
+            ClearOwnedDraggable();
         }
         else
         {
@@ -50,5 +52,36 @@ public class BaseContainer : MonoBehaviour
         }
     }
 
+
+
+    public DraggableObject GetHoveringDraggableObjectTracking()
+    {
+        return hoveringDraggableInCollider;
+    }
+
+    public void SetHoveringDraggableObjectTracking(DraggableObject draggableObject)
+    {
+        hoveringDraggableInCollider = draggableObject;
+    }
+
+    public void ClearHoveringDraggableObjectTracking()
+    {
+        hoveringDraggableInCollider = null;
+    }
+
+    public DraggableObject GetOwnedDraggable()
+    {
+        return ownedDraggable;
+    }
+    
+    public void SetOwnedDraggable(DraggableObject draggableObject)
+    {
+        ownedDraggable = draggableObject; 
+    }
+
+    public void ClearOwnedDraggable()
+    {
+        ownedDraggable = null;
+    }
 
 }

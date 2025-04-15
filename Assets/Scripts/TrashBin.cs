@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TrashBin : MonoBehaviour
 {
-    private DraggableObject draggableInZone = null;
+    [SerializeField] private DraggableObject draggableInZone = null;
 
     private void OnTriggerEnter2D(Collider2D other)
     {

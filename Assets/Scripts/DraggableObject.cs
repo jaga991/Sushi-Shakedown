@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DraggableObject : MonoBehaviour
 {
-    protected bool isDragging = false;
-    protected Vector3 offset;
-    protected bool isColliding = false;
+    [SerializeField] protected bool isDragging = false;
+    [SerializeField] protected Vector3 offset;
+    [SerializeField] protected bool isColliding = false;
 
     [SerializeField] protected BaseContainer parentContainer;
 
@@ -29,8 +29,9 @@ public class DraggableObject : MonoBehaviour
         }
         else if (trashBin != null)
         {
-            Debug.Log($"[DraggableObject] {gameObject.name} entered {container.name}.");
+            Debug.Log($"[DraggableObject] {gameObject.name} entered {trashBin.name}.");
             isColliding = true;
+            Debug.Log(isColliding);
         }
     }
 
@@ -59,15 +60,23 @@ public class DraggableObject : MonoBehaviour
 
     public void TryPickUpThis() //draggableobject should handle pickup by themselves, called to do so by other objects (basecontainers)
     {
-        offset = transform.position - gameDataSO.mousePosition;
-        isDragging = true;
+        if (GameManager.Instance.currentlyDragging != null) //!!SHOULD NOT HAPPEN
+        {
+            Debug.LogWarning($"[{gameObject.name}] Game Manager invoked TryPickUpThis but Game Manager already dragging something");
+        }
+        else
+        {
 
-        GameManager.Instance.currentlyDragging = this;
+            Debug.Log($"[DraggableObject] {gameObject.name} picked up.");
+            isDragging = true;
 
-        Debug.Log($"[DraggableObject] {gameObject.name} picked up.");
+            offset = transform.position - gameDataSO.mousePosition;
+            GameManager.Instance.currentlyDragging = this;
+            transform.SetParent(null);
+        }
     }
 
-    public void ReturnToParentContainer() //draggableobjects should handle returning to parent container themselves, called by game manager
+    public void ReturnToParentContainer() //draggableobjects should handle returning to parent container themselves
     {
         if (parentContainer != null)
         {
@@ -80,6 +89,7 @@ public class DraggableObject : MonoBehaviour
         else
         {
             Debug.LogWarning($"[DraggableObject] {gameObject.name} has no parentContainer assigned!");
+            Destroy(gameObject);
         }
     }
 
@@ -105,6 +115,9 @@ public class DraggableObject : MonoBehaviour
     public void HandleRelease() //method called by game manager when left click is released and game manager currently dragging this object
     {
         Debug.Log($"[DraggableObject] {gameObject.name} released. isColliding = {isColliding}");
+        //set isDragging to false
+        isDragging=false;
+        GameManager.Instance.currentlyDragging=null;
 
         if (!isColliding) //if no valid collision
 
@@ -125,9 +138,7 @@ public class DraggableObject : MonoBehaviour
         else //if valid collision, reset values of this, then let the collided gameObject handle the flow
         {
             Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. set isDragging to False.");
-            this.isDragging = false;
         }
     }
-
 
 }
