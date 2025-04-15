@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8322167764655425657}
   - component: {fileID: 4600635342187005813}
   - component: {fileID: -8544392020798394217}
-  - component: {fileID: 4112686421566407018}
+  - component: {fileID: -8294882435327693432}
   m_Layer: 8
   m_Name: plate
   m_TagString: Untagged
@@ -164,7 +164,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4112686421566407018
+--- !u!114 &-8294882435327693432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2296487094403694516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9037f179faff4f9458058c4f684a7416, type: 3}
+  m_Script: {fileID: 11500000, guid: 318737ca0b2649642abc3562fe380527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDragging: 0
@@ -182,6 +182,17 @@ MonoBehaviour:
   draggableObjectSO: {fileID: 11400000, guid: 41e626baf372d0a4f9b255e9482d4731, type: 2}
   parentContainer: {fileID: 0}
   gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
+  plateIngredientSOArray:
+  - {fileID: 11400000, guid: 97a89796b307986478e65e6589069f27, type: 2}
+  - {fileID: 11400000, guid: c272ba37c0668184a9a893c5531ee707, type: 2}
+  - {fileID: 11400000, guid: 7bce11ea3e874194a9552882c1b1e0e3, type: 2}
+  - {fileID: 11400000, guid: 6a5dcd7c34647364d82f25956525ebc3, type: 2}
+  - {fileID: 11400000, guid: 2a648bcd76a41ae4db33f336bfad0319, type: 2}
+  - {fileID: 11400000, guid: f110ce319faded24ead0dea8540cfe74, type: 2}
+  - {fileID: 11400000, guid: f81c5d72915ca38489fb8db53bab54af, type: 2}
+  - {fileID: 11400000, guid: 2f8d38139603a5d4c906f6b4140dce2a, type: 2}
+  - {fileID: 11400000, guid: afea9ee08222f4140aa8e7186d76bfbf, type: 2}
+  currentIngredientTypeArray: []
 --- !u!1 &4062204961727717758
 GameObject:
   m_ObjectHideFlags: 0

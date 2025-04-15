@@ -18,7 +18,7 @@ public class AssemblerContainer : BaseContainer
 
                 if (GetOwnedDraggable() == null) //if container does not contain draggables
                 {
-                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null || trackingHoveringDraggableObject.GetComponent<ServingDraggable>() != null) 
+                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null || trackingHoveringDraggableObject.GetComponent<PlateDraggable>() != null) 
                     {
                         // It is an IngredientDraggable or a ServingDraggable
                         Debug.Log($"{trackingHoveringDraggableObject.name} is a valid DraggableObject");
@@ -37,9 +37,14 @@ public class AssemblerContainer : BaseContainer
                     {
                         //if plate, trigger plate handle function
                         PlateDraggable plate = GetOwnedDraggable().GetComponent<PlateDraggable>();  
-                        if (plate.TryHandleIngredient(trackingHoveringDraggableObject)) //if plate can handle ingredient, call plate handleIngredient Function
+                        if (plate.TryHandleIngredient(trackingHoveringDraggableObject)) //if plate can handle ingredient
                         {
-
+                            //destroy the object
+                            Destroy(trackingHoveringDraggableObject.gameObject);
+                        } else
+                        {
+                            //return it to parent
+                            trackingHoveringDraggableObject.ReturnToParentContainer();
                         }
 
                     } else if(true)
