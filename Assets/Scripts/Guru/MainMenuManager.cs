@@ -115,7 +115,8 @@ public class MainMenuManager : MonoBehaviour
     [Header("Music")]
     [Tooltip("Reference to an AudioSource in the scene")]
     public AudioSource musicSource;
-
+    public AudioSource sfxSource;
+    public AudioClip buttonClickClip;
     // we'll load these at runtime instead of via Inspector
     private AudioClip[] musicClips;
 
@@ -149,6 +150,7 @@ public class MainMenuManager : MonoBehaviour
         musicSource.clip = chosen;
         musicSource.loop = true;
         musicSource.Play();
+
         Debug.Log($"Now playing: {chosen.name}");
 
         // unload all other clips to free memory
@@ -164,6 +166,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnPlayButtonClicked()
     {
+
+        sfxSource.PlayOneShot(buttonClickClip);
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
         SceneManager.LoadScene("Customers");
@@ -171,6 +175,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnSettingsButtonClicked()
     {
+        sfxSource.PlayOneShot(buttonClickClip);
         Debug.Log("Settings button clicked! Opening Settings...");
         EventSystem.current.SetSelectedGameObject(null);
         // settingsPanel.SetActive(true);
@@ -178,6 +183,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnExitButtonClicked()
     {
+        sfxSource.PlayOneShot(buttonClickClip);
         Debug.Log("Exit button clicked! Quitting...");
         EventSystem.current.SetSelectedGameObject(null);
 

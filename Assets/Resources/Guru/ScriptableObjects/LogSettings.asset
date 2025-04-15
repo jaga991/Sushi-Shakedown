@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: LogSettings
   m_EditorClassIdentifier: 
   CustomerControllerLogs: 0
-  DayManagerLogs: 0
+  DayManagerLogs: 1
   OrderBubbleLogs: 0
   PatienceBarLogs: 0
-  WaveManagerLogs: 0
+  WaveManagerLogs: 1
   NPCControllerLogs: 0
   NPCSpawnerLogs: 0
-  FoodManagerLogs: 0
+  FoodManagerLogs: 1
   FoodSpawnerLogs: 0
