@@ -1,85 +1,181 @@
-using UnityEngine;
-using UnityEngine.UI;         // for Button
+// using UnityEngine;
+// using UnityEngine.AddressableAssets;
+// using UnityEngine.ResourceManagement.ResourceLocations;
+// using UnityEngine.ResourceManagement.AsyncOperations;
+// using UnityEngine.UI;
+// using UnityEngine.EventSystems;
+// using System.Collections.Generic;
 
+// #if UNITY_EDITOR
+// using UnityEditor;
+// #endif
+
+// public class MainMenuManager : MonoBehaviour
+// {
+//     [Header("Music")]
+//     [Tooltip("Reference to an AudioSource in the scene")]
+
+
+//     // we’ll load these at runtime instead of via Inspector
+//     private AudioClip[] musicClips;
+
+//     [Header("UI Buttons")]
+//     public Button playButton;
+//     public Button settingsButton;
+//     public Button exitButton;
+
+//     public AudioSource musicSource;
+//     private IList<IResourceLocation> _locations;
+
+//     void Awake()
+//     {
+//         // Get the list of addresses (tiny metadata, not the clips themselves)
+//         Addressables.LoadResourceLocationsAsync(
+//             "Background",
+//             Addressables.MergeMode.Union
+//         ).Completed += OnLocationsLoaded;
+//     }
+
+//     private void OnLocationsLoaded(AsyncOperationHandle<IList<IResourceLocation>> h)
+//     {
+//         if (h.Status == AsyncOperationStatus.Succeeded)
+//             _locations = h.Result;
+//         else
+//             Debug.LogError("Failed to load music locations");
+//     }
+
+//     void Start()
+//     {
+//         PlayRandomMusic();
+//     }
+//     private void PlayRandomMusic()
+//     {
+//         Debug.Log("Loading random music...");
+//         if (_locations == null || _locations.Count == 0 || musicSource == null)
+//             return;
+//         Debug.Log("Loading random music...__2");
+//         // Pick one location at random
+//         var loc = _locations[Random.Range(0, _locations.Count)];
+//         // Asynchronously load that single clip
+//         Addressables.LoadAssetAsync<AudioClip>(loc).Completed += handle =>
+//         {
+//             if (handle.Status == AsyncOperationStatus.Succeeded)
+//             {
+//                 musicSource.clip = handle.Result;
+//                 musicSource.loop = true;
+//                 musicSource.Play();
+//                 Debug.Log($"Now playing: {handle.Result.name}");
+//             }
+//             else
+//             {
+//                 Debug.LogError($"Failed to load clip at {loc.PrimaryKey}");
+//             }
+//         };
+//     }
+
+
+//     public void OnPlayButtonClicked()
+//     {
+//         Debug.Log("Play button clicked! Loading Game scene...");
+//         EventSystem.current.SetSelectedGameObject(null);
+//         // SceneManager.LoadScene("GameScene");
+//     }
+
+//     public void OnSettingsButtonClicked()
+//     {
+//         Debug.Log("Settings button clicked! Opening Settings...");
+//         EventSystem.current.SetSelectedGameObject(null);
+//         // settingsPanel.SetActive(true);
+//     }
+
+//     public void OnExitButtonClicked()
+//     {
+//         Debug.Log("Exit button clicked! Quitting...");
+//         EventSystem.current.SetSelectedGameObject(null);
+
+// #if UNITY_EDITOR
+//         EditorApplication.isPlaying = false;
+// #else
+//         Application.Quit();
+// #endif
+//     }
+// }
+
+using UnityEngine;
+using UnityEngine.UI;             // for Button
 using UnityEngine.SceneManagement; // for loading scenes
 using UnityEngine.EventSystems;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Music")]
     [Tooltip("Reference to an AudioSource in the scene")]
     public AudioSource musicSource;
 
-    [Tooltip("List of possible background music tracks")]
-    public AudioClip[] musicClips;
+    // we'll load these at runtime instead of via Inspector
+    private AudioClip[] musicClips;
 
-    [Header("UI Buttons")]
-    public Button playButton;
-    public Button settingsButton;
-    public Button exitButton;
 
     void Awake()
     {
+        // Load all clips in that Resources folder
+        musicClips = Resources.LoadAll<AudioClip>(
+            "Audio/Guru/MainMenu/BackgroundTracks"
+        );
+
+        if (musicClips == null || musicClips.Length == 0)
+            Debug.LogWarning("MainMenuManager: No background tracks found in Resources!");
     }
 
     void Start()
     {
-        // Pick a random track from the array and play it
-        // PlayRandomMusic();
-        Debug.Log("Starting Main Menu...");
+        Debug.Log("Starting Main Menu…");
+        PlayRandomMusic();
     }
 
-    /// <summary>
-    /// Plays a random music track from the MusicClips array on the MusicSource.
-    /// </summary>
     private void PlayRandomMusic()
     {
         if (musicSource == null || musicClips == null || musicClips.Length == 0)
-        {
-            Debug.LogWarning("MainMenuManager: Missing AudioSource or no music clips assigned.");
             return;
+
+        // pick one clip at random
+        int idx = Random.Range(0, musicClips.Length);
+        AudioClip chosen = musicClips[idx];
+
+        musicSource.clip = chosen;
+        musicSource.loop = true;
+        musicSource.Play();
+        Debug.Log($"Now playing: {chosen.name}");
+
+        // unload all other clips to free memory
+        for (int i = 0; i < musicClips.Length; i++)
+        {
+            if (i == idx) continue;
+            Resources.UnloadAsset(musicClips[i]);
         }
 
-        int randomIndex = Random.Range(0, musicClips.Length);
-        musicSource.clip = musicClips[randomIndex];
-        musicSource.loop = true;    // Usually loop background music
-        musicSource.Play();
+        // keep only the chosen clip in the array
+        musicClips = new AudioClip[] { chosen };
     }
 
-    /// <summary>
-    /// Called when the Play button is clicked.
-    /// Loads the gameplay scene or transitions to your main game.
-    /// </summary>
     public void OnPlayButtonClicked()
     {
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
-        // Replace "GameScene" with your actual game scene name/index:
-        // SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Customers");
     }
 
-    /// <summary>
-    /// Called when the Settings button is clicked.
-    /// You could load a separate Settings scene, or show a settings panel.
-    /// </summary>
     public void OnSettingsButtonClicked()
     {
-        Debug.Log("Settings button clicked! Loading Settings scene...");
+        Debug.Log("Settings button clicked! Opening Settings...");
         EventSystem.current.SetSelectedGameObject(null);
-        // Example: load a Settings scene or open a UI panel
-        // SceneManager.LoadScene("SettingsScene");
-        // OR
         // settingsPanel.SetActive(true);
     }
 
-    /// <summary>
-    /// Called when the Exit button is clicked.
-    /// Exits the application. Does nothing in the editor unless in play mode.
-    /// </summary>
     public void OnExitButtonClicked()
     {
         Debug.Log("Exit button clicked! Quitting...");
@@ -88,7 +184,7 @@ public class MainMenuManager : MonoBehaviour
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+        Application.Quit();
 #endif
     }
 }

@@ -24,13 +24,15 @@ public class DayManager : MonoBehaviour
 
     private void Awake()
     {
-        if (logSettings)
+        if (!logSettings)
         {
             logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
+
         }
         else
         {
-            Log("LogSettings not found. Please assign it in the inspector.");
+            // Log("LogSettings not found. Please assign it in the inspector.");
+            Debug.Log("LogSettings not found. Please assign it in the inspector.");
         }
 
     }

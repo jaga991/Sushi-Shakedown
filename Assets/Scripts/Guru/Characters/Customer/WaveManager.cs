@@ -33,7 +33,7 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
-        if (logSettings)
+        if (!logSettings)
         {
             logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
         }
