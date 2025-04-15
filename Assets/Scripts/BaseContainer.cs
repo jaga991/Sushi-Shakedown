@@ -9,27 +9,32 @@ public class BaseContainer : MonoBehaviour
     //stove will inherit base container, add cooking functionllity
 
 
-    private DraggableObject draggableInZone = null;
-    private DraggableObject ownedDraggableble = null;
+    //commonality of all basecontainers
+    //1.)track the draggableobject hovering in their colliders (draggableInZone)
+    //2.)keep a record of what child draggables they own (ownedDraggable)
+    [SerializeField]
+    protected DraggableObject draggableInZone = null;
+    protected DraggableObject ownedDraggable= null;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other) //if collision detected
     {
-        if (other.GetComponent<DraggableObject>() != null) //might need to change to prevent condiments and drink source from being trashed
+        if (other.GetComponent<DraggableObject>() != null) //check if other object is a draggableobject
         {
             Debug.Log($"[{gameObject.name}] {other.name} entered {gameObject.name}.");
+            //if other is draggableObject, track the hovering draggableObject 
             draggableInZone = other.GetComponent<DraggableObject>();
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other) //if collider exits
     {
         if (draggableInZone != null && other.gameObject == draggableInZone.gameObject)
         {
+            //if draggableInZone exist, reset to null to show no more draggable hovering in collider
             Debug.Log($"[{gameObject.name}] {other.name} left {gameObject.name}.");
             draggableInZone = null;
         }
     }
-    [SerializeField] private DraggableObject ownedDraggable;
     public void TryGetDraggableToCursor(Vector3 mousePosition)
     {
         //first check if there is draggables within itself
@@ -43,7 +48,6 @@ public class BaseContainer : MonoBehaviour
         {
             Debug.Log($"No Owned Draggables in {gameObject.name}");
         }
-
     }
 
 

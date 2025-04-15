@@ -2,57 +2,62 @@ using UnityEngine;
 
 public class DraggableObject : MonoBehaviour
 {
-    private bool isDragging = false;
-    private Vector3 offset;
-    private bool isColliding = false;
+    protected bool isDragging = false;
+    protected Vector3 offset;
+    protected bool isColliding = false;
 
-    [SerializeField] private BaseContainer parentContainer;
+    [SerializeField] protected BaseContainer parentContainer;
 
-    [SerializeField] private GameDataSO gameDataSO;
+    [SerializeField] protected GameDataSO gameDataSO;
 
     private void Start()
     {
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected void OnTriggerEnter2D(Collider2D other)
     {
-        //check if other GameObject is BaseContainer
+        //check if other GameObject is BaseContainer or TrashBin
         BaseContainer container = other.GetComponent<BaseContainer>();
         TrashBin trashBin = other.GetComponent<TrashBin>();
         if (container != null)
         {
             //set isColliding to true
+            Debug.Log($"[DraggableObject] {gameObject.name} entered {container.name}.");
+
             isColliding = true;
         }
         else if (trashBin != null)
         {
-            Debug.Log($"[DraggableObject] {gameObject.name} entered trash zone.");
+            Debug.Log($"[DraggableObject] {gameObject.name} entered {container.name}.");
             isColliding = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log($"[DraggableObject] {gameObject.name} exited collision zone .");
+
         isColliding = false;
     }
 
-
-    private void UpdatePosition()
+    protected void Update()
     {
-        Vector3 newPosition = gameDataSO.mousePosition + offset;
-        transform.position = newPosition; // Follow the mouse smoothly
-    }
-    private void Update()
-    {
-        if (isDragging) 
+        if (isDragging)
         {
             //continuous position updating
             UpdatePosition();
 
         }
     }
-    public void TryPickUpThis()
+
+    protected void UpdatePosition() //draggableobject should update their own positions
+    {
+        Vector3 newPosition = gameDataSO.mousePosition + offset;
+        transform.position = newPosition; // Follow the mouse smoothly
+    }
+
+    public void TryPickUpThis() //draggableobject should handle pickup by themselves, called to do so by other objects (basecontainers)
     {
         offset = transform.position - gameDataSO.mousePosition;
         isDragging = true;
@@ -62,17 +67,14 @@ public class DraggableObject : MonoBehaviour
         Debug.Log($"[DraggableObject] {gameObject.name} picked up.");
     }
 
-    public bool IsBeingDragged()
-    {
-        return isDragging;
-    }
-
-    public void ReturnToParentContainer()
+    public void ReturnToParentContainer() //draggableobjects should handle returning to parent container themselves, called by game manager
     {
         if (parentContainer != null)
         {
-            transform.position = parentContainer.transform.position;
-            Debug.Log($"[DraggableObject] {gameObject.name} returned to {parentContainer.name}");
+            transform.SetParent(parentContainer.transform); // Safe to call even if already the parent, just to be sure
+            transform.localPosition = Vector3.zero;
+
+            Debug.Log($"[DraggableObject] {gameObject.name} returned to {parentContainer.name} and centered.");
             isDragging = false;
         }
         else
@@ -81,36 +83,46 @@ public class DraggableObject : MonoBehaviour
         }
     }
 
-    public BaseContainer GetParentContainer()
+
+    public BaseContainer GetParentContainer() //getter for parent container
     {
         return parentContainer;
     }
 
-    public void SetParentContainer(BaseContainer container)
-    {
+    public void SetParentContainer(BaseContainer container) //setter for parent container
+    {   
+        
         parentContainer = container;
+        transform.SetParent(container.transform);
+        transform.localPosition = Vector3.zero;
     }
 
-    public void HandleRelease()
+    public bool IsBeingDragged() //getter to check bool status of isDragging
+    {
+        return isDragging;
+    }
+
+    public void HandleRelease() //method called by game manager when left click is released and game manager currently dragging this object
     {
         Debug.Log($"[DraggableObject] {gameObject.name} released. isColliding = {isColliding}");
 
-        if (!isColliding)
+        if (!isColliding) //if no valid collision
+
         {
             Debug.Log($"[DraggableObject] {gameObject.name} is not colliding with any valid container.");
 
-            if (parentContainer)
+            if (parentContainer) //check if parent container exist, if does return this to parent
             {
                 Debug.Log($"[DraggableObject] Returning {gameObject.name} to its parent container: {parentContainer.name}");
                 ReturnToParentContainer();
             }
-            else
+            else //else, remove this
             {
                 Debug.LogWarning($"[DraggableObject] {gameObject.name} has no parent container and was dropped in an invalid area. Destroying...");
                 Destroy(gameObject);
             }
         }
-        else
+        else //if valid collision, reset values of this, then let the collided gameObject handle the flow
         {
             Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. set isDragging to False.");
             this.isDragging = false;

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4995639548779142908}
   - component: {fileID: 8322167764655425657}
-  - component: {fileID: 6400193337350705270}
   - component: {fileID: 4600635342187005813}
   - component: {fileID: -2564973576785005500}
+  - component: {fileID: 6395014284956591739}
   m_Layer: 0
   m_Name: shrimp-raw-uncut
   m_TagString: Untagged
@@ -91,20 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6400193337350705270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296487094403694516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentContainer: {fileID: 0}
-  gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!61 &4600635342187005813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -178,6 +164,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6395014284956591739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296487094403694516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6403ba1b390254098604c190c6e368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!1 &4062204961727717758
 GameObject:
   m_ObjectHideFlags: 0

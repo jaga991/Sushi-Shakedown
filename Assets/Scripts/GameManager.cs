@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     }
     [SerializeField]
     private GameDataSO gameDataSO;
+
     void Start()
     {
         // get main camera for position calculation
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         BaseContainer baseContainer = null;
         DraggableObject draggableObject = null;
         FoodSpawner foodSpawner = null;
+        AssemblerContainer assemblerContainer = null;
 
         Debug.Log($"HandleLeftMouseDown: {hits.Length} hits");
 
@@ -87,6 +89,8 @@ public class GameManager : MonoBehaviour
                 draggableObject = d;
             if (foodSpawner == null && hit.collider.TryGetComponent(out FoodSpawner fs))
                 foodSpawner = fs;
+            if (assemblerContainer == null && hit.collider.TryGetComponent(out AssemblerContainer other))
+                assemblerContainer = other;
         }
 
 
@@ -100,11 +104,16 @@ public class GameManager : MonoBehaviour
             //container trigger pickup on its draggable object
             baseContainer.TryGetDraggableToCursor(gameDataSO.mousePosition);
         }
-           
+        else if (assemblerContainer != null)
+        {
+            assemblerContainer.TryGetDraggableToCursor(gameDataSO.mousePosition);
+        }
+
         else if (draggableObject != null)
         {
             draggableObject.TryPickUpThis();
         }
+
     }
 
     private Vector3 GetMousePosition()
