@@ -12,26 +12,28 @@ public class WaveManager : MonoBehaviour
     public event System.Action OnWavesCompleted;
     public event System.Action<string> OnWaveStatusChanged;
 
+    private bool endlessModeActive = false;
+
     private LogSettings logSettings;
     private bool isDebugEnabled = false;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         logSettings.OnSettingsChanged += UpdateLogStatus;
         UpdateLogStatus();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         logSettings.OnSettingsChanged -= UpdateLogStatus;
     }
 
-    private void UpdateLogStatus()
+    public void UpdateLogStatus()
     {
         isDebugEnabled = logSettings.WaveManagerLogs;
     }
 
-    private void Awake()
+    public void Awake()
     {
         if (!logSettings)
         {
@@ -121,6 +123,48 @@ public class WaveManager : MonoBehaviour
         OnWaveStatusChanged?.Invoke("All waves over");
     }
 
+    public void StartEndlessCustomers()
+    {
+        // Stop any existing coroutines (e.g. wave coroutines),
+        // so we don't run wave logic and endless logic at the same time.
+        StopAllCoroutines();
+
+        endlessModeActive = true;
+        StartCoroutine(EndlessCustomersRoutine());
+    }
+    private IEnumerator EndlessCustomersRoutine()
+    {
+        while (endlessModeActive)
+        {
+            // Pick a random delay between spawns (tweak min/max as you like).
+            float waitTime = Random.Range(2f, 5f);
+            yield return new WaitForSeconds(waitTime);
+
+            bool didSpawn = npcSpawner.SpawnCustomer();
+            if (didSpawn)
+            {
+                // Show how many have been served so far. 
+                // That count might not increase until they’re actually served, 
+                // but we can at least say "Another customer appeared."
+                OnWaveStatusChanged?.Invoke($"Spawned a customer. Total served: {customerData.customersServed}");
+            }
+            else
+            {
+                OnWaveStatusChanged?.Invoke("All order areas are full—will retry later.");
+            }
+        }
+    }
+
+
+
+    /// <summary>
+    /// If you ever want to stop the endless spawning.
+    /// </summary>
+    public void StopEndlessCustomers()
+    {
+        endlessModeActive = false;
+        StopAllCoroutines();
+    }
     IEnumerator WaveCountdown(float seconds)
     {
         float count = seconds;

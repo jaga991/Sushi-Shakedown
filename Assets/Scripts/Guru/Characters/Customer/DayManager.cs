@@ -12,8 +12,10 @@ public class DayManager : MonoBehaviour
     public int customerWarmupThreshold = 3;
     private bool wavesStarted = false;
 
+    private bool freePlayActive = false; // For FreePlay mode, we need to track if we are in free play or not
+
     // For testing, we fake served customers by counting key-presses
-    private int servedCount = 0;
+
 
     private bool isActive = false;
     public int requiredServedCount = 3; // initial phase threshol
@@ -22,7 +24,7 @@ public class DayManager : MonoBehaviour
     private bool isDebugEnabled = false;
 
 
-    private void Awake()
+    public void Awake()
     {
         if (!logSettings)
         {
@@ -37,14 +39,14 @@ public class DayManager : MonoBehaviour
 
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         logSettings.OnSettingsChanged += UpdateLogStatus;
         waveManager.OnWavesCompleted += OnWavesCompleted;
         UpdateLogStatus();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         logSettings.OnSettingsChanged -= UpdateLogStatus;
         waveManager.OnWavesCompleted -= OnWavesCompleted;
@@ -57,13 +59,13 @@ public class DayManager : MonoBehaviour
 
 
 
-    void Start()
+    public void Start()
     {
         Log("Day started random spawns until " + requiredServedCount + " customers are served.");
         isActive = true;
     }
 
-    void Update()
+    public void Update()
     {
         if (!isActive) return;
         if (wavesStarted) return;
@@ -74,6 +76,22 @@ public class DayManager : MonoBehaviour
             waveManager.StartWaves();
         }
 
+        // If user picks FreePlay
+        if (customerDataSO.gameMode == GameMode.FreePlay)
+        {
+            if (!freePlayActive)
+            {
+                freePlayActive = true;
+                Log("FreePlay mode detected. Starting endless customer spawning.");
+                waveManager.StartEndlessCustomers();
+            }
+            // Do nothing special here, 
+            // because NPCSpawner is already spawning randomly via its Update().
+            // If you want a condition to “end” free play, 
+            // you could check for a key press or some milestone, and then do a summary.
+
+            // Example: if you want to let the player press ESC to exit free play
+        }
     }
 
     private void OnWavesCompleted()

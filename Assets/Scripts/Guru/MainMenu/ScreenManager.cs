@@ -10,8 +10,7 @@ public class ScreenManager : MonoBehaviour
     public void ShowSettings()
     {
         Debug.Log("Settings Panel Opened");
-        if (settingsPanel != null)
-            settingsPanel.SetActive(true);
+        settingsPanel?.SetActive(true);
     }
 
     public void OnEnable()
@@ -33,6 +32,13 @@ public class ScreenManager : MonoBehaviour
     {
         // Logic to decline the settings
         Debug.Log("Settings Declined");
+        CloseSettings();
+    }
+
+    public void CloseSettings()
+    {
+
+        settingsPanel?.SetActive(false);
     }
 
 }

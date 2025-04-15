@@ -8,7 +8,7 @@ public class ToggleMode : MonoBehaviour
     public ToggleSwitch gameModeToggle;
 
 
-    void Start()
+    public void Start()
     {
         bool isWaves = customerData.gameMode == GameMode.Waves;
         gameModeToggle.SetStateSilently(isWaves);
