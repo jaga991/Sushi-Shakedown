@@ -1,16 +1,56 @@
 using System.Collections;
 using UnityEngine;
-
+using System.Runtime.CompilerServices;
 public class WaveManager : MonoBehaviour
 {
-    public NPCSpawner npcSpawner;            // Reference to NPCSpawner.
-    public float waveCountdownDuration = 2f;   // Countdown before each wave.
-    public CustomerData customerData;          // Reference to CustomerData.
-    public int[] waveSizes = { 3, 5, 7 };        // Configurable list of wave sizes.
-    private int tempWaveLimit = 1;             // This appears to control the number of waves; adjust as needed.
 
+    public NPCSpawner npcSpawner;
+    public float waveCountdownDuration = 2f;
+    public CustomerData customerData;
+    public int[] waveSizes = { 3, 5, 7 };
+    private int tempWaveLimit = 1;
     public event System.Action OnWavesCompleted;
     public event System.Action<string> OnWaveStatusChanged;
+
+    private LogSettings logSettings;
+    private bool isDebugEnabled = false;
+
+    private void OnEnable()
+    {
+        logSettings.OnSettingsChanged += UpdateLogStatus;
+        UpdateLogStatus();
+    }
+
+    private void OnDisable()
+    {
+        logSettings.OnSettingsChanged -= UpdateLogStatus;
+    }
+
+    private void UpdateLogStatus()
+    {
+        isDebugEnabled = logSettings.WaveManagerLogs;
+    }
+
+    private void Awake()
+    {
+        if (logSettings)
+        {
+            logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
+        }
+        else
+        {
+            Debug.Log("LogSettings not found. Please assign it in the inspector.");
+        }
+
+    }
+
+
+
+    private void Log(string message, [CallerMemberName] string caller = "")
+    {
+        if (isDebugEnabled)
+            Debug.Log($"[WaveManager::{caller}] {message}");
+    }
 
     public class WaveStats
     {
@@ -48,8 +88,8 @@ public class WaveManager : MonoBehaviour
         {
             int waveNumber = i + 1;
             string msg = $"--- Wave {waveNumber}: Preparing to start ---";
-            Debug.Log(msg);
-            OnWaveStatusChanged?.Invoke(msg);
+
+            Log(msg);
 
             // Capture stats before the wave begins.
             WaveStats startStats = GetWaveStats();
@@ -61,7 +101,7 @@ public class WaveManager : MonoBehaviour
             customerData.WaveCount = waveNumber;
 
             msg = $"Wave {waveNumber} started!";
-            Debug.Log(msg);
+            Log(msg);
             OnWaveStatusChanged?.Invoke(msg);
 
             // Spawn the wave.
@@ -76,7 +116,8 @@ public class WaveManager : MonoBehaviour
 
         OnWavesCompleted?.Invoke();
         string msg2 = "All waves for the day are complete!";
-        Debug.Log(msg2);
+
+        Log(msg2);
         OnWaveStatusChanged?.Invoke("All waves over");
     }
 
@@ -103,22 +144,22 @@ public class WaveManager : MonoBehaviour
                 spawnedCount++;
                 remaining--;
                 string spawnMsg = $"Wave {waveNumber}: {spawnedCount}/{customerCount}";
-                Debug.Log(spawnMsg);
+                OnWaveStatusChanged?.Invoke(spawnMsg);
+                Log(spawnMsg);
                 yield return new WaitForSeconds(interval);
             }
             else
             {
-                Debug.Log("Spawn failed — will retry next tick.");
+                Log("Spawn failed — will retry next tick.");
                 yield return null;
             }
         }
-        OnWaveStatusChanged?.Invoke($"Wave {waveNumber} complete!");
-        Debug.Log("Wave complete!");
+        Log("Wave complete!");
     }
 
     void PrintWaveSummary(WaveStats startStats, WaveStats currentStats)
     {
-        Debug.Log(
+        Log(
             $"--- Wave {currentStats.waveNumber} Summary ---\n" +
             $"Total Score: {currentStats.score - startStats.score}\n" +
             $"Customers Served: {currentStats.customersServed - startStats.customersServed}\n" +
