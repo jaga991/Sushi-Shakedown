@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4995639548779142908}
   - component: {fileID: 8322167764655425657}
   - component: {fileID: 4600635342187005813}
-  - component: {fileID: -8544392020798394217}
-  - component: {fileID: -7956670410634692324}
+  - component: {fileID: 6403403574208417745}
+  - component: {fileID: -210535043533413031}
   m_Layer: 8
-  m_Name: cup
+  m_Name: salmon-raw-uncut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0035516024, y: 0.015868425}
+  m_Offset: {x: -0.000906229, y: -0.028708458}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -135,9 +135,9 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5618083, y: 1.8325222}
+  m_Size: {x: 2.551416, y: 1.2619374}
   m_EdgeRadius: 0
---- !u!50 &-8544392020798394217
+--- !u!50 &6403403574208417745
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-7956670410634692324
+--- !u!114 &-210535043533413031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,13 +173,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2296487094403694516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9037f179faff4f9458058c4f684a7416, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6403ba1b390254098604c190c6e368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDragging: 0
   offset: {x: 0, y: 0, z: 0}
   isColliding: 0
-  draggableObjectSO: {fileID: 11400000, guid: 7fc47835dd97e0e45a8ea70589250de8, type: 2}
+  draggableObjectSO: {fileID: 11400000, guid: 8475d0b0fa6300447bb321f2c142505e, type: 2}
   parentContainer: {fileID: 0}
   gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!1 &4062204961727717758
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 2185665974888609423}
   - component: {fileID: 8697278200627116488}
   m_Layer: 0
-  m_Name: cup_visual
+  m_Name: salmon-raw-uncut_visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -258,12 +258,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 9103656482713568619, guid: 8c9ec65b9fb4bdb41b7c4b0dca90b923, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75344e05d2e00ab40bee34f483c76348, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.39, y: 1.65}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

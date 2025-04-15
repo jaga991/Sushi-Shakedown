@@ -6,8 +6,9 @@ public class DraggableObject : MonoBehaviour
     [SerializeField] protected Vector3 offset;
     [SerializeField] protected bool isColliding = false;
 
-    [SerializeField] protected BaseContainer parentContainer;
+    [SerializeField] protected DraggableObjectSO draggableObjectSO;
 
+    [SerializeField] protected BaseContainer parentContainer;
     [SerializeField] protected GameDataSO gameDataSO;
 
     private void Start()
@@ -139,6 +140,13 @@ public class DraggableObject : MonoBehaviour
         {
             Debug.Log($"[DraggableObject] {gameObject.name} was released while colliding with a valid container. set isDragging to False.");
         }
+    }
+
+
+
+    public DraggableObjectSO GetDraggableObjectSO()
+    {
+        return draggableObjectSO;
     }
 
 }

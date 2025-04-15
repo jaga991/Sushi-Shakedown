@@ -18,10 +18,10 @@ public class AssemblerContainer : BaseContainer
 
                 if (GetOwnedDraggable() == null) //if container does not contain draggables
                 {
-                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null)
+                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null || trackingHoveringDraggableObject.GetComponent<ServingDraggable>() != null) 
                     {
-                        // It is an IngredientDraggable
-                        Debug.Log($"{trackingHoveringDraggableObject.name} is a valid IngredientDraggable");
+                        // It is an IngredientDraggable or a ServingDraggable
+                        Debug.Log($"{trackingHoveringDraggableObject.name} is a valid DraggableObject");
                         
                         //set draggable object parent container to this
                         //set ownedDraggable to this draggableObject
@@ -33,6 +33,7 @@ public class AssemblerContainer : BaseContainer
                 } else //container contains draggables
                 {
                     //check if its a plate or cup
+                    
                     //if it is, trigger function in plate or cup that verifies if possble to add
                     trackingHoveringDraggableObject.ReturnToParentContainer();
                 }

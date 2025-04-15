@@ -35,7 +35,7 @@ public class BaseContainer : MonoBehaviour
             ClearHoveringDraggableObjectTracking();
         }
     }
-    public void TryGetDraggableToCursor(Vector3 mousePosition)
+    public virtual void TryGetDraggableToCursor(Vector3 mousePosition)
     {
         //first check if there is draggables within itself
         //if no draggables, ignore
@@ -51,8 +51,6 @@ public class BaseContainer : MonoBehaviour
             Debug.Log($"No Owned Draggables in {gameObject.name}");
         }
     }
-
-
 
     public DraggableObject GetHoveringDraggableObjectTracking()
     {

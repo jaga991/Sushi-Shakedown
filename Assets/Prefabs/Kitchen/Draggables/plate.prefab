@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4995639548779142908}
   - component: {fileID: 8322167764655425657}
-  - component: {fileID: 6400193337350705270}
   - component: {fileID: 4600635342187005813}
-  - component: {fileID: -8665398940103281823}
   - component: {fileID: -8544392020798394217}
-  m_Layer: 0
+  - component: {fileID: 4112686421566407018}
+  m_Layer: 8
   m_Name: plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,20 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6400193337350705270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296487094403694516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentContainer: {fileID: 0}
-  gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!61 &4600635342187005813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -152,20 +137,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.875037, y: 1.399334}
   m_EdgeRadius: 0
---- !u!114 &-8665398940103281823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2296487094403694516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentContainer: {fileID: 0}
-  gameDataSO: {fileID: 0}
 --- !u!50 &-8544392020798394217
 Rigidbody2D:
   serializedVersion: 5
@@ -193,6 +164,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4112686421566407018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296487094403694516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9037f179faff4f9458058c4f684a7416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDragging: 0
+  offset: {x: 0, y: 0, z: 0}
+  isColliding: 0
+  draggableObjectSO: {fileID: 11400000, guid: 41e626baf372d0a4f9b255e9482d4731, type: 2}
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 11400000, guid: 5a115dc1af9ab9d4890c4ad285766af8, type: 2}
 --- !u!1 &4062204961727717758
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +193,7 @@ GameObject:
   - component: {fileID: 2185665974888609423}
   - component: {fileID: 8697278200627116488}
   m_Layer: 0
-  m_Name: cup_visual
+  m_Name: plate_visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
