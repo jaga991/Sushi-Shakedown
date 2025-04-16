@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OrderBubble : MonoBehaviour
 {
-    public FoodManager foodManager;
     private readonly int maxSlots = 3;
     public float slotSpacing = 0f; // Adjust this to control vertical distance
     public float deliveryAnimationDuration = 0.2f;
@@ -19,10 +18,6 @@ public class OrderBubble : MonoBehaviour
         if (selfSpriteRenderer == null)
         {
             Debug.Log("OrderBubble: No SpriteRenderer found!");
-        }
-        if (foodManager == null)
-        {
-            Debug.Log("OrderBubble: No FoodManager found!");
         }
         if (customerController == null)
         {
@@ -45,7 +40,7 @@ public class OrderBubble : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             // Get a new Food instance from FoodManager.
-            Food food = foodManager.GetRandomFood();
+            Food food = FoodManager.instance.GetRandomFood();
             // Make the food a child of OrderBubble.
             food.transform.SetParent(transform);
 

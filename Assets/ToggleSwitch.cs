@@ -10,7 +10,7 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
     [Header("Slider setup")]
     [SerializeField, Range(0, 1f)]
     protected float sliderValue;
-    public bool CurrentValue { get; private set; }
+    public bool CurrentValue { get; set; }
 
     private bool _previousValue;
     private Slider _slider;

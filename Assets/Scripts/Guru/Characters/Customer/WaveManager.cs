@@ -143,14 +143,15 @@ public class WaveManager : MonoBehaviour
             bool didSpawn = npcSpawner.SpawnCustomer();
             if (didSpawn)
             {
-                // Show how many have been served so far. 
                 // That count might not increase until they’re actually served, 
                 // but we can at least say "Another customer appeared."
-                OnWaveStatusChanged?.Invoke($"Spawned a customer. Total served: {customerData.customersServed}");
+                // OnWaveStatusChanged?.Invoke($"Spawned a customer. Total served: {customerData.customersServed}");
+                Log($"Spawned a customer. Total served: {customerData.customersServed}");
             }
             else
             {
-                OnWaveStatusChanged?.Invoke("All order areas are full—will retry later.");
+                // OnWaveStatusChanged?.Invoke("All order areas are full—will retry later.");
+                Log("All order areas are full—will retry later.");
             }
         }
     }

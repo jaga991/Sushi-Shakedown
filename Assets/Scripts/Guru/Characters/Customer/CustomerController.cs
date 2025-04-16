@@ -12,14 +12,13 @@ public class CustomerController : MonoBehaviour
     public CustomerData CustomerData;
 
     public PatienceBar patienceBar;
-    public ScoreCounter scoreCounter;
+
     public AudioClip orderCompletedSound;
     public AudioClip orderFailedSound;
     public AudioSource audioSource;
 
     public OrderBubble orderBubble;
 
-    public FoodManager foodManager;
 
     private SpriteRenderer spriteRenderer;
     public Sprite happySprite;
@@ -202,6 +201,7 @@ public class CustomerController : MonoBehaviour
         else if (reason == 2)
         {
             CustomerData.DeductScore(5);
+            CustomerData.DeductScore(5);
             Debug.Log("Customer Received Wrong Order !!");
             // on wrong delivery 
         }
@@ -266,7 +266,8 @@ public class CustomerController : MonoBehaviour
         Debug.Log("Order Completed!");
         // Calculate score based on patience percentage (1-10)
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
-        scoreCounter.AddScore(score);
+        // ScoreCounter.instance.AddScore(score);
+        CustomerData.AddScore(score);
         Debug.Log("Added Score is " + score);
 
 
