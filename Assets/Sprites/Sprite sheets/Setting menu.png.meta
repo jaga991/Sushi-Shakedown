@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 02f974ace5eab41a1bb34dc1248a8d7b
+guid: 7991f08bbcd7a9244a8ef3e03b8d22ec
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2649243188998809877
-    second: modal-outline_0
+      213: 7267828462667370698
+    second: Setting menu_0
+  - first:
+      213: -7390560224966502635
+    second: Setting menu_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: modal-outline_0
+      name: Setting menu_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 3240
-        height: 1575
+        x: 10
+        y: 9
+        width: 108
+        height: 124
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +118,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 519a5e3e4a004c420800000000000000
-      internalID: 2649243188998809877
+      spriteID: ac013cdea738cd460800000000000000
+      internalID: 7267828462667370698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Setting menu_1
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 9
+        width: 108
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5179dbbd1a47f6990800000000000000
+      internalID: -7390560224966502635
       vertices: []
       indices: 
       edges: []
@@ -134,8 +159,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      modal-outline_0: 2649243188998809877
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
