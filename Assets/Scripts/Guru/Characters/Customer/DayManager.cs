@@ -43,13 +43,36 @@ public class DayManager : MonoBehaviour
     {
         logSettings.OnSettingsChanged += UpdateLogStatus;
         waveManager.OnWavesCompleted += OnWavesCompleted;
+        customerDataSO.OnGameModeChanged += OnModeChanged;
         UpdateLogStatus();
+
     }
 
     public void OnDisable()
     {
         logSettings.OnSettingsChanged -= UpdateLogStatus;
         waveManager.OnWavesCompleted -= OnWavesCompleted;
+        customerDataSO.OnGameModeChanged -= OnModeChanged;
+    }
+
+
+    private void OnModeChanged(GameMode mode)
+    {
+        if (mode == GameMode.Waves)
+        {
+            freePlayActive = false;
+            wavesStarted = true;
+            waveManager.StopEndlessCustomers();
+            waveManager.StartWaves();
+        }
+        else // FreePlay
+        {
+            wavesStarted = false;
+            freePlayActive = true;
+            waveManager.StopWaves();
+            waveManager.StartEndlessCustomers();
+            OnWavesCompleted();
+        }
     }
 
     private void UpdateLogStatus()
@@ -63,36 +86,37 @@ public class DayManager : MonoBehaviour
     {
         Log("Day started random spawns until " + requiredServedCount + " customers are served.");
         isActive = true;
+        OnModeChanged(customerDataSO.gameMode);
     }
 
-    public void Update()
-    {
-        if (!isActive) return;
-        if (wavesStarted) return;
-        if (customerDataSO.gameMode == GameMode.Waves)
-        {
-            wavesStarted = true;
-            Log("Waves mode detected. Starting waves immediately.");
-            waveManager.StartWaves();
-        }
+    // public void Update()
+    // {
+    //     if (!isActive) return;
+    //     if (wavesStarted) return;
+    //     if (customerDataSO.gameMode == GameMode.Waves)
+    //     {
+    //         wavesStarted = true;
+    //         Log("Waves mode detected. Starting waves immediately.");
+    //         waveManager.StartWaves();
+    //     }
 
-        // If user picks FreePlay
-        if (customerDataSO.gameMode == GameMode.FreePlay)
-        {
-            if (!freePlayActive)
-            {
-                freePlayActive = true;
-                Log("FreePlay mode detected. Starting endless customer spawning.");
-                waveManager.StartEndlessCustomers();
-            }
-            // Do nothing special here, 
-            // because NPCSpawner is already spawning randomly via its Update().
-            // If you want a condition to “end” free play, 
-            // you could check for a key press or some milestone, and then do a summary.
+    //     // If user picks FreePlay
+    //     if (customerDataSO.gameMode == GameMode.FreePlay)
+    //     {
+    //         if (!freePlayActive)
+    //         {
+    //             freePlayActive = true;
+    //             Log("FreePlay mode detected. Starting endless customer spawning.");
+    //             waveManager.StartEndlessCustomers();
+    //         }
+    //         // Do nothing special here, 
+    //         // because NPCSpawner is already spawning randomly via its Update().
+    //         // If you want a condition to “end” free play, 
+    //         // you could check for a key press or some milestone, and then do a summary.
 
-            // Example: if you want to let the player press ESC to exit free play
-        }
-    }
+    //         // Example: if you want to let the player press ESC to exit free play
+    //     }
+    // }
 
     private void OnWavesCompleted()
     {

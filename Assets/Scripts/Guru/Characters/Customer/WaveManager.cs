@@ -9,6 +9,10 @@ public class WaveManager : MonoBehaviour
     public CustomerData customerData;
     public int[] waveSizes = { 3, 5, 7 };
     private int tempWaveLimit = 1;
+    private Coroutine _endlessRoutine;
+    private bool _wavesRunning;
+
+    private Coroutine currentWaveRoutine = null;
     public event System.Action OnWavesCompleted;
     public event System.Action<string> OnWaveStatusChanged;
 
@@ -20,13 +24,55 @@ public class WaveManager : MonoBehaviour
     public void OnEnable()
     {
         logSettings.OnSettingsChanged += UpdateLogStatus;
+        // customerData.OnGameModeChanged += HandleModeChanged;
+
         UpdateLogStatus();
+
     }
 
     public void OnDisable()
     {
         logSettings.OnSettingsChanged -= UpdateLogStatus;
+        // customerData.OnGameModeChanged -= HandleModeChanged;
     }
+
+    // private void HandleModeChanged(GameMode mode)
+    // {
+    //     Debug.Log($"WaveManager: mode changed to {mode}");
+
+    //     switch (mode)
+    //     {
+    //         case GameMode.Waves:
+    //             // stop endless spawn, start waves
+    //             StopEndlessCustomers();
+    //             StartWaves();
+    //             break;
+
+    //         case GameMode.FreePlay:
+    //             // stop any wave that’s in progress
+    //             StopWaves();
+    //             StartEndlessCustomers();
+    //             break;
+    //     }
+    // }
+
+    public void StartWaves()
+    {
+        if (_wavesRunning) return;
+        StopWaves();
+        _wavesRunning = true;
+        currentWaveRoutine = StartCoroutine(RunWaves());
+    }
+
+    public void StopWaves()
+    {
+        if (currentWaveRoutine != null)
+            StopCoroutine(currentWaveRoutine);
+        currentWaveRoutine = null;
+        _wavesRunning = false;
+    }
+
+
 
     public void UpdateLogStatus()
     {
@@ -78,10 +124,6 @@ public class WaveManager : MonoBehaviour
     /// <summary>
     /// Starts the waves.
     /// </summary>
-    public void StartWaves()
-    {
-        StartCoroutine(RunWaves());
-    }
 
     IEnumerator RunWaves()
     {
@@ -123,14 +165,32 @@ public class WaveManager : MonoBehaviour
         OnWaveStatusChanged?.Invoke("All waves over");
     }
 
+    // public void StartEndlessCustomers()
+    // {
+    //     // Stop any existing coroutines (e.g. wave coroutines),
+    //     // so we don't run wave logic and endless logic at the same time.
+    //     StopAllCoroutines();
+
+    //     endlessModeActive = true;
+    //     StartCoroutine(EndlessCustomersRoutine());
+    // }
+
     public void StartEndlessCustomers()
     {
-        // Stop any existing coroutines (e.g. wave coroutines),
-        // so we don't run wave logic and endless logic at the same time.
-        StopAllCoroutines();
-
+        StopWaves();
+        StopEndlessCustomers();            // just in case
         endlessModeActive = true;
-        StartCoroutine(EndlessCustomersRoutine());
+        _endlessRoutine = StartCoroutine(EndlessCustomersRoutine());
+    }
+
+    public void StopEndlessCustomers()
+    {
+        endlessModeActive = false;
+        if (_endlessRoutine != null)
+        {
+            StopCoroutine(_endlessRoutine);
+            _endlessRoutine = null;
+        }
     }
     private IEnumerator EndlessCustomersRoutine()
     {
@@ -147,6 +207,7 @@ public class WaveManager : MonoBehaviour
                 // but we can at least say "Another customer appeared."
                 // OnWaveStatusChanged?.Invoke($"Spawned a customer. Total served: {customerData.customersServed}");
                 Log($"Spawned a customer. Total served: {customerData.customersServed}");
+                OnWaveStatusChanged?.Invoke($"served: {customerData.customersServed}");
             }
             else
             {
@@ -161,11 +222,7 @@ public class WaveManager : MonoBehaviour
     /// <summary>
     /// If you ever want to stop the endless spawning.
     /// </summary>
-    public void StopEndlessCustomers()
-    {
-        endlessModeActive = false;
-        StopAllCoroutines();
-    }
+
     IEnumerator WaveCountdown(float seconds)
     {
         float count = seconds;

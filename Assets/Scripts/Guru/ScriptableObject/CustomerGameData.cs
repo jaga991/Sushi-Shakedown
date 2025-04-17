@@ -21,6 +21,7 @@ public class CustomerData : ScriptableObject
 
     public int angryCustomersCount = 0;
     public event Action<int> OnScoreChanged;
+    public event Action<GameMode> OnGameModeChanged;
 
     public void ResetCustomerCount() => customersServed = 0;
     public void ResetDay() => Day = 0;
@@ -37,6 +38,7 @@ public class CustomerData : ScriptableObject
     {
         gameMode = mode;
         Debug.Log($"Game mode set to: {gameMode}");
+        OnGameModeChanged?.Invoke(gameMode);
     }
 
     public void OnStartup()
@@ -48,9 +50,7 @@ public class CustomerData : ScriptableObject
         normalCustomersCount = 0;
         HappyCustomerCount = 0;
         angryCustomersCount = 0;
-
         Debug.Log("CustomerData initialized.");
-
     }
 
     public void Increment()
