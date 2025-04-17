@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58b4e61eba1a724e8a316f722cc986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  draggableInZone: {fileID: 0}
+  containerVisual: {fileID: 5618351568890750116}
 --- !u!1 &4423289099578482616
 GameObject:
   m_ObjectHideFlags: 0

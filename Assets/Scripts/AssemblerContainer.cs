@@ -12,6 +12,12 @@ public class AssemblerContainer : BaseContainer
         if (GetHoveringDraggableObjectTracking() != null) //
         {
             DraggableObject trackingHoveringDraggableObject = GetHoveringDraggableObjectTracking();
+            if (containerVisual != null)
+            {
+                Color faded = containerVisual.color;
+                faded.a = 0.5f; // semi-transparent
+                containerVisual.color = faded;
+            }
             if (!trackingHoveringDraggableObject.IsBeingDragged())
             {
                 Debug.Log($"{trackingHoveringDraggableObject.name} released in {gameObject.name}");
@@ -57,6 +63,12 @@ public class AssemblerContainer : BaseContainer
                 //if not empty, check if its a plate or cup
                 //if not, means area is occupied, return the currentlydragging to parent container
 
+            }
+        }else
+        {
+            if (containerVisual != null)
+            {
+                containerVisual.color = defaultColor;
             }
         }
     }

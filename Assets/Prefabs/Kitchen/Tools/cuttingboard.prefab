@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoveringDraggableInCollider: {fileID: 0}
   ownedDraggable: {fileID: 0}
+  containerVisual: {fileID: 8523804819040443704}
   cuttingRecipeSO: {fileID: 0}
   cuttingProgress: 0
   cuttingRecipeSOArray:
