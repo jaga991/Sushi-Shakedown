@@ -10,6 +10,7 @@ public class OverLayManager : MonoBehaviour
     public CustomerData customerData;
     private CustomerData localCustomerData;
     [SerializeField] private ToggleSwitch gameModeToggle;
+    [SerializeField] private ToggleSwitch DifficultyModeToggle;
 
     public
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,18 +44,23 @@ public class OverLayManager : MonoBehaviour
         }
         localCustomerData = Instantiate(customerData);
         Debug.Log($"Local copy created: {localCustomerData.gameMode}");
+
     }
     private void RefreshUI()
     {
         bool isWaves = localCustomerData.gameMode == GameMode.Waves;
 
         gameModeToggle.CurrentValue = isWaves;
+
+        bool isEasy = localCustomerData.difficulty == Difficulty.Easy;
+        DifficultyModeToggle.CurrentValue = isEasy;
     }
 
     public void Accept()
     {
         // Copy selected settings (here, just gameMode) from local to global.
         customerData.SetGameMode(localCustomerData.gameMode);
+        customerData.SetDifficulty(localCustomerData.difficulty);
         DefaultView();
         // CloseSettings();
         Destroy(localCustomerData);
@@ -78,6 +84,14 @@ public class OverLayManager : MonoBehaviour
     {
         localCustomerData.SetGameMode((GameMode)value);
         RefreshUI();
+    }
+
+    public void ToggleDifficultyButton(int value)
+    {
+        Debug.Log("Tn called with value: " + (Difficulty)value);
+        localCustomerData.SetDifficulty((Difficulty)value);
+        // RefreshUI();s
+
     }
 
     void DefaultView()

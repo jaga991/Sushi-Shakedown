@@ -10,6 +10,8 @@ public class CustomerData : ScriptableObject
     // Existing
     public int customersServed;
     public event Action<int> OnCustomerServed;
+    public Difficulty difficulty = Difficulty.Easy;
+    public event Action<Difficulty> OnDifficultyChanged;
 
     public int Day = 0;
     public int WaveCount = 0;
@@ -22,6 +24,7 @@ public class CustomerData : ScriptableObject
     public int angryCustomersCount = 0;
     public event Action<int> OnScoreChanged;
     public event Action<GameMode> OnGameModeChanged;
+
 
     public void ResetCustomerCount() => customersServed = 0;
     public void ResetDay() => Day = 0;
@@ -39,6 +42,13 @@ public class CustomerData : ScriptableObject
         gameMode = mode;
         Debug.Log($"Game mode set to: {gameMode}");
         OnGameModeChanged?.Invoke(gameMode);
+    }
+
+    public void SetDifficulty(Difficulty mode)
+    {
+        difficulty = mode;
+        Debug.Log($"Game difficulty set to: {difficulty}");
+        OnDifficultyChanged?.Invoke(difficulty);
     }
 
     public void OnStartup()
@@ -105,4 +115,11 @@ public enum GameMode
 {
     FreePlay,
     Waves
+}
+
+
+public enum Difficulty
+{
+    Easy,
+    Hard
 }

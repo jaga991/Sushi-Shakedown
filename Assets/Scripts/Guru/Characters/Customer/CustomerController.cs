@@ -7,6 +7,8 @@ public class CustomerController : MonoBehaviour
     public float speed = 3f;
     public Vector2 targetPosition; // Will be assigned from OrderArea
     public GameObject textBubble;
+
+    public CustomerData customerData;
     public GameObject OrderBubble;
 
     public CustomerData CustomerData;
@@ -41,6 +43,11 @@ public class CustomerController : MonoBehaviour
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
+    private int[] DifficultyMultiplierArr = { 1, 2 };
+
+    private int difficultyMultiplier = 1; // Default to Easy
+
+
     /// <summary>
     /// Called by OrderBubble when the player delivers the right item.
     /// </summary>
@@ -53,6 +60,25 @@ public class CustomerController : MonoBehaviour
         // reflect immediately in the UI
         patienceBar.SetHealth(currentPatience);
         // Optionally, you can also play a sound or show feedback here.
+    }
+
+    public void OnEnable()
+    {
+        customerData.OnDifficultyChanged += OnDifficultyChanged;
+    }
+    public void OnDisable()
+    {
+        customerData.OnDifficultyChanged -= OnDifficultyChanged;
+    }
+
+
+
+    private void OnDifficultyChanged(Difficulty difficulty)
+    {
+        // Update the speed based on the difficulty level
+        Debug.Log($"CustomerController: Difficulty changed to {difficulty}");
+        Debug.Log("New Difficulaty multiplier is " + DifficultyMultiplierArr[(int)difficulty]);
+        difficultyMultiplier = DifficultyMultiplierArr[(int)difficulty];
 
     }
 
@@ -106,7 +132,6 @@ public class CustomerController : MonoBehaviour
 
     }
 
-
     void Update()
     {
         // Move towards the assigned order area if not arrived.
@@ -158,19 +183,23 @@ public class CustomerController : MonoBehaviour
         if (progressRoutine != null) StopCoroutine(progressRoutine);
         progressRoutine = StartCoroutine(PatienceCountdown());
     }
-
     private IEnumerator PatienceCountdown()
     {
-        // keep ticking down until zero
+        // compute how long to wait between each “tick”
+        // Easy (1f) ⇒ 0.1s per point
+        // Hard (2f) ⇒ 0.1f / 2 ⇒ 0.05s per point
+        float waitPerPoint = 0.1f / difficultyMultiplier;
+        Debug.Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
+
         while (currentPatience > 0)
         {
-            // update the bar
+            // update the UI
             patienceBar.SetHealth(currentPatience);
 
-            // wait
-            yield return new WaitForSeconds(0.1f);
+            // wait scaled by difficulty
+            yield return new WaitForSeconds(waitPerPoint);
 
-            // decrement
+            // then lose one point
             currentPatience--;
         }
 
