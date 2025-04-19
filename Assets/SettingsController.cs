@@ -14,6 +14,7 @@ public class SettingsController : MonoBehaviour
     public CustomerData customerData;  // Global data
     [SerializeField] private ToggleSwitch gameModeToggle;
 
+    [SerializeField] private ToggleSwitch DifficultyModeToggle;
     // Local copy of the CustomerData that is used to modify settings locally.
     private CustomerData localCustomerData;
 
@@ -45,6 +46,7 @@ public class SettingsController : MonoBehaviour
             Destroy(localCustomerData);
         }
         localCustomerData = Instantiate(customerData);
+        // Debug.Log($"Local copy created: {localCustomerData.gameMode}");
     }
 
     /// <summary>
@@ -55,7 +57,8 @@ public class SettingsController : MonoBehaviour
         bool isWaves = localCustomerData.gameMode == GameMode.Waves;
         // Update the toggle state using a helper method from your ToggleSwitch
         gameModeToggle.SetStateSilently(isWaves);
-        // If you have more UI elements to refresh, do it here.
+        bool isNotEasy = localCustomerData.difficulty == Difficulty.Hard;
+        DifficultyModeToggle.SetStateSilently(isNotEasy);
     }
 
     /// <summary>
@@ -88,7 +91,8 @@ public class SettingsController : MonoBehaviour
     {
         // Copy selected settings (here, just gameMode) from local to global.
         customerData.SetGameMode(localCustomerData.gameMode);
-        Debug.Log("Settings Accepted. Global settings updated.");
+        customerData.SetDifficulty(localCustomerData.difficulty);
+        // Debug.Log("Settings Accepted. Global settings updated.")=
 
         CloseSettings();
         Destroy(localCustomerData);
@@ -120,8 +124,11 @@ public class SettingsController : MonoBehaviour
     public void ToggleModeButton(int value)
     {
         localCustomerData.SetGameMode((GameMode)value);
-        Debug.Log($"Local game mode changed to: {localCustomerData.gameMode}");
-        RefreshUI();
+    }
+
+    public void ToggleDifficultyButton(int value)
+    {
+        localCustomerData.SetDifficulty((Difficulty)value);
     }
 
     /// <summary>
