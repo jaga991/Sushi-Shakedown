@@ -43,7 +43,7 @@ public class CustomerController : MonoBehaviour
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
-    private int[] DifficultyMultiplierArr = { 1, 2 };
+    private readonly int[] DifficultyMultiplierArr = { 1, 2 };
 
     private int difficultyMultiplier = 1; // Default to Easy
 
@@ -57,9 +57,7 @@ public class CustomerController : MonoBehaviour
 
         currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
 
-        // reflect immediately in the UI
         patienceBar.SetHealth(currentPatience);
-        // Optionally, you can also play a sound or show feedback here.
     }
 
     public void OnEnable()
@@ -70,8 +68,6 @@ public class CustomerController : MonoBehaviour
     {
         customerData.OnDifficultyChanged -= OnDifficultyChanged;
     }
-
-
 
     private void OnDifficultyChanged(Difficulty difficulty)
     {
@@ -100,7 +96,6 @@ public class CustomerController : MonoBehaviour
 
     void Awake()
     {
-
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {

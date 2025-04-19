@@ -21,3 +21,4 @@ MonoBehaviour:
   NPCSpawnerLogs: 0
   FoodManagerLogs: 1
   FoodSpawnerLogs: 0
+  OverLayManagerLogs: 1

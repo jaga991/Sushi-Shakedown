@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -39,21 +40,28 @@ public class CustomerData : ScriptableObject
 
     public void SetGameMode(GameMode mode)
     {
-        gameMode = mode;
-        Debug.Log($"Game mode set to: {gameMode}");
-        OnGameModeChanged?.Invoke(gameMode);
+        if (gameMode != mode)
+        {
+            gameMode = mode;
+            Debug.Log($"Game mode set to: {gameMode}");
+            OnGameModeChanged?.Invoke(gameMode);
+        }
+
     }
 
-    public void SetDifficulty(Difficulty mode)
+    public void SetDifficulty(Difficulty diff)
     {
-        difficulty = mode;
-        Debug.Log($"Game difficulty set to: {difficulty}");
-        OnDifficultyChanged?.Invoke(difficulty);
+
+        if (difficulty != diff)
+        {
+            difficulty = diff;
+            Debug.Log($"Game difficulty set to  : {difficulty}");
+            OnDifficultyChanged?.Invoke(difficulty);
+        }
     }
 
     public void OnStartup()
     {
-
         customersServed = 0;
         WaveCount = 0;
         score = 0;
@@ -110,13 +118,11 @@ public class CustomerData : ScriptableObject
     }
 }
 
-
 public enum GameMode
 {
     FreePlay,
     Waves
 }
-
 
 public enum Difficulty
 {

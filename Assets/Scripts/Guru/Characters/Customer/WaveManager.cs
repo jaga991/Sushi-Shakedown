@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System.Runtime.CompilerServices;
-public class WaveManager : MonoBehaviour
+public class WaveManager : DebuggableMonoBehaviour
 {
 
     public NPCSpawner npcSpawner;
@@ -17,44 +17,15 @@ public class WaveManager : MonoBehaviour
     public event System.Action<string> OnWaveStatusChanged;
 
     private bool endlessModeActive = false;
-
-    private LogSettings logSettings;
-    private bool isDebugEnabled = false;
-
     public void OnEnable()
     {
-        logSettings.OnSettingsChanged += UpdateLogStatus;
-        // customerData.OnGameModeChanged += HandleModeChanged;
-
-        UpdateLogStatus();
-
+        base.OnEnable(); // Call the base class method to set up logging
     }
 
     public void OnDisable()
     {
-        logSettings.OnSettingsChanged -= UpdateLogStatus;
-        // customerData.OnGameModeChanged -= HandleModeChanged;
+        base.OnDisable(); // Call the base class method to clean up logging
     }
-
-    // private void HandleModeChanged(GameMode mode)
-    // {
-    //     Debug.Log($"WaveManager: mode changed to {mode}");
-
-    //     switch (mode)
-    //     {
-    //         case GameMode.Waves:
-    //             // stop endless spawn, start waves
-    //             StopEndlessCustomers();
-    //             StartWaves();
-    //             break;
-
-    //         case GameMode.FreePlay:
-    //             // stop any wave that’s in progress
-    //             StopWaves();
-    //             StartEndlessCustomers();
-    //             break;
-    //     }
-    // }
 
     public void StartWaves()
     {
@@ -71,35 +42,15 @@ public class WaveManager : MonoBehaviour
         currentWaveRoutine = null;
         _wavesRunning = false;
     }
-
-
-
-    public void UpdateLogStatus()
+    protected override void UpdateLogStatus()
     {
         isDebugEnabled = logSettings.WaveManagerLogs;
     }
 
     public void Awake()
     {
-        if (!logSettings)
-        {
-            logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
-        }
-        else
-        {
-            Debug.Log("LogSettings not found. Please assign it in the inspector.");
-        }
 
     }
-
-
-
-    private void Log(string message, [CallerMemberName] string caller = "")
-    {
-        if (isDebugEnabled)
-            Debug.Log($"[WaveManager::{caller}] {message}");
-    }
-
     public class WaveStats
     {
         public int waveNumber;
@@ -164,17 +115,6 @@ public class WaveManager : MonoBehaviour
         Log(msg2);
         OnWaveStatusChanged?.Invoke("All waves over");
     }
-
-    // public void StartEndlessCustomers()
-    // {
-    //     // Stop any existing coroutines (e.g. wave coroutines),
-    //     // so we don't run wave logic and endless logic at the same time.
-    //     StopAllCoroutines();
-
-    //     endlessModeActive = true;
-    //     StartCoroutine(EndlessCustomersRoutine());
-    // }
-
     public void StartEndlessCustomers()
     {
         StopWaves();
@@ -203,15 +143,11 @@ public class WaveManager : MonoBehaviour
             bool didSpawn = npcSpawner.SpawnCustomer();
             if (didSpawn)
             {
-                // That count might not increase until they’re actually served, 
-                // but we can at least say "Another customer appeared."
-                // OnWaveStatusChanged?.Invoke($"Spawned a customer. Total served: {customerData.customersServed}");
                 Log($"Spawned a customer. Total served: {customerData.customersServed}");
                 OnWaveStatusChanged?.Invoke($"served: {customerData.customersServed}");
             }
             else
             {
-                // OnWaveStatusChanged?.Invoke("All order areas are full—will retry later.");
                 Log("All order areas are full—will retry later.");
             }
         }

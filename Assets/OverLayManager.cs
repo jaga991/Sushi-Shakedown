@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Security;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -12,8 +13,28 @@ public class OverLayManager : MonoBehaviour
     [SerializeField] private ToggleSwitch gameModeToggle;
     [SerializeField] private ToggleSwitch DifficultyModeToggle;
 
-    public
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private LogSettings logSettings;
+    private bool isDebugEnabled = false;
+
+    // Update is called once per frame
+    void Update()
+    {
+    }
+
+
+    public void Awake()
+    {
+        if (!logSettings)
+        {
+            logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
+        }
+        else
+        {
+            Debug.Log("LogSettings not found. Please assign it in the inspector.");
+        }
+    }
+
     void Start()
     {
         // Initialize the UI to show the game screen by default
@@ -21,10 +42,22 @@ public class OverLayManager : MonoBehaviour
         CreateLocalCopy();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnEnable()
     {
+        logSettings.OnSettingsChanged += UpdateLogStatus;
+        // customerData.OnGameModeChanged += HandleModeChanged;
+        UpdateLogStatus();
+    }
 
+    public void UpdateLogStatus()
+    {
+        isDebugEnabled = logSettings.OverLayManagerLogs;
+    }
+
+    public void OnDisable()
+    {
+        logSettings.OnSettingsChanged -= UpdateLogStatus;
+        // customerData.OnGameModeChanged -= HandleModeChanged;
     }
 
     public void PauseButtonClick()
@@ -43,7 +76,7 @@ public class OverLayManager : MonoBehaviour
             Destroy(localCustomerData);
         }
         localCustomerData = Instantiate(customerData);
-        Debug.Log($"Local copy created: {localCustomerData.gameMode}");
+        Log($"Local copy created: {localCustomerData.gameMode}");
 
     }
     private void RefreshUI()
@@ -73,7 +106,7 @@ public class OverLayManager : MonoBehaviour
     /// </summary>
     public void Decline()
     {
-        Debug.Log("Settings Declined. Changes discarded.");
+        Log("Settings Declined. Changes discarded.");
         DefaultView();
         // Resume game speed when returning to game
         Destroy(localCustomerData);
@@ -88,7 +121,7 @@ public class OverLayManager : MonoBehaviour
 
     public void ToggleDifficultyButton(int value)
     {
-        Debug.Log("Tn called with value: " + (Difficulty)value);
+        Log("Tn called with value: " + (Difficulty)value);
         localCustomerData.SetDifficulty((Difficulty)value);
         // RefreshUI();s
 
@@ -98,5 +131,12 @@ public class OverLayManager : MonoBehaviour
     {
         GameUI.SetActive(true);
         PauseUI.SetActive(false);
+    }
+
+
+    private void Log(string message, [CallerMemberName] string caller = "")
+    {
+        if (isDebugEnabled)
+            Debug.Log($"[OverlayManager::{caller}] {message}");
     }
 }

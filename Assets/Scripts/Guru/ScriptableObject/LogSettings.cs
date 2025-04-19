@@ -14,6 +14,8 @@ public class LogSettings : ScriptableObject
     public bool FoodManagerLogs;
     public bool FoodSpawnerLogs;
 
+    public bool OverLayManagerLogs;
+
     public Action OnSettingsChanged;
 
     public void TriggerUpdate()
