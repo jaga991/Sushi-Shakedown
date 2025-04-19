@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: CustomerData
   m_EditorClassIdentifier: 
   gameMode: 0
-  customersServed: 2
+  customersServed: 0
+  difficulty: 1
   Day: 0
   WaveCount: 0
-  score: 15
+  score: 0
   normalCustomersCount: 0
-  HappyCustomerCount: 2
+  HappyCustomerCount: 0
   angryCustomersCount: 0
