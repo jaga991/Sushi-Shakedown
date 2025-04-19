@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI; // Kept for Text component on textBubble
 
-public class CustomerController : MonoBehaviour
+public class CustomerController : DebuggableMonoBehaviour
 {
     public float speed = 3f;
     public Vector2 targetPosition; // Will be assigned from OrderArea
@@ -53,7 +53,7 @@ public class CustomerController : MonoBehaviour
     /// </summary>
     public void OnCorrectDelivery()
     {
-        Debug.Log("CustomerController: Correct delivery! , boosted patience.");
+        Log("CustomerController: Correct delivery! , boosted patience.");
 
         currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
 
@@ -62,18 +62,25 @@ public class CustomerController : MonoBehaviour
 
     public void OnEnable()
     {
+        base.OnEnable(); // Call the base class method to set up logging
         customerData.OnDifficultyChanged += OnDifficultyChanged;
     }
     public void OnDisable()
     {
+        base.OnDisable(); // Call the base class method to clean up logging
         customerData.OnDifficultyChanged -= OnDifficultyChanged;
+    }
+
+    protected override void UpdateLogStatus()
+    {
+        isDebugEnabled = logSettings.CustomerControllerLogs;
     }
 
     private void OnDifficultyChanged(Difficulty difficulty)
     {
         // Update the speed based on the difficulty level
-        Debug.Log($"CustomerController: Difficulty changed to {difficulty}");
-        Debug.Log("New Difficulaty multiplier is " + DifficultyMultiplierArr[(int)difficulty]);
+        Log($"CustomerController: Difficulty changed to {difficulty}");
+        Log("New Difficulaty multiplier is " + DifficultyMultiplierArr[(int)difficulty]);
         difficultyMultiplier = DifficultyMultiplierArr[(int)difficulty];
 
     }
@@ -84,7 +91,7 @@ public class CustomerController : MonoBehaviour
     /// </summary>
     public void OnWrongDelivery(string foodName)
     {
-        Debug.Log($"CustomerController: Wrong delivery of {foodName}!");
+        Log($"CustomerController: Wrong delivery of {foodName}!");
         OrderFailed(2);
     }
 
@@ -99,7 +106,7 @@ public class CustomerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
-            Debug.Log("NPCController: No SpriteRenderer found!");
+            Log("NPCController: No SpriteRenderer found!");
         }
         if (textBubble != null)
         {
@@ -116,7 +123,7 @@ public class CustomerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("OrderBubble is not active.");
+            Log("OrderBubble is not active.");
         }
 
         audioSource = GetComponent<AudioSource>();
@@ -151,7 +158,7 @@ public class CustomerController : MonoBehaviour
 
             if (Vector2.Distance(currentPosition, offScreenTarget) < 0.1f)
             {
-                Debug.Log("Customer has walked off screen.");
+                Log("Customer has walked off screen.");
                 isWalkingOffScreen = false;
                 // Optionally, destroy the customer:
                 Destroy(gameObject);
@@ -162,11 +169,6 @@ public class CustomerController : MonoBehaviour
 
     void ArrivedAtCounter()
     {
-        // if (assignedOrderArea != null)
-        // {
-        //     Debug.Log($"Customer reached assigned OrderArea: {assignedOrderArea.gameObject.name}");
-        // }
-
         textBubble.SetActive(false);
         OrderBubble.SetActive(true);
 
@@ -180,11 +182,8 @@ public class CustomerController : MonoBehaviour
     }
     private IEnumerator PatienceCountdown()
     {
-        // compute how long to wait between each “tick”
-        // Easy (1f) ⇒ 0.1s per point
-        // Hard (2f) ⇒ 0.1f / 2 ⇒ 0.05s per point
         float waitPerPoint = 0.1f / difficultyMultiplier;
-        Debug.Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
+        Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
 
         while (currentPatience > 0)
         {
@@ -202,8 +201,6 @@ public class CustomerController : MonoBehaviour
         OrderFailed(1);
     }
 
-
-
     public void OnAllOrdersFulfilled()
     {
         // 1) stop patience timer
@@ -212,21 +209,19 @@ public class CustomerController : MonoBehaviour
 
         OrderCompleted();
     }
-
-
     void OrderFailed(int reason)
     {
         if (reason == 1)
         {
             // customer ran out of patience 
             CustomerData.DeductScore(1);
-            Debug.Log("Times up! Order failed.");
+            Log("Times up! Order failed.");
         }
         else if (reason == 2)
         {
             CustomerData.DeductScore(5);
             CustomerData.DeductScore(5);
-            Debug.Log("Customer Received Wrong Order !!");
+            Log("Customer Received Wrong Order !!");
             // on wrong delivery 
         }
         spriteRenderer.sprite = angrySprite;
@@ -287,12 +282,12 @@ public class CustomerController : MonoBehaviour
 
         CustomerData.Increment();
 
-        Debug.Log("Order Completed!");
+        Log("Order Completed!");
         // Calculate score based on patience percentage (1-10)
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
         // ScoreCounter.instance.AddScore(score);
         CustomerData.AddScore(score);
-        Debug.Log("Added Score is " + score);
+        Log("Added Score is " + score);
 
 
         if (progressRoutine != null)

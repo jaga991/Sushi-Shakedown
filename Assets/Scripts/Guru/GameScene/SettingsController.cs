@@ -20,7 +20,6 @@ public class SettingsController : MonoBehaviour
 
     private void Start()
     {
-        // For initial setup, create the local copy and refresh the UI.
         CreateLocalCopy();
         RefreshUI();
     }

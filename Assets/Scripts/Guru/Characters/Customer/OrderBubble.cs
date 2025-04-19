@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderBubble : MonoBehaviour
+public class OrderBubble : DebuggableMonoBehaviour
 {
     private readonly int maxSlots = 3;
     public float slotSpacing = 0f; // Adjust this to control vertical distance
@@ -55,6 +55,11 @@ public class OrderBubble : MonoBehaviour
         }
     }
 
+    protected override void UpdateLogStatus()
+    {
+        isDebugEnabled = logSettings.OrderBubbleLogs;
+    }
+
     private Vector3 CalculateOrderPosition(int slotIndex)
     {
         Vector3 spawnPosition = transform.position;
@@ -83,7 +88,7 @@ public class OrderBubble : MonoBehaviour
 
         if (other.TryGetComponent<FoodDraggable>(out var foodDraggable))
         {
-            Debug.Log($"Food draggable entered order bubble: {foodDraggable.foodName}");
+            Log($"Food draggable entered order bubble: {foodDraggable.foodName}");
             ProcessFoodDelivery(foodDraggable);
         }
     }
@@ -126,7 +131,7 @@ public class OrderBubble : MonoBehaviour
         else
         {
             // wrong item
-            Debug.Log($"OrderBubble: No matching order found for '{name}'");
+            Log($"OrderBubble: No matching order found for '{name}'");
             customerController.OnWrongDelivery(name);
         }
     }

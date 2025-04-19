@@ -27,7 +27,7 @@ public class OverLayManager : MonoBehaviour
     {
         if (!logSettings)
         {
-            logSettings = Resources.Load<LogSettings>("Guru/ScriptableObjects/LogSettings");
+            logSettings = Resources.Load<LogSettings>("Guru/DataStore/LogSettings");
         }
         else
         {

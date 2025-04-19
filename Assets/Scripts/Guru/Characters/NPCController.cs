@@ -51,8 +51,6 @@ public class NPCController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
     /// <summary>
     /// Initializes this NPC: sets movement, scaling & alignment.
     /// </summary>
