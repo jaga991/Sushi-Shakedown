@@ -119,6 +119,7 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
     }
 
 
+    // ...existing code...
     private IEnumerator AnimateSlider()
     {
         float startValue = _slider.value;
@@ -129,7 +130,8 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
         {
             while (time < animationDuration)
             {
-                time += Time.deltaTime;
+                // Use unscaledDeltaTime to ignore Time.timeScale
+                time += Time.unscaledDeltaTime;
 
                 float lerpFactor = slideEase.Evaluate(time / animationDuration);
                 _slider.value = sliderValue = Mathf.Lerp(startValue, endValue, lerpFactor);
@@ -142,4 +144,28 @@ public class ToggleSwitch : MonoBehaviour, IPointerClickHandler
 
         _slider.value = endValue;
     }
+    // ...existing code...
+    // private IEnumerator AnimateSlider()
+    // {
+    //     float startValue = _slider.value;
+    //     float endValue = CurrentValue ? 1 : 0;
+
+    //     float time = 0;
+    //     if (animationDuration > 0)
+    //     {
+    //         while (time < animationDuration)
+    //         {
+    //             time += Time.deltaTime;
+
+    //             float lerpFactor = slideEase.Evaluate(time / animationDuration);
+    //             _slider.value = sliderValue = Mathf.Lerp(startValue, endValue, lerpFactor);
+
+    //             transitionEffect?.Invoke();
+
+    //             yield return null;
+    //         }
+    //     }
+
+    //     _slider.value = endValue;
+    // }
 }

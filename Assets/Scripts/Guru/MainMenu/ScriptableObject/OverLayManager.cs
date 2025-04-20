@@ -1,9 +1,10 @@
 using System.Runtime.CompilerServices;
 using System.Security;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Playables;
 
-public class OverLayManager : DebuggableMonoBehaviour
+public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
     public GameObject GameUI;
     public GameObject PauseUI;
@@ -46,6 +47,7 @@ public class OverLayManager : DebuggableMonoBehaviour
         RefreshUI();
         GameUI.SetActive(false);
         PauseUI.SetActive(true);
+        Time.timeScale = 0f; // Pause the game
 
     }
     private void CreateLocalCopy()
@@ -78,6 +80,7 @@ public class OverLayManager : DebuggableMonoBehaviour
         // CloseSettings();
         Destroy(localCustomerData);
         localCustomerData = null;
+        Time.timeScale = 1f; // Resume the game speed
     }
 
     /// <summary>
@@ -91,6 +94,8 @@ public class OverLayManager : DebuggableMonoBehaviour
         // Resume game speed when returning to game
         Destroy(localCustomerData);
         localCustomerData = null;
+
+        Time.timeScale = 1f; // Resume the game speed
     }
 
     public void ToggleModeButton(int value)
@@ -111,5 +116,10 @@ public class OverLayManager : DebuggableMonoBehaviour
     {
         GameUI.SetActive(true);
         PauseUI.SetActive(false);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("[Settings]  Settings UI received click");
     }
 }
