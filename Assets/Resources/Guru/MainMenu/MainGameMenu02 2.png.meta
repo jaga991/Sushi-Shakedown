@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 67c093ae5a21543f198fee7f9f98a97e
+guid: e914321e0e7fb63438f6edd4810f4177
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5421281233550482904
-    second: MainMenu-OpenignScreen2_0
+      213: -3759017588043552761
+    second: MainGameMenu02_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MainMenu-OpenignScreen2_0
+      name: MainGameMenu02_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8226bb6f07db3c4b0800000000000000
-      internalID: -5421281233550482904
+      spriteID: 708e7387b6945dbc0800000000000000
+      internalID: -3759017588043552761
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MainMenu-OpenignScreen2_0: -5421281233550482904
+      MainGameMenu02_0: -3759017588043552761
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
