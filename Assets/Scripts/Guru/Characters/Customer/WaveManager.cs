@@ -17,12 +17,12 @@ public class WaveManager : DebuggableMonoBehaviour
     public event System.Action<string> OnWaveStatusChanged;
 
     private bool endlessModeActive = false;
-    public void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable(); // Call the base class method to set up logging
     }
 
-    public void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable(); // Call the base class method to clean up logging
     }
@@ -47,9 +47,9 @@ public class WaveManager : DebuggableMonoBehaviour
         isDebugEnabled = logSettings.WaveManagerLogs;
     }
 
-    public void Awake()
+    protected override void Awake()
     {
-
+        base.Awake();
     }
     public class WaveStats
     {

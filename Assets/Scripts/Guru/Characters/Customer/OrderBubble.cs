@@ -12,12 +12,13 @@ public class OrderBubble : DebuggableMonoBehaviour
     // List to store ordered food items.
     private List<Food> orderedFoods = new List<Food>();
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         selfSpriteRenderer = GetComponent<SpriteRenderer>();
         if (selfSpriteRenderer == null)
         {
-            Debug.Log("OrderBubble: No SpriteRenderer found!");
+            Debug.Log("OrderBubble: No SpriteRenderers found!");
         }
         if (customerController == null)
         {

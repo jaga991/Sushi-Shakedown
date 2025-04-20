@@ -12,7 +12,7 @@ public class DayManager : DebuggableMonoBehaviour
     private bool isActive = false;
     public int requiredServedCount = 3; // initial phase thresho
 
-    public void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable(); // Call the base class 
         waveManager.OnWavesCompleted += OnWavesCompleted;
@@ -21,7 +21,7 @@ public class DayManager : DebuggableMonoBehaviour
 
     }
 
-    public void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable(); // Call the base class method to clean up logging
         waveManager.OnWavesCompleted -= OnWavesCompleted;
@@ -44,7 +44,7 @@ public class DayManager : DebuggableMonoBehaviour
         }
     }
 
-    private void UpdateLogStatus()
+    protected override void UpdateLogStatus()
     {
         isDebugEnabled = logSettings.DayManagerLogs;
     }

@@ -3318,7 +3318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 2047327384}
-  mainMenuPanel: {fileID: 1129446994}
+  mainMenuPanel: {fileID: 2007045203}
   mainMenuManager: {fileID: 1129446997}
   customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   gameModeToggle: {fileID: 1252639145}

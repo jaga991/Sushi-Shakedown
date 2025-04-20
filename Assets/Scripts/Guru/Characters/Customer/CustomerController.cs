@@ -60,12 +60,12 @@ public class CustomerController : DebuggableMonoBehaviour
         patienceBar.SetHealth(currentPatience);
     }
 
-    public void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable(); // Call the base class method to set up logging
         customerData.OnDifficultyChanged += OnDifficultyChanged;
     }
-    public void OnDisable()
+    protected override void OnDisable()
     {
         base.OnDisable(); // Call the base class method to clean up logging
         customerData.OnDifficultyChanged -= OnDifficultyChanged;
@@ -101,8 +101,9 @@ public class CustomerController : DebuggableMonoBehaviour
         targetPosition = area.GetCoordinates();
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake(); // Call the base class method to set up logging
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {

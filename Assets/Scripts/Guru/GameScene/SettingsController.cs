@@ -21,7 +21,7 @@ public class SettingsController : MonoBehaviour
     private void Start()
     {
         CreateLocalCopy();
-        RefreshUI();
+        CloseSettings();
     }
 
     private void OnEnable()
@@ -68,18 +68,8 @@ public class SettingsController : MonoBehaviour
     {
         CreateLocalCopy();
         RefreshUI();
+        mainMenuPanel?.SetActive(false);
         settingsPanel?.SetActive(true);
-        mainMenuPanel?.SetActive(false);
-    }
-
-    public void HideMainMenu()
-    {
-        mainMenuPanel?.SetActive(false);
-    }
-
-    public void ShowMainMenu()
-    {
-        mainMenuPanel?.SetActive(true);
     }
 
     /// <summary>
@@ -91,7 +81,6 @@ public class SettingsController : MonoBehaviour
         // Copy selected settings (here, just gameMode) from local to global.
         customerData.SetGameMode(localCustomerData.gameMode);
         customerData.SetDifficulty(localCustomerData.difficulty);
-        // Debug.Log("Settings Accepted. Global settings updated.")=
 
         CloseSettings();
         Destroy(localCustomerData);
