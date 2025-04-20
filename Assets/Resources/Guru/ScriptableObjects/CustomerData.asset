@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMode: 0
   customersServed: 0
-  difficulty: 1
+  difficulty: 0
   Day: 0
   WaveCount: 0
   score: 0

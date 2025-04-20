@@ -47,6 +47,8 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private int difficultyMultiplier = 1; // Default to Easy
 
+    public CoinHandler CoinHandler;
+
 
     /// <summary>
     /// Called by OrderBubble when the player delivers the right item.
@@ -286,9 +288,11 @@ public class CustomerController : DebuggableMonoBehaviour
         Log("Order Completed!");
         // Calculate score based on patience percentage (1-10)
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
-        // ScoreCounter.instance.AddScore(score);
+
         CustomerData.AddScore(score);
         Log("Added Score is " + score);
+
+        CoinHandler.SpawnCoins(score, transform.position);
 
 
         if (progressRoutine != null)
