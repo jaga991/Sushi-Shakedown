@@ -35,7 +35,7 @@ public class DebuggableMonoBehaviour : MonoBehaviour
 
     protected virtual void UpdateLogStatus()
     {
-        isDebugEnabled = logSettings.WaveManagerLogs; // Or override this in child
+        isDebugEnabled = true;// Or override this in child
     }
 
     protected void Log(string message, [CallerMemberName] string caller = "")

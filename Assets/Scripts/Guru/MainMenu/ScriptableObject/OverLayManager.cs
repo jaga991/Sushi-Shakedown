@@ -3,7 +3,7 @@ using System.Security;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class OverLayManager : MonoBehaviour
+public class OverLayManager : DebuggableMonoBehaviour
 {
     public GameObject GameUI;
     public GameObject PauseUI;
@@ -12,51 +12,31 @@ public class OverLayManager : MonoBehaviour
     private CustomerData localCustomerData;
     [SerializeField] private ToggleSwitch gameModeToggle;
     [SerializeField] private ToggleSwitch DifficultyModeToggle;
-
-
-    private LogSettings logSettings;
-    private bool isDebugEnabled = false;
-
-    // Update is called once per frame
-    void Update()
+    protected override void Awake()
     {
-    }
-
-
-    public void Awake()
-    {
-        if (!logSettings)
-        {
-            logSettings = Resources.Load<LogSettings>("Guru/DataStore/LogSettings");
-        }
-        else
-        {
-            Debug.Log("LogSettings not found. Please assign it in the inspector.");
-        }
+        base.Awake();
     }
 
     void Start()
     {
         // Initialize the UI to show the game screen by default
         DefaultView();
-        CreateLocalCopy();
     }
 
-    public void OnEnable()
+    protected override void OnEnable()
     {
-        logSettings.OnSettingsChanged += UpdateLogStatus;
+        base.OnEnable();
         // customerData.OnGameModeChanged += HandleModeChanged;
-        UpdateLogStatus();
     }
 
-    public void UpdateLogStatus()
+    protected override void UpdateLogStatus()
     {
         isDebugEnabled = logSettings.OverLayManagerLogs;
     }
 
-    public void OnDisable()
+    protected override void OnDisable()
     {
-        logSettings.OnSettingsChanged -= UpdateLogStatus;
+        base.OnDisable();
         // customerData.OnGameModeChanged -= HandleModeChanged;
     }
 
@@ -131,12 +111,5 @@ public class OverLayManager : MonoBehaviour
     {
         GameUI.SetActive(true);
         PauseUI.SetActive(false);
-    }
-
-
-    private void Log(string message, [CallerMemberName] string caller = "")
-    {
-        if (isDebugEnabled)
-            Debug.Log($"[OverlayManager::{caller}] {message}");
     }
 }

@@ -8,8 +8,6 @@ public class DayManager : DebuggableMonoBehaviour
     public CustomerData customerDataSO;
     public NPCSpawner npcSpawner; // assign via the Inspector
     public WaveManager waveManager; // assign via the Inspector
-
-    private bool isActive = false;
     public int requiredServedCount = 3; // initial phase thresho
 
     protected override void OnEnable()
@@ -52,14 +50,11 @@ public class DayManager : DebuggableMonoBehaviour
     public void Start()
     {
         Log("Day started random spawns until " + requiredServedCount + " customers are served.");
-        isActive = true;
         OnModeChanged(customerDataSO.gameMode);
     }
     private void OnWavesCompleted()
     {
         Log("Waves completed. Summarizing the day...");
-        isActive = false;
-
         PrintDaySummary();
     }
 
