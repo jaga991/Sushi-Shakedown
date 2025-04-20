@@ -8,6 +8,10 @@ public class PlateDraggable : DraggableObject
     [SerializeField] private List<string> currentIngredientTypes = new List<string>(); // tracks types like "rice", "fish"
     [SerializeField] private List<DraggableObjectSO> currentIngredients = new List<DraggableObjectSO>(); // actual ingredients
 
+    [SerializeField] private SpriteRenderer riceSprite;
+    [SerializeField] private SpriteRenderer fishSprite;
+    [SerializeField] private SpriteRenderer condimentSprite;
+
     //An array to track items currently on it (bluff, no actual gameobject, use sprite to simulate)
 
 
@@ -34,13 +38,29 @@ public class PlateDraggable : DraggableObject
             return false;
         }
 
-        // Add to plate
-        currentIngredientTypes.Add(ingredientType);
-        currentIngredients.Add(incomingSO);
 
-        Debug.Log($"Added {ingredientType} ({incomingSO.name}) to plate.");
+        // Add to plate
+        if(ingredientType == "rice" || ingredientType == "fish" || ingredientType == "condiment")
+        {
+            currentIngredientTypes.Add(ingredientType);
+            currentIngredients.Add(incomingSO);
+            Debug.Log($"Added {ingredientType} ({incomingSO.name}) to plate.");
+        }
 
         // You can trigger a UI update or visual stacking here
+        if (ingredientType == "rice")
+        {
+            riceSprite.sprite = incomingSO.sprite;
+        }
+        else if (ingredientType == "fish")
+        {
+            fishSprite.sprite = incomingSO.sprite;
+        }
+        else if (ingredientType == "condiment")
+        {
+            condimentSprite.sprite = incomingSO.sprite;
+        }
+
         return true;
     }
     private PlateIngredientSO GetPlateIngredientSO(DraggableObjectSO inputSO)

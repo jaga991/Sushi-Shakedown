@@ -1,15 +1,19 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CuttingBoard : BaseContainer   //cutting board will inherit base container, add the cutting functionality
 
 {
-    [SerializeField] private CuttingRecipeSO cuttingRecipeSO;
-
     [SerializeField] private int cuttingProgress;
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
 
+
+    [SerializeField] private Image progressFillImage;
+    [SerializeField] private GameObject cuttingProgressUI;
+
+
+    //
     public event EventHandler OnAnyObjectCut;
 
     //create a event for onprogresschange
@@ -20,7 +24,6 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
     }
     private void Update()
     {
-
         // On mouse release, check if draggable is inside and was just dropped
         if (GetHoveringDraggableObjectTracking() != null) //
         {
@@ -55,6 +58,9 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
                         {
                             ProgressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax
                         });
+                        //UI progress bar
+                        progressFillImage.fillAmount = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
+                        cuttingProgressUI.SetActive(true); // Show UI when progress starts
                     }
                 }
                 else //container contains draggables
@@ -84,6 +90,8 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
 
             //then reset any cutting status
             cuttingProgress = 0;
+            //UI reset
+            cuttingProgressUI.SetActive(false); // Show UI when progress starts
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventArgs
             {
                 ProgressNormalized = (float)0
@@ -106,6 +114,9 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
             Debug.Log($"cutting progress: {cuttingProgress}");
             EventManager.Instance.TriggerEvent("ObjectCut", this);
             OnAnyObjectCut?.Invoke(this, EventArgs.Empty);
+
+            //Update Progress UI
+            progressFillImage.fillAmount = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;
             if (cuttingProgress >= cuttingRecipeSO.cuttingProgressMax)
             {
                 DraggableObjectSO outputDraggableObjectSO = GetOutputForInput(GetOwnedDraggable().GetDraggableObjectSO());
@@ -120,6 +131,10 @@ public class CuttingBoard : BaseContainer   //cutting board will inherit base co
                 SetOwnedDraggable(draggable);
                 draggable.SetParentContainer(this);
                 ClearHoveringDraggableObjectTracking();
+
+                //UI progress bar reset
+                progressFillImage.fillAmount = 0f;
+                cuttingProgressUI.SetActive(false);
             }
         }
     }

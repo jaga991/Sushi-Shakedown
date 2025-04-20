@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2473798427546180556}
   - component: {fileID: 2296056223498440833}
+  - component: {fileID: 7325122580303598946}
   m_Layer: 7
   m_Name: IngredientDispenserContainer
   m_TagString: Untagged
@@ -154,7 +155,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.012733996, y: -0.000000029802322}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -164,5 +165,20 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.85568225, y: 0.86417156}
   m_EdgeRadius: 0
+--- !u!114 &7325122580303598946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7070018820604292151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65ac4be908aeb1347b732fb82167f335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoveringDraggableInCollider: {fileID: 0}
+  ownedDraggable: {fileID: 0}
+  containerVisual: {fileID: 8523804819040443704}

@@ -48,6 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragging: 0
+  offset: {x: 0, y: 0, z: 0}
+  isColliding: 0
+  draggableObjectSO: {fileID: 0}
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 0}
 --- !u!61 &4600635342187005813
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -106,6 +112,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c38dccea9d895a4398800d37058c9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragging: 0
+  offset: {x: 0, y: 0, z: 0}
+  isColliding: 0
+  draggableObjectSO: {fileID: 0}
+  parentContainer: {fileID: 0}
+  gameDataSO: {fileID: 0}
 --- !u!50 &-8544392020798394217
 Rigidbody2D:
   serializedVersion: 5
@@ -209,12 +221,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: fe0ff823705ecfe4d8c45fc26d78cdc6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd851588f2bbcb84b877b3de9d1c9f9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 2, y: 2.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

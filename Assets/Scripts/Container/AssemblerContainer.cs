@@ -24,7 +24,7 @@ public class AssemblerContainer : BaseContainer
 
                 if (GetOwnedDraggable() == null) //if container does not contain draggables
                 {
-                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null || trackingHoveringDraggableObject.GetComponent<PlateDraggable>() != null) 
+                    if (trackingHoveringDraggableObject.GetComponent<IngredientDraggable>() != null || trackingHoveringDraggableObject.GetComponent<PlateDraggable>() != null || trackingHoveringDraggableObject.GetComponent<CupDraggable>() != null) 
                     {
                         // It is an IngredientDraggable or a ServingDraggable
                         Debug.Log($"{trackingHoveringDraggableObject.name} is a valid DraggableObject");
@@ -36,7 +36,13 @@ public class AssemblerContainer : BaseContainer
                         SetOwnedDraggable(trackingHoveringDraggableObject);
                         ClearHoveringDraggableObjectTracking();   
                     }
-                } else //container contains draggables
+                    else if (trackingHoveringDraggableObject.GetComponent<IngredientDispenserDraggable>() != null)
+                    {
+                        //if its a ingredient dispenser, return it back to parent container
+                        trackingHoveringDraggableObject.ReturnToParentContainer();
+                    }
+                } 
+                else //container contains draggables
                 {
                     //check if its a plate or cup
                     if(GetOwnedDraggable().GetComponent<PlateDraggable>() != null)
@@ -45,15 +51,40 @@ public class AssemblerContainer : BaseContainer
                         PlateDraggable plate = GetOwnedDraggable().GetComponent<PlateDraggable>();  
                         if (plate.TryHandleIngredient(trackingHoveringDraggableObject)) //if plate can handle ingredient
                         {
-                            //destroy the object
-                            Destroy(trackingHoveringDraggableObject.gameObject);
-                        } else
+                            //if its condiment (roe, soysauce, wasabi), return to parent container
+                            if(trackingHoveringDraggableObject.GetDraggableObjectSO().objectName == "roe" || trackingHoveringDraggableObject.GetDraggableObjectSO().objectName == "soysauce" || trackingHoveringDraggableObject.GetDraggableObjectSO().objectName == "wasabi")
+                            {
+                                trackingHoveringDraggableObject.ReturnToParentContainer();
+                                ClearHoveringDraggableObjectTracking();
+                            }
+                            //else, destroy object
+                            else
+                            {
+                                Destroy(trackingHoveringDraggableObject.gameObject);
+                                ClearHoveringDraggableObjectTracking();
+                            }
+                        } 
+                        else
                         {
                             //return it to parent
                             trackingHoveringDraggableObject.ReturnToParentContainer();
+                            ClearHoveringDraggableObjectTracking();
                         }
 
-                    } else if(true)
+                    } 
+                    else if(GetOwnedDraggable().GetComponent<CupDraggable>() != null)
+                    {
+                        CupDraggable cup = GetOwnedDraggable().GetComponent<CupDraggable>();
+                        if (cup.TryHandleIngredient(trackingHoveringDraggableObject))
+                        {
+
+
+                            // then return it (or destroy it) as you already do
+                            trackingHoveringDraggableObject.ReturnToParentContainer();
+                            // immediately clear hover so we don't re-enter this block next frame
+                            ClearHoveringDraggableObjectTracking();
+                        }
+                    }
                     //if it is, trigger function in plate or cup that verifies if possble to add
                     trackingHoveringDraggableObject.ReturnToParentContainer();
                 }
@@ -64,7 +95,8 @@ public class AssemblerContainer : BaseContainer
                 //if not, means area is occupied, return the currentlydragging to parent container
 
             }
-        }else
+        }
+        else
         {
             if (containerVisual != null)
             {
