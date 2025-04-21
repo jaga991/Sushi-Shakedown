@@ -95,9 +95,9 @@ public class ScoreCounter : MonoBehaviour
             return;
         }
 
-        if (customerData != null)
-            scoreText.text = $"Score: {customerData.score}";
-        else
-            scoreText.text = "Score: 0";
+        // if (customerData != null)
+        //     scoreText.text = $"Score: {customerData.score}";
+        // else
+        //     scoreText.text = "Score: 0";
     }
 }

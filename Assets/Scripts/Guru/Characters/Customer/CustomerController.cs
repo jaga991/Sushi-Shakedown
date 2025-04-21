@@ -290,7 +290,7 @@ public class CustomerController : DebuggableMonoBehaviour
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
 
         CustomerData.AddScore(score);
-        Log("Added Score is " + score);
+        // Log("Added Score is " + score);
 
         CoinHandler.SpawnCoins(score, transform.position);
 

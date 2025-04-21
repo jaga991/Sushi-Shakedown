@@ -10,6 +10,7 @@ public class CoinHandler : MonoBehaviour
     [Header("Target (score icon)")]
     public GameObject scoreTarget;   // drag the UI Image / Text here
     private float travelTime = .7f;
+    public ScoreParent ScoreParent; // Reference to the ScoreParent script
 
     public static CoinHandler Instance { get; private set; }
 
@@ -22,6 +23,8 @@ public class CoinHandler : MonoBehaviour
     public void Start()
     {
         scoreTarget = GameObject.Find("CoinFloating");
+        ScoreParent = GameObject.Find("Score").GetComponent<ScoreParent>();
+
     }
 
     // --------------------------------------------------------------------
@@ -61,8 +64,8 @@ public class CoinHandler : MonoBehaviour
         while (coin != null &&
                Vector3.Distance(coin.transform.position, targetWorld) > 0.065f)
         {
-            Debug.Log("Coin distance to target: " +
-                      Vector3.Distance(coin.transform.position, targetWorld));
+            // Debug.Log("Coin distance to target: " +
+            //           Vector3.Distance(coin.transform.position, targetWorld));
             coin.transform.position = Vector3.MoveTowards(
                 coin.transform.position,
                 targetWorld,
@@ -71,8 +74,9 @@ public class CoinHandler : MonoBehaviour
 
             yield return null;
         }
-        Debug.Log("Coin reached target: " + coin);
-        Destroy(coin); // destroy the coin when it reaches the target
+        ScoreParent.DeleteCoin(coin); // Call the static method to handle coin collection
+        // Debug.Log("Coin reached target: " + coin);
+        // Destroy(coin); // destroy the coin when it reaches the target
     }
 
 
