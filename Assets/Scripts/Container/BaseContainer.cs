@@ -14,18 +14,22 @@ public class BaseContainer : MonoBehaviour
     //2.)keep a record of what child draggables they own (ownedDraggable)
     [SerializeField] protected DraggableObject hoveringDraggableInCollider = null;
     [SerializeField] protected DraggableObject ownedDraggable= null;
-    [SerializeField] protected SpriteRenderer containerVisual;
-    protected Color defaultColor;
+
+    //TODO UI
+    //[SerializeField] protected SpriteRenderer containerVisual;
+    //protected Color defaultColor;
     private void Start()
     {
-        if (containerVisual != null)
-        {
-            defaultColor = containerVisual.color;
-        }
+        ////TODO UI
+        //if (containerVisual != null)
+        //{
+
+        //    defaultColor = containerVisual.color;
+        //}
     }
     private void OnTriggerEnter2D(Collider2D other) //if collision detected
     {
-        if (other.GetComponent<DraggableObject>() != null) //check if other object is a draggableobject
+        if (other.GetComponent<DraggableObject>() != null && other.GetComponent<DraggableObject>().IsBeingDragged()) //check if other object is a draggableobject and its being dragged
         {
             Debug.Log($"[{gameObject.name}] {other.name} entered {gameObject.name}.");
             //if other is draggableObject, track the hovering draggableObject by invoking SetHoveringDraggableObject 
@@ -90,4 +94,13 @@ public class BaseContainer : MonoBehaviour
         ownedDraggable = null;
     }
 
+    public void TriggerBaseContainerSelectedVisualEvent(BaseContainer baseContainer)
+    {
+        EventManager.Instance.Trigger<BaseContainer>("baseContainerSelectedVisual", baseContainer);
+    }
+
+    public void TriggerBaseContainerDeselectedSelectedVisualEvent(BaseContainer baseContainer)
+    {
+        EventManager.Instance.Trigger<BaseContainer>("baseContainerDeselectedVisual", baseContainer);
+    }
 }

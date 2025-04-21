@@ -12,12 +12,15 @@ public class AssemblerContainer : BaseContainer
         if (GetHoveringDraggableObjectTracking() != null) //
         {
             DraggableObject trackingHoveringDraggableObject = GetHoveringDraggableObjectTracking();
-            if (containerVisual != null)
-            {
-                Color faded = containerVisual.color;
-                faded.a = 0.5f; // semi-transparent
-                containerVisual.color = faded;
-            }
+            //TODO add event for ui
+            TriggerBaseContainerSelectedVisualEvent(this);
+            //if (containerVisual != null)
+            //{
+
+            //    Color faded = containerVisual.color;
+            //    faded.a = 0.5f; // semi-transparent
+            //    containerVisual.color = faded;
+            //}
             if (!trackingHoveringDraggableObject.IsBeingDragged())
             {
                 Debug.Log($"{trackingHoveringDraggableObject.name} released in {gameObject.name}");
@@ -98,10 +101,11 @@ public class AssemblerContainer : BaseContainer
         }
         else
         {
-            if (containerVisual != null)
-            {
-                containerVisual.color = defaultColor;
-            }
+            TriggerBaseContainerDeselectedSelectedVisualEvent(this);
+            //if (containerVisual != null)
+            //{
+            //    containerVisual.color = defaultColor;
+            //}
         }
     }
 }

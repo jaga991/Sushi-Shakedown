@@ -64,11 +64,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("HandleRightMouseDown Triggered");
         //first execute a raycast hit
         RaycastHit2D[] hits = Physics2D.RaycastAll(gameDataSO.mousePosition, Vector2.zero, Mathf.Infinity, gameDataSO.interactableLayers);
-        CuttingBoard cuttingBoard = null;
+        CuttingContainer cuttingBoard = null;
 
         foreach (RaycastHit2D hit in hits)
         {
-            if (cuttingBoard == null && hit.collider.TryGetComponent(out CuttingBoard cb))
+            if (cuttingBoard == null && hit.collider.TryGetComponent(out CuttingContainer cb))
                 cuttingBoard = cb;
 
         }

@@ -5,10 +5,11 @@ public class IngredientDispenserContainer : BaseContainer
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (containerVisual != null)
-        {
-            defaultColor = containerVisual.color;
-        }
+        //if (containerVisual != null)
+        //{
+        //    defaultColor = containerVisual.color;
+        //}
+       
         ClearHoveringDraggableObjectTracking();
     }
 
@@ -20,12 +21,13 @@ public class IngredientDispenserContainer : BaseContainer
         if (GetHoveringDraggableObjectTracking() != null) //
         {
             DraggableObject trackingHoveringDraggableObject = GetHoveringDraggableObjectTracking();
-            if (containerVisual != null)
-            {
-                Color faded = containerVisual.color;
-                faded.a = 0.5f; // semi-transparent
-                containerVisual.color = faded;
-            }
+            TriggerBaseContainerSelectedVisualEvent(this);
+            //if (containerVisual != null)
+            //{
+            //    Color faded = containerVisual.color;
+            //    faded.a = 0.5f; // semi-transparent
+            //    containerVisual.color = faded;
+            //}
             if (!trackingHoveringDraggableObject.IsBeingDragged())
             {
                 Debug.Log($"{trackingHoveringDraggableObject.name} released in {gameObject.name}");
@@ -52,10 +54,11 @@ public class IngredientDispenserContainer : BaseContainer
         }
         else
         {
-            if (containerVisual != null)
-            {
-                containerVisual.color = defaultColor;
-            }
+            TriggerBaseContainerDeselectedSelectedVisualEvent(this);
+            //if (containerVisual != null)
+            //{
+            //    containerVisual.color = defaultColor;
+            //}
         }
     }
 }

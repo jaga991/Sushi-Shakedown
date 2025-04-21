@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: eel-raw-cut_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: 482e27e1ac3b21e44ad55aabb0fd3ff5, type: 2}
-  grillingProgressMax: 10
+  grillingProgressMax: 2
   outputIngredient: {fileID: 11400000, guid: bd5d1d44785ea8b48ac185fd78570e7d, type: 2}

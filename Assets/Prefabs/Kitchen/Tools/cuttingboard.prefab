@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8270655568402323177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -271,13 +271,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6359949208588407826}
+  - component: {fileID: 4686631100105831607}
   m_Layer: 0
   m_Name: CuttingProgressUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6359949208588407826
 Transform:
   m_ObjectHideFlags: 0
@@ -294,6 +295,20 @@ Transform:
   - {fileID: 8270655568402323177}
   m_Father: {fileID: 2473798427546180556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4686631100105831607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5050928786062604613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb700374ab4f83f48be16fbf22f37468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillImage: {fileID: 7369550575169464471}
+  uiContainer: {fileID: 1163896731359730587}
 --- !u!1 &6576912609929677537
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6907128704244284593}
   - component: {fileID: 8523804819040443704}
+  - component: {fileID: 132192923453147110}
   m_Layer: 0
   m_Name: cuttingboard_visual
   m_TagString: Untagged
@@ -381,6 +397,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &132192923453147110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6576912609929677537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934dcac62867c6541afd3c46e831d303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containerVisual: {fileID: 8523804819040443704}
 --- !u!1 &7070018820604292151
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +505,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoveringDraggableInCollider: {fileID: 0}
   ownedDraggable: {fileID: 0}
-  containerVisual: {fileID: 8523804819040443704}
   cuttingProgress: 0
   cuttingRecipeSOArray:
   - {fileID: 11400000, guid: 1aa2d81652dd43d4485af28005b65d38, type: 2}
@@ -484,5 +512,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 89afcca1aa34dc7409f32be47f4d101b, type: 2}
   - {fileID: 11400000, guid: cde28e0b00117e84cb63c57d3815d86e, type: 2}
   - {fileID: 11400000, guid: bb64f1b91c5a3154195e3bd4dd5816ec, type: 2}
-  progressFillImage: {fileID: 7369550575169464471}
   cuttingProgressUI: {fileID: 5050928786062604613}

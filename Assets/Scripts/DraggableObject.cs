@@ -83,7 +83,7 @@ public class DraggableObject : MonoBehaviour
         {
             transform.SetParent(parentContainer.transform); // Safe to call even if already the parent, just to be sure
             transform.localPosition = Vector3.zero;
-
+            parentContainer.SetOwnedDraggable(this);
             Debug.Log($"[DraggableObject] {gameObject.name} returned to {parentContainer.name} and centered.");
             isDragging = false;
         }

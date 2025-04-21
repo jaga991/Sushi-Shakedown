@@ -3,15 +3,9 @@ using UnityEngine;
 public class TrashBin : MonoBehaviour
 {
     [SerializeField] private DraggableObject draggableInZone = null;
-    [SerializeField] protected SpriteRenderer containerVisual;
-    protected Color defaultColor;
 
     private void Start()
     {
-        if (containerVisual != null)
-        {
-            defaultColor = containerVisual.color;
-        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,7 +13,6 @@ public class TrashBin : MonoBehaviour
         {
             draggableInZone = other.GetComponent<DraggableObject>();
             Debug.Log($"[TrashBin] {other.name} entered trash zone.");
-            //
         }
     }
 
@@ -37,13 +30,9 @@ public class TrashBin : MonoBehaviour
         // On mouse release, check if draggable is inside and was just dropped
         if (draggableInZone != null) //Condition: if a draggable in trashbin collider
         {
-            if (containerVisual != null)
-            {
-                Color faded = containerVisual.color;
-                faded.a = 0.5f; // semi-transparent
-                containerVisual.color = faded;
-            }
-            if (!draggableInZone.IsBeingDragged()) //
+            //UI events
+            EventManager.Instance.Trigger<TrashBin>("trashbinSelectedVisual", this);
+            if (!draggableInZone.IsBeingDragged())
             {
                 Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
                 //!TODO, need to do additional checker to make sure dont destroy condiments and drinks ingredients
@@ -53,10 +42,8 @@ public class TrashBin : MonoBehaviour
         }
         else
         {
-            if (containerVisual != null)
-            {
-                containerVisual.color = defaultColor;
-            }
+            EventManager.Instance.Trigger<TrashBin>("trashbinDeselectedVisual", this);
+
         }
     } 
 }

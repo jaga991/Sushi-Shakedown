@@ -2,118 +2,162 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GrillingBoard : BaseContainer
+public class GrillContainer : BaseContainer
 {
     [SerializeField] private GrillingRecipeSO[] grillingRecipeSOArray;
 
     [Header("Progress UI")]
-    [SerializeField] private Image progressFillImage;
-    [SerializeField] private GameObject grillingProgressUI;
+    [SerializeField] private GameObject grillingProgressUI;  // assign your ProgressBarUI root here
 
     private float grillingProgress = 0f;
     private bool isGrilling = false;
     private GrillingRecipeSO activeRecipe;
 
-    public event EventHandler OnAnyObjectGrilled;
-    public event EventHandler<IHasProgress.OnProgressChangeEventArgs> OnProgressChanged;
+
 
     private void Update()
     {
         HandleHoverAndDrop();
+        //NEW: if we have an owned draggable, but aren’t cooking, kick off a new cycle
+        TryResumeCooking();
+
         HandleGrillingProgress();
     }
+    private void TryResumeCooking()
+    {
+        // only when:
+        // 1) something is back in the grill
+        // 2) we’re not already grilling
+        // 3) we don’t have an activeRecipe yet
+        var held = GetOwnedDraggable();
+        if (held != null && !isGrilling && activeRecipe == null)
+        {
+            // find a recipe for it
+            var recipe = GetRecipeWithInput(held.GetDraggableObjectSO());
+            if (recipe != null)
+            {
+                activeRecipe = recipe;
+                grillingProgress = 0f;
+                isGrilling = true;
 
+                EventManager.Instance.Trigger("showProgressUI", grillingProgressUI);
+                EventManager.Instance.Trigger("updateProgressUI",
+                    new ProgressBarUpdateData(grillingProgressUI, 0f));
+            }
+        }
+    }
     private void HandleHoverAndDrop()
     {
         var hovering = GetHoveringDraggableObjectTracking();
-
-        if (hovering != null && !hovering.IsBeingDragged())
+        if (hovering != null)
         {
-            if (GetOwnedDraggable() == null && HasRecipeWithInput(hovering.GetDraggableObjectSO()))
-            {
-                Debug.Log($"{hovering.name} is a valid GrillingObject");
+            TriggerBaseContainerSelectedVisualEvent(this);
 
-                // Accept the draggable object
-                hovering.SetParentContainer(this);
-                SetOwnedDraggable(hovering);
-                ClearHoveringDraggableObjectTracking();
-
-                // Start grilling
-                activeRecipe = GetRecipeWithInput(hovering.GetDraggableObjectSO());
-                grillingProgress = 0f;
-                isGrilling = true;
-                grillingProgressUI.SetActive(true);
-                UpdateUIProgress(0f);
-            }
-            else
+            if (!hovering.IsBeingDragged())
             {
-                hovering.ReturnToParentContainer();
+                // only accept if empty and we have a recipe for this input
+                if (GetOwnedDraggable() == null && HasRecipeWithInput(hovering.GetDraggableObjectSO()))
+                {
+                    // grab it
+                    hovering.SetParentContainer(this);
+                    SetOwnedDraggable(hovering);
+                    ClearHoveringDraggableObjectTracking();
+
+                    // start grilling
+                    activeRecipe = GetRecipeWithInput(hovering.GetDraggableObjectSO());
+                    grillingProgress = 0f;
+                    isGrilling = true;
+
+                    // show & zero the bar
+                    EventManager.Instance.Trigger("showProgressUI", grillingProgressUI);
+                    EventManager.Instance.Trigger("updateProgressUI",
+                        new ProgressBarUpdateData(grillingProgressUI, 0f));
+                }
+                else
+                {
+                    // invalid: return it
+                    hovering.ReturnToParentContainer();
+                }
             }
         }
-        else if (containerVisual != null)
+        else
         {
-            containerVisual.color = defaultColor;
+            TriggerBaseContainerDeselectedSelectedVisualEvent(this);
         }
     }
 
     private void HandleGrillingProgress()
     {
-        if (!isGrilling || GetOwnedDraggable() == null || activeRecipe == null) return;
+        if (!isGrilling || GetOwnedDraggable() == null) return;
 
+        // advance
         grillingProgress += Time.deltaTime;
         float normalized = grillingProgress / activeRecipe.grillingProgressMax;
-        UpdateUIProgress(normalized);
 
-        EventManager.Instance.TriggerEvent("ObjectGrilled", this);
-        OnAnyObjectGrilled?.Invoke(this, EventArgs.Empty);
+        // update bar every frame
+        EventManager.Instance.Trigger("updateProgressUI", new ProgressBarUpdateData(grillingProgressUI, normalized));
 
+        // finished?
         if (grillingProgress >= activeRecipe.grillingProgressMax)
-        {
             CompleteGrillingCycle();
-        }
     }
 
     private void CompleteGrillingCycle()
     {
-        // Replace current ingredient with grilled output
+        // destroy raw
         Destroy(GetOwnedDraggable().gameObject);
         ClearOwnedDraggable();
 
-        var newObj = Instantiate(activeRecipe.outputIngredient.prefab);
-        var grilled = newObj.GetComponent<DraggableObject>();
-
+        // spawn grilled
+        var go = Instantiate(activeRecipe.outputIngredient.prefab);
+        var grilled = go.GetComponent<DraggableObject>();
         SetOwnedDraggable(grilled);
         grilled.SetParentContainer(this);
 
-        // Check if output has another recipe (e.g. grilled -> burnt)
-        GrillingRecipeSO nextRecipe = GetRecipeWithInput(activeRecipe.outputIngredient);
-
-        if (nextRecipe != null)
+        // chain to next recipe? (e.g. grilled -> burnt)
+        var next = GetRecipeWithInput(activeRecipe.outputIngredient);
+        if (next != null)
         {
-            activeRecipe = nextRecipe;
+            activeRecipe = next;
             grillingProgress = 0f;
             isGrilling = true;
-            grillingProgressUI.SetActive(true);
+
+            // reset bar to zero (we’re still showing)
+            EventManager.Instance.Trigger("updateProgressUI",
+                new ProgressBarUpdateData(grillingProgressUI, 0f));
         }
         else
         {
-            // No more recipes, stop grilling
+            // done cooking
             isGrilling = false;
-            grillingProgress = 0f;
-            grillingProgressUI.SetActive(false);
             activeRecipe = null;
+
+            // hide the bar
+            EventManager.Instance.Trigger("hideProgressUI", grillingProgressUI);
         }
     }
 
-    private void UpdateUIProgress(float normalized)
+    public override void TryGetDraggableToCursor(Vector3 mousePosition)
     {
-        normalized = Mathf.Clamp01(normalized);
-        progressFillImage.fillAmount = normalized;
-
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangeEventArgs
+        if (GetOwnedDraggable())
         {
-            ProgressNormalized = normalized
-        });
+            // pick it back up
+            GetOwnedDraggable().TryPickUpThis();
+            SetHoveringDraggableObjectTracking(GetOwnedDraggable());
+            ClearOwnedDraggable();
+
+            // cancel grilling
+            grillingProgress = 0f;
+            isGrilling = false;
+            activeRecipe = null;
+
+            // hide the bar
+            EventManager.Instance.Trigger("hideProgressUI", grillingProgressUI);
+        }
+        else
+        {
+            Debug.Log($"No Owned Draggables in {gameObject.name}");
+        }
     }
 
     private GrillingRecipeSO GetRecipeWithInput(DraggableObjectSO input)
@@ -131,24 +175,4 @@ public class GrillingBoard : BaseContainer
         return GetRecipeWithInput(input) != null;
     }
 
-    public override void TryGetDraggableToCursor(Vector3 mousePosition)
-    {
-        if (GetOwnedDraggable())
-        {
-            GetOwnedDraggable().TryPickUpThis();
-            SetHoveringDraggableObjectTracking(GetOwnedDraggable());
-            ClearOwnedDraggable();
-
-            // Reset grilling state
-            isGrilling = false;
-            grillingProgress = 0f;
-            activeRecipe = null;
-            grillingProgressUI.SetActive(false);
-            UpdateUIProgress(0f);
-        }
-        else
-        {
-            Debug.Log($"No Owned Draggables in {gameObject.name}");
-        }
-    }
 }

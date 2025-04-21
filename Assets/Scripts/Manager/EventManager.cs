@@ -5,47 +5,70 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     public static EventManager Instance { get; private set; }
+    private Dictionary<string, Delegate> _eventTable = new Dictionary<string, Delegate>();
 
-    private Dictionary<string, Action<object>> eventDictionary = new Dictionary<string, Action<object>>();
-
-    private void Awake()
+    void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Keep across scenes
+            Destroy(gameObject);
+            return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // 0-ARG SUBSCRIBE
+    public void Subscribe(string eventName, Action listener)
+    {
+        if (_eventTable.TryGetValue(eventName, out var existing))
+            _eventTable[eventName] = Delegate.Combine(existing, listener);
         else
-        {
-            Destroy(gameObject); // Ensure only one instance exists
-        }
+            _eventTable[eventName] = listener;
     }
 
-    // Subscribe to an event
-    public void Subscribe(string eventName, Action<object> listener)
+    // 0-ARG UNSUBSCRIBE
+    public void Unsubscribe(string eventName, Action listener)
     {
-        if (!eventDictionary.ContainsKey(eventName))
-        {
-            eventDictionary[eventName] = delegate { };
-        }
-        eventDictionary[eventName] += listener;
+        if (!_eventTable.TryGetValue(eventName, out var existing)) return;
+        var updated = Delegate.Remove(existing, listener);
+        if (updated == null)
+            _eventTable.Remove(eventName);
+        else
+            _eventTable[eventName] = updated;
     }
 
-    // Unsubscribe from an event
-    public void Unsubscribe(string eventName, Action<object> listener)
+    // 0-ARG TRIGGER
+    public void Trigger(string eventName)
     {
-        if (eventDictionary.ContainsKey(eventName))
-        {
-            eventDictionary[eventName] -= listener;
-        }
+        if (_eventTable.TryGetValue(eventName, out var del) && del is Action callback)
+            callback.Invoke();
     }
 
-    // Trigger an event
-    public void TriggerEvent(string eventName, object eventData = null)
+    // 1-ARG SUBSCRIBE
+    public void Subscribe<T>(string eventName, Action<T> listener)
     {
-        if (eventDictionary.ContainsKey(eventName))
-        {
-            eventDictionary[eventName]?.Invoke(eventData);
-        }
+        if (_eventTable.TryGetValue(eventName, out var existing))
+            _eventTable[eventName] = Delegate.Combine(existing, listener);
+        else
+            _eventTable[eventName] = listener;
+    }
+
+    // 1-ARG UNSUBSCRIBE
+    public void Unsubscribe<T>(string eventName, Action<T> listener)
+    {
+        if (!_eventTable.TryGetValue(eventName, out var existing)) return;
+        var updated = Delegate.Remove(existing, listener);
+        if (updated == null)
+            _eventTable.Remove(eventName);
+        else
+            _eventTable[eventName] = updated;
+    }
+
+    // 1-ARG TRIGGER
+    public void Trigger<T>(string eventName, T arg)
+    {
+        if (_eventTable.TryGetValue(eventName, out var del) && del is Action<T> callback)
+            callback.Invoke(arg);
     }
 }

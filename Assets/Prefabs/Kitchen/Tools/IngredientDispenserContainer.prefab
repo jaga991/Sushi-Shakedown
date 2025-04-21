@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6907128704244284593}
   - component: {fileID: 8523804819040443704}
+  - component: {fileID: 7487665319997876357}
   m_Layer: 0
-  m_Name: coaster_visual
+  m_Name: IngredientDispenserContainer_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,6 +88,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7487665319997876357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6576912609929677537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934dcac62867c6541afd3c46e831d303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containerVisual: {fileID: 8523804819040443704}
 --- !u!1 &7070018820604292151
 GameObject:
   m_ObjectHideFlags: 0
