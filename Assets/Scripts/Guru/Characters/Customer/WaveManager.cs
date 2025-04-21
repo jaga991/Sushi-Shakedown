@@ -139,7 +139,7 @@ public class WaveManager : DebuggableMonoBehaviour
         {
             Debug.Log("Endless Customer Round : " + temp);
 
-            float waitTime = Random.Range(4f, 6f);
+            float waitTime = Random.Range(2f, 3f);
             yield return new WaitForSeconds(waitTime);
 
             bool didSpawn = npcSpawner.SpawnCustomer();

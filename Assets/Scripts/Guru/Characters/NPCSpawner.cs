@@ -95,11 +95,11 @@ public class NPCSpawner : MonoBehaviour
         customer.SetActive(true);
         if (customer.TryGetComponent<CustomerController>(out var customerController))
         {
-            customerController.SetOrderArea(orderArea); // Set the order area for the customer.
+            customerController.SetOrderArea(orderArea);
         }
         else
         {
-            Debug.Log("Something Bad is happening. CustomerController is not found !!");
+            Debug.Log("Something Bad is happening   : CustomerController is not found.");
         }
         return true;
     }

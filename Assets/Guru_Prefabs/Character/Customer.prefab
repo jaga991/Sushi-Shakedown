@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 912170452810297443}
   - component: {fileID: 2584946290778633212}
   - component: {fileID: 8701546849306260434}
-  - component: {fileID: 444486757600623846}
   m_Layer: 7
   m_Name: Customer
   m_TagString: Untagged
@@ -122,7 +121,7 @@ MonoBehaviour:
   maxPatience: 100
   assignedOrderArea: {fileID: 0}
   patienceBoostOnCorrect: 10
-  CoinHandler: {fileID: 444486757600623846}
+  randomInt: 0
 --- !u!61 &2584946290778633212
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -266,20 +265,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &444486757600623846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2721969614351062611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3abf8d97f5b815e47980e0c4d3ca5387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinPrefab: {fileID: 4205338701915316176, guid: 9b8ad060c7666654ca57dde00d9536b8, type: 3}
-  spawnRoot: {fileID: 2866542297894205511}
 --- !u!1 &3239254254607974306
 GameObject:
   m_ObjectHideFlags: 0

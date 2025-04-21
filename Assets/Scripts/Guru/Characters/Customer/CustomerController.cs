@@ -47,9 +47,6 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private int difficultyMultiplier = 1; // Default to Easy
 
-    public CoinHandler CoinHandler;
-
-
     /// <summary>
     /// Called by OrderBubble when the player delivers the right item.
     /// </summary>
@@ -106,8 +103,6 @@ public class CustomerController : DebuggableMonoBehaviour
 
     protected override void Awake()
     {
-
-        Debug.Log("CustomerController: Awake called.");
         base.Awake(); // Call the base class method to set up logging
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -295,7 +290,7 @@ public class CustomerController : DebuggableMonoBehaviour
         CustomerData.AddScore(score);
         // Log("Added Score is " + score);
 
-        CoinHandler.SpawnCoins(score, transform.position);
+        CoinHandler.Instance.SpawnCoins(score, transform.position);
 
 
         if (progressRoutine != null)
