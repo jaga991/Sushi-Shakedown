@@ -11,29 +11,29 @@ using UnityEngine.UI;
 public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
     public CustomerData customerData;
-    private CustomerData localCustomerData;
-    public GameObject GameUI;
-    public GameObject PauseUI;
-    [SerializeField] private ToggleSwitch gameModeToggle;
-    [SerializeField] private ToggleSwitch DifficultyModeToggle;
+    private CustomerData Pause_CustomerData_Local;
 
-    public GameObject InfoUI;
+    // Screens
+    public GameObject Game_Screen;
+    public GameObject Pause_Screen;
+    public GameObject Info_Screen;
+    public GameObject PreDay_Screen;
 
-    public TextMeshProUGUI dayText;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI totalServedText;
-    public TextMeshProUGUI happyText;
+    // UI Toggles (Settings)
+    [SerializeField] private ToggleSwitch GameMode_Toggle;
+    [SerializeField] private ToggleSwitch DifficultyMode_Toggle;
 
+    // InfoUI elements
+    public TextMeshProUGUI Info_DayText;
+    public TextMeshProUGUI Info_ScoreText;
+    public TextMeshProUGUI Info_TotalServedText;
+    public TextMeshProUGUI Info_HappyText;
     public event System.Action OnInfoClosed;
 
-
-    public GameObject PreDayUI;
-
-    public TextMeshProUGUI preDayText;
-    public TextMeshProUGUI preDayScoreText;
-
+    // PreDayUI elements
+    public TextMeshProUGUI PreDay_DayText;
+    public TextMeshProUGUI PreDay_ScoreText;
     public event System.Action OnPreDayClosed;
-
     protected override void Awake()
     {
         base.Awake();
@@ -66,41 +66,41 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         CreateLocalCopy();
         RefreshUI();
-        GameUI.SetActive(false);
-        PauseUI.SetActive(true);
+        Game_Screen.SetActive(false);
+        Pause_Screen.SetActive(true);
         Time.timeScale = 0f; // Pause the game
 
     }
     private void CreateLocalCopy()
     {
         // Destroy any previous local copy
-        if (localCustomerData != null)
+        if (Pause_CustomerData_Local != null)
         {
-            Destroy(localCustomerData);
+            Destroy(Pause_CustomerData_Local);
         }
-        localCustomerData = Instantiate(customerData);
-        Log($"Local copy created: {localCustomerData.gameMode}");
+        Pause_CustomerData_Local = Instantiate(customerData);
+        Log($"Local copy created: {Pause_CustomerData_Local.gameMode}");
 
     }
     private void RefreshUI()
     {
-        bool isWaves = localCustomerData.gameMode == GameMode.Waves;
+        bool isWaves = Pause_CustomerData_Local.gameMode == GameMode.Waves;
 
-        gameModeToggle.CurrentValue = isWaves;
+        GameMode_Toggle.CurrentValue = isWaves;
 
-        bool isEasy = localCustomerData.difficulty == Difficulty.Easy;
-        DifficultyModeToggle.CurrentValue = isEasy;
+        bool isEasy = Pause_CustomerData_Local.difficulty == Difficulty.Easy;
+        DifficultyMode_Toggle.CurrentValue = isEasy;
     }
 
     public void Accept()
     {
         // Copy selected settings (here, just gameMode) from local to global.
-        customerData.SetGameMode(localCustomerData.gameMode);
-        customerData.SetDifficulty(localCustomerData.difficulty);
+        customerData.SetGameMode(Pause_CustomerData_Local.gameMode);
+        customerData.SetDifficulty(Pause_CustomerData_Local.difficulty);
         DefaultView();
         // CloseSettings();
-        Destroy(localCustomerData);
-        localCustomerData = null;
+        Destroy(Pause_CustomerData_Local);
+        Pause_CustomerData_Local = null;
         Time.timeScale = 1f; // Resume the game speed
     }
 
@@ -113,46 +113,45 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Log("Settings Declined. Changes discarded.");
         DefaultView();
         // Resume game speed when returning to game
-        Destroy(localCustomerData);
-        localCustomerData = null;
+        Destroy(Pause_CustomerData_Local);
+        Pause_CustomerData_Local = null;
 
         Time.timeScale = 1f; // Resume the game speed
     }
 
     public void ToggleModeButton(int value)
     {
-        localCustomerData.SetGameMode((GameMode)value);
+        Pause_CustomerData_Local.SetGameMode((GameMode)value);
         RefreshUI();
     }
 
     public void ToggleDifficultyButton(int value)
     {
         Log("Tn called with value: " + (Difficulty)value);
-        localCustomerData.SetDifficulty((Difficulty)value);
+        Pause_CustomerData_Local.SetDifficulty((Difficulty)value);
         // RefreshUI();s
 
     }
 
-    void DefaultView()
+    private void DefaultView()
     {
-        GameUI.SetActive(true);
-        PauseUI.SetActive(false);
-        InfoUI.SetActive(false);
-        PreDayUI.SetActive(false);
+        Game_Screen.SetActive(true);
+        Pause_Screen.SetActive(false);
+        Info_Screen.SetActive(false);
+        PreDay_Screen.SetActive(false);
     }
 
     public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry)
     {
-        // Pause the game
-        Debug.Log($"[Settings]  ShowInfoUI called with day: {day}, score: {score}, totalServed: {totalServed}, happy: {happy}, angry: {angry}");
-        dayText.text = $"Day: {day} Completed !";
-        scoreText.text = $"Coins Earned {score}";
-        totalServedText.text = $"Customers Served: {totalServed}";
-        happyText.text = $"Happy Customers: {happy}";
-        GameUI.SetActive(false);
-        PauseUI.SetActive(false);
-        PreDayUI.SetActive(false);
-        InfoUI.SetActive(true);
+        Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry}");
+        Info_DayText.text = $"Day: {day} Completed!";
+        Info_ScoreText.text = $"Coins Earned: {score}";
+        Info_TotalServedText.text = $"Customers Served: {totalServed}";
+        Info_HappyText.text = $"Happy Customers: {happy}";
+        Game_Screen.SetActive(false);
+        Pause_Screen.SetActive(false);
+        PreDay_Screen.SetActive(false);
+        Info_Screen.SetActive(true);
     }
 
     public void CloseInfoUI()
@@ -162,15 +161,15 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         DefaultView();
         OnInfoClosed?.Invoke();
     }
-    public void ShowPreDayUI(int Day)
+    public void ShowPreDayUI(int day)
     {
-        Debug.Log("[Settings]  ShowPreDayUI called");
-        preDayText.text = $"Day {Day} Starting";
-        preDayScoreText.text = $"Make  {customerData.GetRansom(Day)} COINS OR ELSE !";
-        GameUI.SetActive(false);
-        PauseUI.SetActive(false);
-        InfoUI.SetActive(false);
-        PreDayUI.SetActive(true);
+        Debug.Log($"[Overlay] ShowPreDayUI: starting day {day}");
+        PreDay_DayText.text = $"Day {day} Starting";
+        PreDay_ScoreText.text = $"Make {customerData.GetRansom(day)} COINS OR ELSE!";
+        Game_Screen.SetActive(false);
+        Pause_Screen.SetActive(false);
+        Info_Screen.SetActive(false);
+        PreDay_Screen.SetActive(true);
     }
     public void ClosePreDayUI()
     {
