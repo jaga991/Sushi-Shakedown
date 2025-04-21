@@ -99,12 +99,15 @@ public class CustomerController : DebuggableMonoBehaviour
 
     public void SetOrderArea(OrderArea area)
     {
+        Debug.Log("CustomerController: SetOrderArea called.");
         assignedOrderArea = area;
         targetPosition = area.GetCoordinates();
     }
 
     protected override void Awake()
     {
+
+        Debug.Log("CustomerController: Awake called.");
         base.Awake(); // Call the base class method to set up logging
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -186,7 +189,7 @@ public class CustomerController : DebuggableMonoBehaviour
     private IEnumerator PatienceCountdown()
     {
         float waitPerPoint = 0.1f / difficultyMultiplier;
-        Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
+        // Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
 
         while (currentPatience > 0)
         {
@@ -306,6 +309,8 @@ public class CustomerController : DebuggableMonoBehaviour
         SetOffScreenTarget();
 
         isWalkingOffScreen = true;
+
+
 
         if (assignedOrderArea != null)
         {

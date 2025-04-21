@@ -64,17 +64,15 @@ public class NPCSpawner : MonoBehaviour
 
     public bool SpawnCustomer()
     {
-
+        orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
         OrderArea orderArea = orderAreaGroup.GetFreeOrderArea();
+        orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
+        Debug.Log("Spawn Customer is being called.");
         if (orderArea == null)
         {
             Debug.Log("All order areas are occupied. Customer Not Spawned !!");
             return false;
         }
-
-        orderArea.UpdateState(true); // Mark the order area as occupied.
-
-
         bool spawnFromLeft = Random.value > 0.5f;
         Camera cam = Camera.main;
         float camHeight = 2f * cam.orthographicSize;
@@ -95,10 +93,13 @@ public class NPCSpawner : MonoBehaviour
         Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
         GameObject customer = Instantiate(customerTemplate, spawnPosition, Quaternion.identity);
         customer.SetActive(true);
-
         if (customer.TryGetComponent<CustomerController>(out var customerController))
         {
             customerController.SetOrderArea(orderArea); // Set the order area for the customer.
+        }
+        else
+        {
+            Debug.Log("Something Bad is happening. CustomerController is not found !!");
         }
         return true;
     }

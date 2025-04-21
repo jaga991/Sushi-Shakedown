@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class OrderAreaGroup : MonoBehaviour
 {
@@ -16,12 +18,15 @@ public class OrderAreaGroup : MonoBehaviour
     {
         foreach (var area in orderAreas)
         {
-            if (!area.isOccupied)
+            if (area.IsFree())
             {
-                // Reservation should be handled by the caller.
+                // Mark the area as occupied.
+                area.UpdateState(true);
                 return area;
             }
+
         }
+
         return null; // No free area available.
     }
 
@@ -29,22 +34,20 @@ public class OrderAreaGroup : MonoBehaviour
     {
         if (orderAreas.Contains(area))
         {
-            area.isOccupied = false;
+            area.UpdateState(false);
         }
+    }
+
+    public void PrintAllOrderArea()
+    {
+
+        Debug.Log(string.Join(" | ", orderAreas.Select(area => $"Order Area: {area.name}, Free: {(area.IsFree() ? 1 : 0)}")));
+
     }
 
     void Start()
     {
-        // Benchmarking to compare sequential vs parallel performance
-        OrderArea area = GetFreeOrderArea();
-        if (area != null)
-        {
-            Debug.Log($"Free Order Area found: {area.name}");
-            Debug.Log("Located at coordinates: " + area.GetCoordinates());
-        }
-        else
-        {
-            Debug.Log("No free Order Area available.");
-        }
+        Debug.Log(string.Join(" | ", orderAreas.Select(area => $"Order Area: {area.name}, Free: {(area.IsFree() ? 1 : 0)}")));
+
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Specialized;
 using UnityEngine;
 public class OrderArea : MonoBehaviour
 {
-    public bool isOccupied = false;
+    private bool isOccupied = false;
 
     private float x, y;
 
@@ -27,6 +27,7 @@ public class OrderArea : MonoBehaviour
     public void UpdateState(bool occupied)
     {
         isOccupied = occupied;
+        Debug.Log($"Order area {gameObject.name} is now {(occupied ? "occupied" : "free")}.");
     }
     void OnTriggerEnter2D(Collider2D other)
     {

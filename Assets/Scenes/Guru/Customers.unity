@@ -2442,7 +2442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcTemplate: {fileID: 1042496770908616225, guid: 5179314cb6a13b545ad0c5f34bcc2b3a, type: 3}
-  customerTemplate: {fileID: 2721969614351062611, guid: b233b5162c657584da1af1879413114e, type: 3}
+  customerTemplate: {fileID: 1443159622}
   spawnInterval: 3
   spawnMargin: 1
   spawnZone: {fileID: 149554979}
@@ -3595,7 +3595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bb6f0b4c89f476ea7beeae6e68e411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
 --- !u!1 &1138867779
 GameObject:
   m_ObjectHideFlags: 0
@@ -3936,7 +3935,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bb6f0b4c89f476ea7beeae6e68e411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
 --- !u!65 &1168837878
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4405,6 +4403,7 @@ GameObject:
   - component: {fileID: 1443159623}
   - component: {fileID: 1443159627}
   - component: {fileID: 1443159628}
+  - component: {fileID: 1443159629}
   m_Layer: 7
   m_Name: Customer
   m_TagString: Untagged
@@ -4657,6 +4656,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1443159629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443159622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abf8d97f5b815e47980e0c4d3ca5387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 4205338701915316176, guid: 9b8ad060c7666654ca57dde00d9536b8, type: 3}
+  randomSpread: 0.5
+  scoreTarget: {fileID: 0}
+  ScoreParent: {fileID: 0}
 --- !u!1 &1474172076
 GameObject:
   m_ObjectHideFlags: 0
@@ -6775,7 +6790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bb6f0b4c89f476ea7beeae6e68e411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
 --- !u!65 &2063956623
 BoxCollider:
   m_ObjectHideFlags: 0

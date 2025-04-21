@@ -38,7 +38,7 @@ public class DayManager : DebuggableMonoBehaviour
         {
             waveManager.StopWaves();
             waveManager.StartEndlessCustomers();
-            OnWavesCompleted();
+            // OnWavesCompleted();
         }
     }
 
@@ -49,7 +49,6 @@ public class DayManager : DebuggableMonoBehaviour
 
     public void Start()
     {
-        Log("Day started random spawns until " + requiredServedCount + " customers are served.");
         OnModeChanged(customerDataSO.gameMode);
     }
     private void OnWavesCompleted()

@@ -92,7 +92,7 @@ public class WaveManager : DebuggableMonoBehaviour
             // Countdown.
             yield return StartCoroutine(WaveCountdown(waveCountdownDuration));
 
-            // Update the global wave number.
+            // Update the global dnumber.
             customerData.WaveCount = waveNumber;
 
             msg = $"Wave {waveNumber} started!";
@@ -134,26 +134,29 @@ public class WaveManager : DebuggableMonoBehaviour
     }
     private IEnumerator EndlessCustomersRoutine()
     {
+        int temp = 0;
         while (endlessModeActive)
         {
-            // Pick a random delay between spawns (tweak min/max as you like).
-            float waitTime = Random.Range(2f, 5f);
+            Debug.Log("Endless Customer Round : " + temp);
+
+            float waitTime = Random.Range(4f, 6f);
             yield return new WaitForSeconds(waitTime);
 
             bool didSpawn = npcSpawner.SpawnCustomer();
             if (didSpawn)
             {
-                Log($"Spawned a customer. Total served: {customerData.customersServed}");
+                // Log($"Spawned a customer: " + temp);
+                Debug.Log("Endless Customer Finish Round : " + temp);
                 OnWaveStatusChanged?.Invoke($"served: {customerData.customersServed}");
             }
             else
             {
                 Log("All order areas are full—will retry later.");
             }
+            temp += 1;
         }
+
     }
-
-
 
     /// <summary>
     /// If you ever want to stop the endless spawning.
@@ -174,6 +177,7 @@ public class WaveManager : DebuggableMonoBehaviour
     {
         int remaining = customerCount;
         int spawnedCount = 0; // number successfully spawned
+        Debug.Log($"Spawning {customerCount} customers in wave {waveNumber}.");
         while (remaining > 0)
         {
             bool didSpawn = npcSpawner.SpawnCustomer();
