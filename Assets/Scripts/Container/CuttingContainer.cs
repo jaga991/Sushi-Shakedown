@@ -37,6 +37,9 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
                         trackingHoveringDraggableObject.SetParentContainer(this);
                         SetOwnedDraggable(trackingHoveringDraggableObject);
                         ClearHoveringDraggableObjectTracking();
+                        //audio
+                        EventManager.Instance.Trigger<object>("PlaceItemAudio", this);
+
 
                         //start cutting progress
                         cuttingProgress = 0;
@@ -96,6 +99,8 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
             cuttingProgress++;
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetOwnedDraggable().GetDraggableObjectSO());
             Debug.Log($"cutting progress: {cuttingProgress}");
+            //audio
+            EventManager.Instance.Trigger<object>("ObjectCutAudio", this);
 
             //Update Progress UI
             float normalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax;

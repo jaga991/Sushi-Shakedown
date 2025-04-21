@@ -44,6 +44,8 @@ public class PlateDraggable : DraggableObject
         {
             currentIngredientTypes.Add(ingredientType);
             currentIngredients.Add(incomingSO);
+
+            EventManager.Instance.Trigger<object>("AddPlateIngredientAudio", this);
             Debug.Log($"Added {ingredientType} ({incomingSO.name}) to plate.");
         }
 

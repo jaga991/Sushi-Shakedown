@@ -30,7 +30,7 @@ public class GrillContainer : BaseContainer
         // 2) we’re not already grilling
         // 3) we don’t have an activeRecipe yet
         var held = GetOwnedDraggable();
-        if (held != null && !isGrilling && activeRecipe == null)
+        if (held != null && !isGrilling && activeRecipe == null && HasRecipeWithInput(held.GetDraggableObjectSO()))
         {
             // find a recipe for it
             var recipe = GetRecipeWithInput(held.GetDraggableObjectSO());
@@ -39,6 +39,8 @@ public class GrillContainer : BaseContainer
                 activeRecipe = recipe;
                 grillingProgress = 0f;
                 isGrilling = true;
+                EventManager.Instance.Trigger<object>("GrillStartAudioLoop", this);
+
 
                 EventManager.Instance.Trigger("showProgressUI", grillingProgressUI);
                 EventManager.Instance.Trigger("updateProgressUI",
@@ -62,11 +64,14 @@ public class GrillContainer : BaseContainer
                     hovering.SetParentContainer(this);
                     SetOwnedDraggable(hovering);
                     ClearHoveringDraggableObjectTracking();
+                    //audio
+                    EventManager.Instance.Trigger<object>("PlaceItemAudio", this);
 
                     // start grilling
                     activeRecipe = GetRecipeWithInput(hovering.GetDraggableObjectSO());
                     grillingProgress = 0f;
                     isGrilling = true;
+                    EventManager.Instance.Trigger<object>("GrillStartAudioLoop", this);
 
                     // show & zero the bar
                     EventManager.Instance.Trigger("showProgressUI", grillingProgressUI);
@@ -131,6 +136,7 @@ public class GrillContainer : BaseContainer
             // done cooking
             isGrilling = false;
             activeRecipe = null;
+            EventManager.Instance.Trigger<object>("GrillStopAudioLoop", this);
 
             // hide the bar
             EventManager.Instance.Trigger("hideProgressUI", grillingProgressUI);
@@ -150,6 +156,7 @@ public class GrillContainer : BaseContainer
             grillingProgress = 0f;
             isGrilling = false;
             activeRecipe = null;
+            EventManager.Instance.Trigger<object>("GrillStopAudioLoop", this);
 
             // hide the bar
             EventManager.Instance.Trigger("hideProgressUI", grillingProgressUI);

@@ -35,6 +35,7 @@ public class CupDraggable : DraggableObject
         if (currentIngredients.Count < 3)
         {
             currentIngredients.Add(incomingSO);
+            EventManager.Instance.Trigger<object>("AddCupIngredientAudio", this);
             Debug.Log($"Added {ingredientInfo.ingredientType} ({incomingSO.name}) to cup.");
             UpdateDrinkSprites();
             return true;

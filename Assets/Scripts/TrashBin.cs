@@ -35,6 +35,7 @@ public class TrashBin : MonoBehaviour
             if (!draggableInZone.IsBeingDragged())
             {
                 Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
+                EventManager.Instance.Trigger<object>("ObjectTrashedAudio", this);
                 //!TODO, need to do additional checker to make sure dont destroy condiments and drinks ingredients
                 Destroy(draggableInZone.gameObject);
                 draggableInZone = null;

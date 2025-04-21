@@ -32,12 +32,14 @@ public class AssemblerContainer : BaseContainer
                         // It is an IngredientDraggable or a ServingDraggable
                         Debug.Log($"{trackingHoveringDraggableObject.name} is a valid DraggableObject");
                         
-                        //set draggable object parent container to this
-                        //set ownedDraggable to this draggableObject
+                       
+                        //Setting up object being placed on assemblycontainer
+                        //logic
                         trackingHoveringDraggableObject.SetParentContainer(this); 
-                        //setowned draggable
                         SetOwnedDraggable(trackingHoveringDraggableObject);
-                        ClearHoveringDraggableObjectTracking();   
+                        ClearHoveringDraggableObjectTracking();
+                        //audio
+                        EventManager.Instance.Trigger<object>("PlaceItemAudio", this);
                     }
                     else if (trackingHoveringDraggableObject.GetComponent<IngredientDispenserDraggable>() != null)
                     {
@@ -80,16 +82,26 @@ public class AssemblerContainer : BaseContainer
                         CupDraggable cup = GetOwnedDraggable().GetComponent<CupDraggable>();
                         if (cup.TryHandleIngredient(trackingHoveringDraggableObject))
                         {
-
-
                             // then return it (or destroy it) as you already do
                             trackingHoveringDraggableObject.ReturnToParentContainer();
                             // immediately clear hover so we don't re-enter this block next frame
                             ClearHoveringDraggableObjectTracking();
                         }
+                        else
+                        {
+                            // now covers invalid cup drops too
+                            trackingHoveringDraggableObject.ReturnToParentContainer();
+                            ClearHoveringDraggableObjectTracking();
+                        }
                     }
-                    //if it is, trigger function in plate or cup that verifies if possble to add
-                    trackingHoveringDraggableObject.ReturnToParentContainer();
+                    else
+                    {
+                        //if it is, trigger function in plate or cup that verifies if possble to add
+                        trackingHoveringDraggableObject.ReturnToParentContainer();
+                        ClearHoveringDraggableObjectTracking();
+
+                    }
+
                 }
                 //!TODO check if assembler owns any draggables
                 //if empty, check if draggable is valid for assembler
