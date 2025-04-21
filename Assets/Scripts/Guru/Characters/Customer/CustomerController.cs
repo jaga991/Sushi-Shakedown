@@ -96,7 +96,6 @@ public class CustomerController : DebuggableMonoBehaviour
 
     public void SetOrderArea(OrderArea area)
     {
-        Debug.Log("CustomerController: SetOrderArea called.");
         assignedOrderArea = area;
         targetPosition = area.GetCoordinates();
     }

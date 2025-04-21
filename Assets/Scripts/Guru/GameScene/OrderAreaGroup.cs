@@ -50,4 +50,10 @@ public class OrderAreaGroup : MonoBehaviour
         Debug.Log(string.Join(" | ", orderAreas.Select(area => $"Order Area: {area.name}, Free: {(area.IsFree() ? 1 : 0)}")));
 
     }
+    public bool AreAllOrderAreasFree()
+    {
+        // PrintAllOrderArea(); // Print all order areas for debugging.
+        return orderAreas.All(area => area.IsFree());
+
+    }
 }

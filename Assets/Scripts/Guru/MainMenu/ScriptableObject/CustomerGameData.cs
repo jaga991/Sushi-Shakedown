@@ -14,6 +14,8 @@ public class CustomerData : ScriptableObject
     public Difficulty difficulty = Difficulty.Easy;
     public event Action<Difficulty> OnDifficultyChanged;
 
+    private int[] Ransom = { 1, 2, 3, 4, 5, 6, 7 };
+
     public int Day = 0;
     public int WaveCount = 0;
 
@@ -36,6 +38,12 @@ public class CustomerData : ScriptableObject
         // Initialize the data when the scriptable object is enabled.
         OnStartup();
         // gameMode = GameMode.Waves; // Default mode
+    }
+
+    public int GetRansom(int day)
+    {
+        // day is 0 indexed
+        return Ransom[day % Ransom.Length];
     }
 
     public void SetGameMode(GameMode mode)
@@ -83,6 +91,7 @@ public class CustomerData : ScriptableObject
     {
 
         score += amount;
+        Debug.Log("Scire is " + score);
         if (amount > 5)
             HappyCustomerCount++;
         else

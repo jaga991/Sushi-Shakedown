@@ -1,18 +1,39 @@
 using System.Runtime.CompilerServices;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
-    public GameObject GameUI;
-    public GameObject PauseUI;
-
     public CustomerData customerData;
     private CustomerData localCustomerData;
+    public GameObject GameUI;
+    public GameObject PauseUI;
     [SerializeField] private ToggleSwitch gameModeToggle;
     [SerializeField] private ToggleSwitch DifficultyModeToggle;
+
+    public GameObject InfoUI;
+
+    public TextMeshProUGUI dayText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI totalServedText;
+    public TextMeshProUGUI happyText;
+
+    public event System.Action OnInfoClosed;
+
+
+    public GameObject PreDayUI;
+
+    public TextMeshProUGUI preDayText;
+    public TextMeshProUGUI preDayScoreText;
+
+    public event System.Action OnPreDayClosed;
+
     protected override void Awake()
     {
         base.Awake();
@@ -116,6 +137,46 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         GameUI.SetActive(true);
         PauseUI.SetActive(false);
+        InfoUI.SetActive(false);
+        PreDayUI.SetActive(false);
+    }
+
+    public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry)
+    {
+        // Pause the game
+        Debug.Log($"[Settings]  ShowInfoUI called with day: {day}, score: {score}, totalServed: {totalServed}, happy: {happy}, angry: {angry}");
+        dayText.text = $"Day: {day} Completed !";
+        scoreText.text = $"Coins Earned {score}";
+        totalServedText.text = $"Customers Served: {totalServed}";
+        happyText.text = $"Happy Customers: {happy}";
+        GameUI.SetActive(false);
+        PauseUI.SetActive(false);
+        PreDayUI.SetActive(false);
+        InfoUI.SetActive(true);
+    }
+
+    public void CloseInfoUI()
+    {
+
+        Debug.Log("[Settings]  CloseInfoUI called");
+        DefaultView();
+        OnInfoClosed?.Invoke();
+    }
+    public void ShowPreDayUI(int Day)
+    {
+        Debug.Log("[Settings]  ShowPreDayUI called");
+        preDayText.text = $"Day {Day} Starting";
+        preDayScoreText.text = $"Make  {customerData.GetRansom(Day)} COINS OR ELSE !";
+        GameUI.SetActive(false);
+        PauseUI.SetActive(false);
+        InfoUI.SetActive(false);
+        PreDayUI.SetActive(true);
+    }
+    public void ClosePreDayUI()
+    {
+        Debug.Log("[Settings]  ClosePreDayUI called");
+        DefaultView();
+        OnPreDayClosed?.Invoke();
     }
 
     public void OnPointerClick(PointerEventData eventData)

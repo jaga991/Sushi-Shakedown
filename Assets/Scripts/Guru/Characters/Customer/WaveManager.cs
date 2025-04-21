@@ -1,13 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using System.Runtime.CompilerServices;
+using UnityEngine.Rendering.Universal;
 public class WaveManager : DebuggableMonoBehaviour
 {
 
     public NPCSpawner npcSpawner;
     public float waveCountdownDuration = 2f;
     public CustomerData customerData;
-    public int[] waveSizes = { 3, 5, 7 };
+    public int[] waveSizes = { 1, 1 };
     private int tempWaveLimit = 1;
     private Coroutine _endlessRoutine;
     private bool _wavesRunning;
@@ -15,6 +16,8 @@ public class WaveManager : DebuggableMonoBehaviour
     private Coroutine currentWaveRoutine = null;
     public event System.Action OnWavesCompleted;
     public event System.Action<string> OnWaveStatusChanged;
+
+    public OrderAreaGroup orderAreaGroup; // assign via the Inspector 
 
     private bool endlessModeActive = false;
     protected override void OnEnable()
@@ -32,7 +35,9 @@ public class WaveManager : DebuggableMonoBehaviour
         if (_wavesRunning) return;
         StopWaves();
         _wavesRunning = true;
+        Debug.Log("WaveManager: Starting waves.");
         currentWaveRoutine = StartCoroutine(RunWaves());
+        OnWaveStatusChanged?.Invoke("Waves are starting!");
     }
 
     public void StopWaves()
@@ -79,7 +84,7 @@ public class WaveManager : DebuggableMonoBehaviour
     IEnumerator RunWaves()
     {
         // Loop over the configured wave sizes.
-        for (int i = 0; i < tempWaveLimit; i++)
+        for (int i = 0; i < waveSizes.Length; i++)
         {
             int waveNumber = i + 1;
             string msg = $"--- Wave {waveNumber}: Preparing to start ---";
@@ -109,11 +114,19 @@ public class WaveManager : DebuggableMonoBehaviour
             PrintWaveSummary(startStats, GetWaveStats());
         }
 
-        OnWavesCompleted?.Invoke();
-        string msg2 = "All waves for the day are complete!";
+        // after the for‐loop
+        // Wait until all order areas are free, but only check every 0.5 seconds
+        while (!orderAreaGroup.AreAllOrderAreasFree())
+        {
+            yield return new WaitForSeconds(0.5f); // check every half-second
+        }
 
+        OnWavesCompleted?.Invoke();
+
+        string msg2 = "All waves for the day are complete!";
         Log(msg2);
-        OnWaveStatusChanged?.Invoke("All waves over");
+        OnWaveStatusChanged?.Invoke("All waves are over!");
+        StopWaves();
     }
     public void StartEndlessCustomers()
     {
@@ -137,7 +150,7 @@ public class WaveManager : DebuggableMonoBehaviour
         int temp = 0;
         while (endlessModeActive)
         {
-            Debug.Log("Endless Customer Round : " + temp);
+            // Debug.Log("Endless Customer Round : " + temp);
 
             float waitTime = Random.Range(2f, 3f);
             yield return new WaitForSeconds(waitTime);
@@ -146,7 +159,7 @@ public class WaveManager : DebuggableMonoBehaviour
             if (didSpawn)
             {
                 // Log($"Spawned a customer: " + temp);
-                Debug.Log("Endless Customer Finish Round : " + temp);
+                // Debug.Log("Endless Customer Finish Round : " + temp);
                 OnWaveStatusChanged?.Invoke($"served: {customerData.customersServed}");
             }
             else
