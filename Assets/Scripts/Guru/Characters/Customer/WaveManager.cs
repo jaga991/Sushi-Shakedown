@@ -6,7 +6,7 @@ public class WaveManager : DebuggableMonoBehaviour
 {
 
     public NPCSpawner npcSpawner;
-    public float waveCountdownDuration = 2f;
+    public float waveCountdownDuration = 1f;
     public CustomerData customerData;
     public int[] waveSizes = { 1, 1 };
     private int tempWaveLimit = 1;
@@ -152,7 +152,7 @@ public class WaveManager : DebuggableMonoBehaviour
         {
             // Debug.Log("Endless Customer Round : " + temp);
 
-            float waitTime = Random.Range(2f, 3f);
+            float waitTime = Random.Range(1f, 2f);
             yield return new WaitForSeconds(waitTime);
 
             bool didSpawn = npcSpawner.SpawnCustomer();

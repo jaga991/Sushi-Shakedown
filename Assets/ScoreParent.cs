@@ -24,6 +24,13 @@ public class ScoreParent : MonoBehaviour
         HandleScore(1);
         Destroy(coin);
     }
+
+    public void ResetScore()
+    {
+        score = 0; // Reset the score to zero
+        UpdateScoreUI();
+    }
+
     public void HandleScore(int amount)
     {
         score += amount;

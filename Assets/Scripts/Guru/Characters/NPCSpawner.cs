@@ -64,10 +64,10 @@ public class NPCSpawner : MonoBehaviour
 
     public bool SpawnCustomer()
     {
-        orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
+        // orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
         OrderArea orderArea = orderAreaGroup.GetFreeOrderArea();
-        orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
-        Debug.Log("Spawn Customer is being called.");
+        // orderAreaGroup.PrintAllOrderArea(); // Print all order areas for debugging.
+        // Debug.Log("Spawn Customer is being called.");
         if (orderArea == null)
         {
             Debug.Log("All order areas are occupied. Customer Not Spawned !!");
@@ -97,10 +97,7 @@ public class NPCSpawner : MonoBehaviour
         {
             customerController.SetOrderArea(orderArea);
         }
-        else
-        {
-            Debug.Log("Something Bad is happening   : CustomerController is not found.");
-        }
+
         return true;
     }
 

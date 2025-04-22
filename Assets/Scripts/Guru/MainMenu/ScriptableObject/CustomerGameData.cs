@@ -36,6 +36,7 @@ public class CustomerData : ScriptableObject
     public void IncrementCustomerCoins(int amount) => CustomerCoins += amount;
     public void DecrementCustomerCoins(int amount) => CustomerCoins -= amount;
 
+    public void ResetCustomerCoins() => CustomerCoins = 10;
     public void ResetCustomerCount() => customersServed = 0;
     public void ResetDay() => Day = 0;
     public void ResetWaveCount() => WaveCount = 0;
@@ -103,7 +104,7 @@ public class CustomerData : ScriptableObject
     {
 
         score += amount;
-        Debug.Log("Scire is " + score);
+        // Debug.Log("Score is " + score);
         if (amount > 5)
             HappyCustomerCount++;
         else
@@ -135,6 +136,7 @@ public class CustomerData : ScriptableObject
         ResetDay();
         ResetWaveCount();
         ResetScore();
+        ResetCustomerCoins();
         Debug.Log("All data reset.");
     }
 }

@@ -19,7 +19,7 @@ public class DayManager : DebuggableMonoBehaviour
     public NPCSpawner npcSpawner; // assign via the Inspector
     public WaveManager waveManager; // assign via the Inspector
     public OverLayManager OM;
-
+    public ScoreParent ScoreParent; // assign via the Inspector
     public List<DaySnapshot> dayHistory = new List<DaySnapshot>();
     protected override void OnEnable()
     {
@@ -57,6 +57,7 @@ public class DayManager : DebuggableMonoBehaviour
         customerDataSO.score = 0;
         customerDataSO.normalCustomersCount = 0;
         customerDataSO.angryCustomersCount = 0;
+        ScoreParent.ResetScore();
 
         if (customerDataSO.gameMode == GameMode.Waves)
             OM.ShowPreDayUI(customerDataSO.Day);
@@ -129,6 +130,7 @@ public class DayManager : DebuggableMonoBehaviour
     public void Start()
     {
         Debug.Log("DayManager: Start() called.");
+        ScoreParent = GameObject.Find("Score").GetComponent<ScoreParent>();
         StartDay();
         // OnModeChanged(customerDataSO.gameMode);
     }
