@@ -34,11 +34,21 @@ public class TrashBin : MonoBehaviour
             EventManager.Instance.Trigger<TrashBin>("trashbinSelectedVisual", this);
             if (!draggableInZone.IsBeingDragged())
             {
-                Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
-                EventManager.Instance.Trigger<object>("ObjectTrashedAudio", this);
-                //!TODO, need to do additional checker to make sure dont destroy condiments and drinks ingredients
-                Destroy(draggableInZone.gameObject);
-                draggableInZone = null;
+                //dont allow ingredientdispenser to be trashed, return it to parent container
+
+                if(draggableInZone.GetComponent<IngredientDispenserDraggable>() != null)
+                {
+                    draggableInZone.ReturnToParentContainer();
+                }   
+                else
+                {
+                    Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
+                    EventManager.Instance.Trigger<object>("ObjectTrashedAudio", this);
+                    //!TODO, need to do additional checker to make sure dont destroy condiments and drinks ingredients
+                    Destroy(draggableInZone.gameObject);
+                    draggableInZone = null;
+                }
+
             }
         }
         else
