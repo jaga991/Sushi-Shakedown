@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: -20
   m_Sprite: {fileID: 1027293058523329318, guid: 6a78082b3a996402cb6cf577340a53e9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -121,7 +121,6 @@ MonoBehaviour:
   maxPatience: 100
   assignedOrderArea: {fileID: 0}
   patienceBoostOnCorrect: 10
-  randomInt: 0
 --- !u!61 &2584946290778633212
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -344,7 +343,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: -19
   m_Sprite: {fileID: -8951394264379003798, guid: ca1e5d56559a9488e8039dddfbc140a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -371,6 +370,7 @@ MonoBehaviour:
   slotSpacing: 0
   deliveryAnimationDuration: 0.5
   customerController: {fileID: 912170452810297443}
+  FM: {fileID: 0}
 --- !u!61 &4941886208244841912
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -639,7 +639,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: -19
   m_TargetDisplay: 0
 --- !u!114 &607037387737497058
 MonoBehaviour:
@@ -757,7 +757,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: -19
   m_Sprite: {fileID: 1546697530131228885, guid: 3efc19a6fc6324a82bb25937facb3845, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
