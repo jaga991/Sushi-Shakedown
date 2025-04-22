@@ -12,6 +12,8 @@ public class OrderBubble : DebuggableMonoBehaviour
     // List to store ordered food items.
     private List<Food> orderedFoods = new List<Food>();
 
+    public FoodManager FoodManager;
+
     protected override void Awake()
     {
         base.Awake();
@@ -31,6 +33,12 @@ public class OrderBubble : DebuggableMonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        FoodManager = GameObject.Find("GameManager").GetComponent<FoodManager>();
+    }
+
+
     // New StartOrder method that accepts a number parameter.
     public void StartOrder(int numberOfOrders = 1)
     {
@@ -41,7 +49,7 @@ public class OrderBubble : DebuggableMonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             // Get a new Food instance from FoodManager.
-            Food food = FoodManager.instance.GetRandomFood();
+            Food food = FoodManager.GetRandomFood();
             // Make the food a child of OrderBubble.
             food.transform.SetParent(transform);
 

@@ -1,12 +1,9 @@
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Security.Cryptography.X509Certificates;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // for loading scenes
 
 public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
@@ -19,6 +16,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public GameObject Info_Screen;
     public GameObject PreDay_Screen;
 
+    public GameObject Final_Day_Screen;
+
     // UI Toggles (Settings)
     [SerializeField] private ToggleSwitch GameMode_Toggle;
     [SerializeField] private ToggleSwitch DifficultyMode_Toggle;
@@ -28,11 +27,19 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI Info_ScoreText;
     public TextMeshProUGUI Info_TotalServedText;
     public TextMeshProUGUI Info_HappyText;
+
+    public TextMeshProUGUI Info_CustomerCoinsText;
     public event System.Action OnInfoClosed;
+
+
 
     // PreDayUI elements
     public TextMeshProUGUI PreDay_DayText;
     public TextMeshProUGUI PreDay_ScoreText;
+
+    public TextMeshProUGUI PreDay_HiddenStashText;
+
+
     public event System.Action OnPreDayClosed;
     protected override void Awake()
     {
@@ -66,7 +73,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         CreateLocalCopy();
         RefreshUI();
-        Game_Screen.SetActive(false);
+        HideAllScreens();
+
         Pause_Screen.SetActive(true);
         Time.timeScale = 0f; // Pause the game
 
@@ -129,29 +137,24 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         Log("Tn called with value: " + (Difficulty)value);
         Pause_CustomerData_Local.SetDifficulty((Difficulty)value);
-        // RefreshUI();s
-
     }
 
     private void DefaultView()
-    {
-        Game_Screen.SetActive(true);
-        Pause_Screen.SetActive(false);
-        Info_Screen.SetActive(false);
-        PreDay_Screen.SetActive(false);
-    }
 
-    public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry)
     {
-        Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry}");
+        HideAllScreens();
+        Game_Screen.SetActive(true);
+    }
+    public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry, int TotalCoins)
+    {
+        HideAllScreens();
+        Info_Screen.SetActive(true);
+        Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry} , TotalCoins={TotalCoins}");
         Info_DayText.text = $"Day: {day} Completed!";
-        Info_ScoreText.text = $"Coins Earned: {score}";
+        Info_ScoreText.text = $"Coins Earned Today: {score} ";
         Info_TotalServedText.text = $"Customers Served: {totalServed}";
         Info_HappyText.text = $"Happy Customers: {happy}";
-        Game_Screen.SetActive(false);
-        Pause_Screen.SetActive(false);
-        PreDay_Screen.SetActive(false);
-        Info_Screen.SetActive(true);
+        Info_CustomerCoinsText.text = $"Total Coins: {TotalCoins}";
     }
 
     public void CloseInfoUI()
@@ -163,12 +166,11 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     public void ShowPreDayUI(int day)
     {
-        Debug.Log($"[Overlay] ShowPreDayUI: starting day {day}");
+        // Debug.Log($"[Overlay] ShowPreDayUI: starting day {day}");
         PreDay_DayText.text = $"Day {day} Starting";
         PreDay_ScoreText.text = $"Make {customerData.GetRansom(day)} COINS OR ELSE!";
-        Game_Screen.SetActive(false);
-        Pause_Screen.SetActive(false);
-        Info_Screen.SetActive(false);
+        PreDay_HiddenStashText.text = $"Hidden Stash: {customerData.getCustomerCoins()} COINS";
+        HideAllScreens();
         PreDay_Screen.SetActive(true);
     }
     public void ClosePreDayUI()
@@ -177,9 +179,38 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         DefaultView();
         OnPreDayClosed?.Invoke();
     }
+    public void ShowFinalDayUI()
+    {
+        HideAllScreens();
+        Final_Day_Screen.SetActive(true);
+        // Debug.Log($"[Overlay] ShowFinalDayUI: starting day {customerData.Day}");
+    }
+
+    public void FinalDayScreen_ExitButtonClick()
+    {
+        Debug.Log("[Overlay] Exit Game");
+        Application.Quit();
+        // (in the Editor this won’t do anything, but in a build it will quit)
+    }
+
+    public void FinalDayScreen_RestartButtonClick()
+    {
+        Debug.Log("[Overlay] Restart Game");
+        customerData.ResetEverything();
+        SceneManager.LoadScene("MainMenu");
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("[Settings]  Settings UI received click");
+    }
+
+    public void HideAllScreens()
+    {
+        Game_Screen.SetActive(false);
+        Pause_Screen.SetActive(false);
+        Info_Screen.SetActive(false);
+        PreDay_Screen.SetActive(false);
+        Final_Day_Screen.SetActive(false);
     }
 }

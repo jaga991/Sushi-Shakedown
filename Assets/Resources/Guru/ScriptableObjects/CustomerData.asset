@@ -15,9 +15,11 @@ MonoBehaviour:
   gameMode: 1
   customersServed: 0
   difficulty: 0
-  Day: 4
+  Day: 0
   WaveCount: 0
+  maxDays: 2
   score: 0
   normalCustomersCount: 0
   HappyCustomerCount: 0
   angryCustomersCount: 0
+  CustomerCoins: 10

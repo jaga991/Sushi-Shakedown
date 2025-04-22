@@ -121,12 +121,12 @@ public class WaveManager : DebuggableMonoBehaviour
             yield return new WaitForSeconds(0.5f); // check every half-second
         }
 
-        OnWavesCompleted?.Invoke();
-
         string msg2 = "All waves for the day are complete!";
         Log(msg2);
         OnWaveStatusChanged?.Invoke("All waves are over!");
         StopWaves();
+        OnWavesCompleted?.Invoke();
+
     }
     public void StartEndlessCustomers()
     {

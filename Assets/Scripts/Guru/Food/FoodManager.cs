@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FoodManager : Singleton<FoodManager>
+public class FoodManager : MonoBehaviour
 {
     public GameObject foodPrefab;
     Sprite[] sprites;

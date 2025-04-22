@@ -19,6 +19,8 @@ public class CustomerData : ScriptableObject
     public int Day = 0;
     public int WaveCount = 0;
 
+    public int maxDays = 7;
+
     // NEW: score tracking
     public int score = 0;
     public int normalCustomersCount = 0;
@@ -28,6 +30,11 @@ public class CustomerData : ScriptableObject
     public event Action<int> OnScoreChanged;
     public event Action<GameMode> OnGameModeChanged;
 
+    public int CustomerCoins = 0;
+    public int getCustomerCoins() => CustomerCoins;
+    public void setCustomerCoins(int amount) => CustomerCoins = amount;
+    public void IncrementCustomerCoins(int amount) => CustomerCoins += amount;
+    public void DecrementCustomerCoins(int amount) => CustomerCoins -= amount;
 
     public void ResetCustomerCount() => customersServed = 0;
     public void ResetDay() => Day = 0;
@@ -70,12 +77,17 @@ public class CustomerData : ScriptableObject
 
     public void OnStartup()
     {
+        maxDays = 2;
         customersServed = 0;
         WaveCount = 0;
         score = 0;
         normalCustomersCount = 0;
         HappyCustomerCount = 0;
         angryCustomersCount = 0;
+        if (Day == 0)
+        {
+            CustomerCoins = 10; // Start at day 1
+        }
         Debug.Log("CustomerData initialized.");
     }
 

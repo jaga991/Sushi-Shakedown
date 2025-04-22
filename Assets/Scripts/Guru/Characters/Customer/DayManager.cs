@@ -1,20 +1,26 @@
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public class DaySnapshot
+{
+    public int day;
+    public int score;
+    public int customersServed;
+    public int happyCustomers;
+    public int angryCustomers;
+}
+
+
 public class DayManager : DebuggableMonoBehaviour
 {
-
     public CustomerData customerDataSO;
     public NPCSpawner npcSpawner; // assign via the Inspector
     public WaveManager waveManager; // assign via the Inspector
-    public int requiredServedCount = 3; // initial phase thresho
-
-    public int maxDays = 7;
-
     public OverLayManager OM;
 
-
+    public List<DaySnapshot> dayHistory = new List<DaySnapshot>();
     protected override void OnEnable()
     {
         base.OnEnable(); // Call the base class 
@@ -37,28 +43,36 @@ public class DayManager : DebuggableMonoBehaviour
     // encapsulate starting each day
     void StartDay()
     {
+        // if we've already completed the maximum days, go straight to final screen
+        if (customerDataSO.Day > customerDataSO.maxDays)
+        {
+            OM.ShowFinalDayUI();
+            return;
+        }
+
         Debug.Log($"--- Starting Day {customerDataSO.Day} ---");
-        // reset daily stats if you want fresh per-day metrics:
+        // reset daily stats
         customerDataSO.WaveCount = 0;
         customerDataSO.customersServed = 0;
         customerDataSO.score = 0;
         customerDataSO.normalCustomersCount = 0;
         customerDataSO.angryCustomersCount = 0;
 
-        // kick off waves (or freeplay) based on current mode
-        // OnModeChanged(customerDataSO.gameMode);
         if (customerDataSO.gameMode == GameMode.Waves)
-        {
             OM.ShowPreDayUI(customerDataSO.Day);
-        }
-        else // FreePlay
-        {
+        else
             OnModeChanged(customerDataSO.gameMode);
-        }
     }
 
     public void HandleStartWaves()
     {
+        if (customerDataSO.Day > customerDataSO.maxDays)
+        {
+            Debug.Log("Max days reached in HandleStartWaves — showing final UI.");
+            OM.ShowFinalDayUI();
+            return;
+        }
+
         OnModeChanged(customerDataSO.gameMode);
     }
 
@@ -82,7 +96,17 @@ public class DayManager : DebuggableMonoBehaviour
     // fired by OverLayManager.CloseInfoUI()
     private void OnInfoClosed()
     {
-        if (customerDataSO.Day < maxDays)
+
+        dayHistory.Add(new DaySnapshot
+        {
+            day = customerDataSO.Day,
+            score = customerDataSO.score,
+            customersServed = customerDataSO.customersServed,
+            happyCustomers = customerDataSO.HappyCustomerCount,
+            angryCustomers = customerDataSO.angryCustomersCount
+        });
+
+        if (customerDataSO.Day < customerDataSO.maxDays)
         {
             customerDataSO.Day++;
             StartDay();
@@ -90,6 +114,7 @@ public class DayManager : DebuggableMonoBehaviour
         else
         {
             Debug.Log("All days complete! Transition to endgame...");
+
             // TODO: show final results / return to menu / quit
         }
     }
@@ -103,6 +128,7 @@ public class DayManager : DebuggableMonoBehaviour
 
     public void Start()
     {
+        Debug.Log("DayManager: Start() called.");
         StartDay();
         // OnModeChanged(customerDataSO.gameMode);
     }
@@ -110,7 +136,20 @@ public class DayManager : DebuggableMonoBehaviour
     {
         Log("Waves completed. Summarizing the day...");
         PrintDaySummary();
-        OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount);
+        customerDataSO.IncrementCustomerCoins(customerDataSO.score);
+        int dailyRansom = customerDataSO.GetRansom(customerDataSO.Day);
+        customerDataSO.DecrementCustomerCoins(dailyRansom);
+        if (customerDataSO.Day == customerDataSO.maxDays - 1)
+        {
+            OM.ShowFinalDayUI();
+
+            // OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount, customerDataSO.CustomerCoins);
+        }
+        else
+        {
+
+            OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount, customerDataSO.CustomerCoins);
+        }
     }
 
     void PrintDaySummary()
