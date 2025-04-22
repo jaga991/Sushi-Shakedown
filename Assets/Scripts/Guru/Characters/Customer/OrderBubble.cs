@@ -12,7 +12,7 @@ public class OrderBubble : DebuggableMonoBehaviour
     // List to store ordered food items.
     private List<Food> orderedFoods = new List<Food>();
 
-    public FoodManager FoodManager;
+    public FoodManager FM;
 
     protected override void Awake()
     {
@@ -35,7 +35,18 @@ public class OrderBubble : DebuggableMonoBehaviour
 
     public void Start()
     {
-        FoodManager = GameObject.Find("GameManager").GetComponent<FoodManager>();
+        var gameManager = GameObject.Find("GameManager");
+        if (gameManager == null)
+        {
+            Debug.Log("OrderBubble: GameManager not found in scene!");
+            return;
+        }
+
+        FM = gameManager.GetComponent<FoodManager>();
+        if (FM == null)
+        {
+            Debug.Log("OrderBubble: FoodManager component not found on GameManager!");
+        }
     }
 
 
@@ -49,7 +60,7 @@ public class OrderBubble : DebuggableMonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             // Get a new Food instance from FoodManager.
-            Food food = FoodManager.GetRandomFood();
+            Food food = FM.GetRandomFood();
             // Make the food a child of OrderBubble.
             food.transform.SetParent(transform);
 

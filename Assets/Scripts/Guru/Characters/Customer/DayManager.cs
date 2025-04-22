@@ -43,7 +43,7 @@ public class DayManager : DebuggableMonoBehaviour
     // encapsulate starting each day
     void StartDay()
     {
-        // if we've already completed the maximum days, go straight to final screen
+
         if (customerDataSO.Day > customerDataSO.maxDays)
         {
             OM.ShowFinalDayUI();
@@ -131,6 +131,7 @@ public class DayManager : DebuggableMonoBehaviour
     {
         Debug.Log("DayManager: Start() called.");
         ScoreParent = GameObject.Find("Score").GetComponent<ScoreParent>();
+        Debug.Log("Day is " + customerDataSO.Day + " in Start() method.");
         StartDay();
         // OnModeChanged(customerDataSO.gameMode);
     }

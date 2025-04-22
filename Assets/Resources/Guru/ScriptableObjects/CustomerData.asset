@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d0dd3257409143e3a519a186ac29f29, type: 3}
   m_Name: CustomerData
   m_EditorClassIdentifier: 
-  gameMode: 1
-  customersServed: 0
+  gameMode: 0
+  customersServed: 3
   difficulty: 0
-  Day: 0
+  Day: 1
   WaveCount: 0
   maxDays: 2
-  score: 0
+  score: 22
   normalCustomersCount: 0
-  HappyCustomerCount: 0
+  HappyCustomerCount: 3
   angryCustomersCount: 0
   CustomerCoins: 10

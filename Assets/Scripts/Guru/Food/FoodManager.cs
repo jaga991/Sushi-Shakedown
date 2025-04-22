@@ -12,6 +12,7 @@ public class FoodManager : MonoBehaviour
 
     public Food GetRandomFood()
     {
+
         int randomIndex = Random.Range(0, sprites.Length);
         Sprite randomSprite = sprites[randomIndex];
 
