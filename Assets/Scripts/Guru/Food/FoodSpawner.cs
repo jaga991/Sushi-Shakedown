@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodSpawner : MonoBehaviour
+public class Guru_FoodSpawner : MonoBehaviour
 {
     [Header("How many food items to keep alive at once")]
     public int maxFoodCount = 1;

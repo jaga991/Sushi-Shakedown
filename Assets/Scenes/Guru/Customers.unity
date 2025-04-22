@@ -348,6 +348,7 @@ MonoBehaviour:
   slotSpacing: 0
   deliveryAnimationDuration: 0.5
   customerController: {fileID: 0}
+  FM: {fileID: 0}
 --- !u!61 &6951690
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3323,7 +3324,7 @@ SpriteRenderer:
   m_Size: {x: 0.6666667, y: 0.6666667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &504781231
@@ -6227,7 +6228,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -10755,7 +10756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1893336477
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10939,7 +10940,7 @@ GameObject:
   - component: {fileID: 1932379690}
   - component: {fileID: 1932379691}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GuruGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10961,6 +10962,7 @@ MonoBehaviour:
   npcSpawner: {fileID: 657353901}
   waveManager: {fileID: 1932379689}
   OM: {fileID: 1071521612}
+  ScoreParent: {fileID: 0}
 --- !u!4 &1932379688
 Transform:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ public class FoodDraggable : Food
     private Vector3 offset;
     private bool isDragging = false;
 
-    public FoodSpawner spawner;  // set by the spawner at Instantiate()
+    public Guru_FoodSpawner spawner;  // set by the spawner at Instantiate()
     public void CancelDrag()
     {
         isDragging = false;

@@ -35,7 +35,7 @@ public class OrderBubble : DebuggableMonoBehaviour
 
     public void Start()
     {
-        var gameManager = GameObject.Find("GameManager");
+        var gameManager = GameObject.Find("GuruGameManager");
         if (gameManager == null)
         {
             Debug.Log("OrderBubble: GameManager not found in scene!");
