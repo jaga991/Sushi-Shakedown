@@ -15,8 +15,8 @@ MonoBehaviour:
   gameMode: 1
   customersServed: 0
   difficulty: 0
-  Day: 6
-  WaveCount: 2
+  Day: 4
+  WaveCount: 0
   score: 0
   normalCustomersCount: 0
   HappyCustomerCount: 0

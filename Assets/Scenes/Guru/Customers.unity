@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &333364547
 Canvas:
   m_ObjectHideFlags: 0
@@ -4239,8 +4239,8 @@ Transform:
   m_Children:
   - {fileID: 729120803}
   - {fileID: 184863065}
-  - {fileID: 1719301653}
   - {fileID: 1515896481}
+  - {fileID: 1719301653}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1071521612
@@ -4255,19 +4255,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00bc11a39ee78db49b73942c30f7a397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameUI: {fileID: 729120799}
-  PauseUI: {fileID: 184863064}
-  InfoUI: {fileID: 1719301652}
-  PreDayUI: {fileID: 0}
   customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
-  dayText: {fileID: 447880558}
-  scoreText: {fileID: 1604785636}
-  totalServedText: {fileID: 1581713920}
-  happyText: {fileID: 286182834}
-  preDayText: {fileID: 100632332}
-  preDayScoreText: {fileID: 2069814872}
-  gameModeToggle: {fileID: 503791250}
-  DifficultyModeToggle: {fileID: 1852036408}
+  Game_Screen: {fileID: 729120799}
+  Pause_Screen: {fileID: 184863064}
+  Info_Screen: {fileID: 1719301652}
+  PreDay_Screen: {fileID: 1515896480}
+  GameMode_Toggle: {fileID: 623132760}
+  DifficultyMode_Toggle: {fileID: 1852036408}
+  Info_DayText: {fileID: 447880558}
+  Info_ScoreText: {fileID: 1604785636}
+  Info_TotalServedText: {fileID: 1581713920}
+  Info_HappyText: {fileID: 286182834}
+  PreDay_DayText: {fileID: 100632332}
+  PreDay_ScoreText: {fileID: 2069814872}
 --- !u!1 &1077786961
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,7 +5939,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1071521612}
         m_TargetAssemblyTypeName: OverLayManager, Assembly-CSharp
-        m_MethodName: CloseInfoUI
+        m_MethodName: ClosePreDayUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
