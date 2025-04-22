@@ -141,7 +141,7 @@ public class DayManager : DebuggableMonoBehaviour
         customerDataSO.IncrementCustomerCoins(customerDataSO.score);
         int dailyRansom = customerDataSO.GetRansom(customerDataSO.Day);
         customerDataSO.DecrementCustomerCoins(dailyRansom);
-        if (customerDataSO.Day == customerDataSO.maxDays - 1)
+        if (customerDataSO.Day == customerDataSO.maxDays)
         {
             OM.ShowFinalDayUI();
 

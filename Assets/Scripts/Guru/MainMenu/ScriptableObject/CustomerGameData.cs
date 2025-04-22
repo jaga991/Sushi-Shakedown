@@ -16,7 +16,7 @@ public class CustomerData : ScriptableObject
 
     private int[] Ransom = { 1, 2, 3, 4, 5, 6, 7 };
 
-    public int Day = 0;
+    public int Day = 1;
     public int WaveCount = 0;
 
     public int maxDays = 7;
@@ -38,7 +38,7 @@ public class CustomerData : ScriptableObject
 
     public void ResetCustomerCoins() => CustomerCoins = 10;
     public void ResetCustomerCount() => customersServed = 0;
-    public void ResetDay() => Day = 0;
+    public void ResetDay() => Day = 1;
     public void ResetWaveCount() => WaveCount = 0;
 
     private void OnEnable()
@@ -51,7 +51,7 @@ public class CustomerData : ScriptableObject
     public int GetRansom(int day)
     {
         // day is 0 indexed
-        return Ransom[day % Ransom.Length];
+        return Ransom[(day - 1) % Ransom.Length];
     }
 
     public void SetGameMode(GameMode mode)
@@ -85,7 +85,7 @@ public class CustomerData : ScriptableObject
         normalCustomersCount = 0;
         HappyCustomerCount = 0;
         angryCustomersCount = 0;
-        if (Day == 0)
+        if (Day == 1)
         {
             CustomerCoins = 10; // Start at day 1
         }
