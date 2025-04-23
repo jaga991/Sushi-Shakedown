@@ -14,12 +14,16 @@ public class SettingsController : MonoBehaviour
     public CustomerData customerData;  // Global data
     [SerializeField] private ToggleSwitch gameModeToggle;
 
+    public GuruAudioManager gm;
+
     [SerializeField] private ToggleSwitch DifficultyModeToggle;
     // Local copy of the CustomerData that is used to modify settings locally.
     private CustomerData localCustomerData;
 
     private void Start()
     {
+        gm = GameObject.Find("GuruAudioManager").GetComponent<GuruAudioManager>();
+
         CreateLocalCopy();
         CloseSettings();
     }
@@ -79,6 +83,7 @@ public class SettingsController : MonoBehaviour
     public void Accept()
     {
         // Copy selected settings (here, just gameMode) from local to global.
+        gm.PlayButtonClickSound();
         customerData.SetGameMode(localCustomerData.gameMode);
         customerData.SetDifficulty(localCustomerData.difficulty);
 
@@ -93,6 +98,7 @@ public class SettingsController : MonoBehaviour
     /// </summary>
     public void Decline()
     {
+        gm.PlayButtonClickSound();
         Debug.Log("Settings Declined. Changes discarded.");
         CloseSettings();
         Destroy(localCustomerData);
@@ -111,11 +117,13 @@ public class SettingsController : MonoBehaviour
     /// </summary>
     public void ToggleModeButton(int value)
     {
+        gm.PlayButtonClickSound();
         localCustomerData.SetGameMode((GameMode)value);
     }
 
     public void ToggleDifficultyButton(int value)
     {
+        gm.PlayButtonClickSound();
         localCustomerData.SetDifficulty((Difficulty)value);
     }
 

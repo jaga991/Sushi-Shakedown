@@ -111,7 +111,7 @@ MonoBehaviour:
   OrderBubble: {fileID: 3239254254607974306}
   CustomerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   patienceBar: {fileID: 3285532191880464430}
-  orderCompletedSound: {fileID: 8300000, guid: 1fff219f4fef94461ab85e455767a7fe, type: 3}
+  orderCompletedSound: {fileID: 8300000, guid: 94934d10155ded04baa08cafee32367f, type: 3}
   orderFailedSound: {fileID: 8300000, guid: f9672fa80ea7b4a81b1b517855ca6a31, type: 3}
   audioSource: {fileID: 8701546849306260434}
   orderBubble: {fileID: 2543995445548076220}

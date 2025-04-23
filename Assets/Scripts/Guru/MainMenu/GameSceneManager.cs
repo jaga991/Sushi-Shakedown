@@ -9,6 +9,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
     {
         base.Awake();
 
+        Debug.Log("Displays is " + Display.displays.Length);
         // e.g. ensure Display2 is activated, if you’re using multi-display:
         // if (Display.displays.Length > 1) Display.displays[1].Activate();
     }

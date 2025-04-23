@@ -11,6 +11,8 @@ public class AudioManager : MonoBehaviour
     // Keeps track of looping sounds (e.g., grills)
     private Dictionary<Transform, AudioSource> loopAudioSources = new();
 
+    [SerializeField] private AudioSource oneShotSource;
+
     private void Awake()
     {
         if (Instance == null)
@@ -54,7 +56,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    // ————— One-Shot SFX —————
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ One-Shot SFX ï¿½ï¿½ï¿½ï¿½ï¿½
     private void OnPlaceItem(object sender)
     {
         PlayOneShot(audioClipRefsSO.addPlateIngredient, GetSenderPos(sender));
@@ -79,7 +81,7 @@ public class AudioManager : MonoBehaviour
         PlayOneShot(audioClipRefsSO.addCupIngredient, GetSenderPos(sender));
     }
 
-    // ————— Looping Grill SFX —————
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ Looping Grill SFX ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void OnGrillStart(object sender)
     {
@@ -108,13 +110,14 @@ public class AudioManager : MonoBehaviour
         loopAudioSources.Remove(grillTransform);
     }
 
-    // ————— Helper Methods —————
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ Helper Methods ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void PlayOneShot(AudioClip clip, Vector3 position, float volume = 1f)
     {
-        if (clip != null)
+        if (clip != null && oneShotSource != null)
         {
-            AudioSource.PlayClipAtPoint(clip, position, volume);
+            oneShotSource.transform.position = position;
+            oneShotSource.PlayOneShot(clip, volume);
         }
     }
 

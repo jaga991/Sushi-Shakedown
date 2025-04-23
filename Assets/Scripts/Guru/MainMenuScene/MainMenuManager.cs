@@ -17,6 +17,9 @@ public class MainMenuManager : MonoBehaviour
     // we'll load these at runtime instead of via Inspector
     private AudioClip[] musicClips;
 
+    public GuruAudioManager gm;
+
+
     public event System.Action OnSettingsOpened;
 
     void Awake()
@@ -32,6 +35,8 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
+        gm = GameObject.Find("GuruAudioManager").GetComponent<GuruAudioManager>();
+
         Debug.Log("Starting Main Menu…");
         PlayRandomMusic();
     }
@@ -65,7 +70,7 @@ public class MainMenuManager : MonoBehaviour
     public void OnPlayButtonClicked()
     {
 
-        sfxSource.PlayOneShot(buttonClickClip);
+        gm.PlayButtonClickSound();
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
         GameSceneManager.instance.StartGame();
@@ -74,7 +79,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnSettingsButtonClicked()
     {
-        sfxSource.PlayOneShot(buttonClickClip);
+        gm.PlayButtonClickSound();
         Debug.Log("Settings button clicked! Opening Settings...");
         EventSystem.current.SetSelectedGameObject(null);
         OnSettingsOpened?.Invoke();
@@ -82,7 +87,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnExitButtonClicked()
     {
-        sfxSource.PlayOneShot(buttonClickClip);
+        gm.PlayButtonClickSound();
         Debug.Log("Exit button clicked! Quitting...");
         EventSystem.current.SetSelectedGameObject(null);
 
