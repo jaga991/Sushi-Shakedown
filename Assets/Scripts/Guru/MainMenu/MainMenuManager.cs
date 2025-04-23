@@ -68,8 +68,7 @@ public class MainMenuManager : MonoBehaviour
         sfxSource.PlayOneShot(buttonClickClip);
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
-        SceneManager.LoadScene("Customers", LoadSceneMode.Single);
-        SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
+        GameSceneManager.instance.StartGame();
 
     }
 
@@ -79,7 +78,6 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log("Settings button clicked! Opening Settings...");
         EventSystem.current.SetSelectedGameObject(null);
         OnSettingsOpened?.Invoke();
-        // settingsPanel.SetActive(true);
     }
 
     public void OnExitButtonClicked()

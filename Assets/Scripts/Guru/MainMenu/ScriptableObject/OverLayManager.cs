@@ -197,7 +197,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         Debug.Log("[Overlay] Restart Game");
         customerData.ResetEverything();
-        SceneManager.LoadScene("MainMenu");
+        GameSceneManager.instance.BackToMainMenu();
     }
 
     public void OnPointerClick(PointerEventData eventData)
