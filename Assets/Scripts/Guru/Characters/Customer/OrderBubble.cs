@@ -122,8 +122,6 @@ public class OrderBubble : DebuggableMonoBehaviour
         }
 
 
-
-
         // if (other.TryGetComponent<FoodDraggable>(out var foodDraggable))
         // {
         //     Log($"Food draggable entered order bubble: {foodDraggable.foodName}");

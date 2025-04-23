@@ -6757,6 +6757,8 @@ MonoBehaviour:
   BackgroundMusicSource: {fileID: 2110115599}
   SFXSource: {fileID: 846673024}
   ButtonClickClip: {fileID: 8300000, guid: 3a2b04acd34ff44639c9d99c9c10708a, type: 3}
+  gameplaySnapshot: {fileID: 24500006, guid: 0d82fe62aded846c39f4ca23d1de8bec, type: 2}
+  pauseSnapshot: {fileID: 7215589156450155842, guid: 0d82fe62aded846c39f4ca23d1de8bec, type: 2}
 --- !u!1 &2082927673
 GameObject:
   m_ObjectHideFlags: 0

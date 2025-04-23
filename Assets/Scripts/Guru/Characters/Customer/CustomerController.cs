@@ -192,8 +192,8 @@ public class CustomerController : DebuggableMonoBehaviour
         OrderBubble.SetActive(true);
 
         // orderBubble.StartOrder(Random.Range(1, 4));
-        // orderBubble.StartOrder(1, 3); // Randomly choose between 1 and 3 orders
-        orderBubble.StartOrder(1);
+        orderBubble.StartOrder(Random.Range(1, 4)); // Randomly choose between 1 and 3 orders
+        // orderBubble.StartOrder(1);
         currentPatience = maxPatience;
 
         // Start the fake progress count (0 to 100) over 10 seconds.\

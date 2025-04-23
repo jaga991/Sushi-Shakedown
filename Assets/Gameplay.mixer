@@ -52,17 +52,6 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
---- !u!245 &-6575754343232634637
-AudioMixerSnapshotController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: MainMenu
-  m_AudioMixer: {fileID: 24100000}
-  m_SnapshotID: 8e57d928775004e728916ae29d74c82c
-  m_FloatValues: {}
-  m_TransitionOverrides: {}
 --- !u!243 &-6370205832731588269
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -206,7 +195,7 @@ AudioMixerController:
   m_MasterGroup: {fileID: 24300002}
   m_Snapshots:
   - {fileID: 24500006}
-  - {fileID: -6575754343232634637}
+  - {fileID: 7215589156450155842}
   m_StartSnapshot: {fileID: 24500006}
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
@@ -269,12 +258,12 @@ AudioMixerSnapshotController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Snapshot
+  m_Name: gamePlay
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 702c3781c5df145198cc1d6a86e61954
   m_FloatValues:
     fcaf01f0baa7a4f44bc243bf1483d6b6: 0.10800299
-    b572137706f9e45fc8db87448fc3e5cf: -16.818087
+    b572137706f9e45fc8db87448fc3e5cf: -19.422974
     0861573bc3831431abd117deabde7dc6: -24.900742
     bcc69b8d2f4b5284c8399baa86678703: -18.592384
   m_TransitionOverrides: {}
@@ -344,6 +333,21 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!245 &7215589156450155842
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DimmedUI
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: d3592b43b9773674d873f67ff27a29e8
+  m_FloatValues:
+    fcaf01f0baa7a4f44bc243bf1483d6b6: 0.10800299
+    b572137706f9e45fc8db87448fc3e5cf: -56.45051
+    0861573bc3831431abd117deabde7dc6: -24.900742
+    bcc69b8d2f4b5284c8399baa86678703: -18.592384
+  m_TransitionOverrides: {}
 --- !u!244 &7680706016590080386
 AudioMixerEffectController:
   m_ObjectHideFlags: 3

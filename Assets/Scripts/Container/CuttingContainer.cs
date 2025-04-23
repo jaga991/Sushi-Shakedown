@@ -56,7 +56,8 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
                     trackingHoveringDraggableObject.ReturnToParentContainer();
                 }
             }
-        } else
+        }
+        else
         {
             TriggerBaseContainerDeselectedSelectedVisualEvent(this);
             //if (containerVisual != null)
@@ -94,9 +95,9 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
     {
         Debug.Log("Cutting board triggered");
         //check cutting board has ingredient and valid to cut
-        if(GetOwnedDraggable() && HasRecipeWithInput(GetOwnedDraggable().GetDraggableObjectSO()))
+        if (GetOwnedDraggable() && HasRecipeWithInput(GetOwnedDraggable().GetDraggableObjectSO()))
         {
-            cuttingProgress++;
+            cuttingProgress += 1;
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetOwnedDraggable().GetDraggableObjectSO());
             Debug.Log($"cutting progress: {cuttingProgress}");
             //audio

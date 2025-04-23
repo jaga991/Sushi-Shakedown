@@ -124,8 +124,8 @@
 
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class CustomerAudioManager : MonoBehaviour
 {
@@ -136,7 +136,8 @@ public class CustomerAudioManager : MonoBehaviour
 
     // keep the full pool in memory!
     private AudioClip[] musicClips;
-
+    public AudioMixerSnapshot gameplaySnapshot;
+    public AudioMixerSnapshot pauseSnapshot;
     private Coroutine musicRoutine;
 
     void Awake()
@@ -155,6 +156,7 @@ public class CustomerAudioManager : MonoBehaviour
         // kick off the looping-through-the-playlist coroutine
         if (musicClips.Length > 0)
             musicRoutine = StartCoroutine(PlayMusicSequence());
+
     }
 
     /// <summary>
@@ -176,6 +178,16 @@ public class CustomerAudioManager : MonoBehaviour
             // wait exactly the clip’s length
             yield return new WaitForSeconds(next.length);
         }
+    }
+
+    public void TransitionToDimmedSnapshot()
+    {
+        pauseSnapshot.TransitionTo(0.5f);  // 0.5 seconds transition
+    }
+
+    public void TransitionToGameplaySnapshot()
+    {
+        gameplaySnapshot.TransitionTo(0.5f);
     }
 
     /// <summary>

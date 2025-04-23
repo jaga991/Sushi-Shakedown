@@ -91,6 +91,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Pause_Screen.SetActive(true);
         Time.timeScale = 0f; // Pause the game
 
+        cm.TransitionToDimmedSnapshot();  // ADD HERE
+
     }
     private void CreateLocalCopy()
     {
@@ -124,6 +126,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Destroy(Pause_CustomerData_Local);
         Pause_CustomerData_Local = null;
         Time.timeScale = 1f; // Resume the game speed
+        cm.TransitionToGameplaySnapshot();
     }
 
     /// <summary>
@@ -140,6 +143,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Pause_CustomerData_Local = null;
 
         Time.timeScale = 1f; // Resume the game speed
+        cm.TransitionToGameplaySnapshot();  // AD
     }
 
     public void ToggleModeButton(int value)
@@ -164,6 +168,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry, int TotalCoins, int Ransom)
     {
+        cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Info_Screen.SetActive(true);
         Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry} , TotalCoins={TotalCoins}");
@@ -180,13 +185,14 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void CloseInfoUI()
     {
-
+        cm.TransitionToGameplaySnapshot();
         Debug.Log("[Settings]  CloseInfoUI called");
         DefaultView();
         OnInfoClosed?.Invoke();
     }
     public void ShowPreDayUI(int day)
     {
+        cm.TransitionToDimmedSnapshot();
         // Debug.Log($"[Overlay] ShowPreDayUI: starting day {day}");
         PreDay_DayText.text = $"Day {day} Starting";
         PreDay_ScoreText.text = $"Make {customerData.GetRansom(day)} COINS OR ELSE!";
@@ -196,12 +202,15 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     public void ClosePreDayUI()
     {
+
+        cm.TransitionToGameplaySnapshot();
         Debug.Log("[Settings]  ClosePreDayUI called");
         DefaultView();
         OnPreDayClosed?.Invoke();
     }
     public void ShowFinalDayUI()
     {
+        cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Final_Day_Screen.SetActive(true);
         // Debug.Log($"[Overlay] ShowFinalDayUI: starting day {customerData.Day}");
@@ -217,6 +226,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void FinalDayScreen_RestartButtonClick()
     {
+        cm.TransitionToGameplaySnapshot();
         cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Restart Game");
         customerData.ResetEverything();
@@ -226,6 +236,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void ShowFailureUI(int day, int EarnedCoins, int YakuzaDeduction)
     {
+        cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Failure_Screen.SetActive(true);
         Failure_Title.text = $"Day {day} Failed!";
@@ -234,6 +245,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void Failure_QuitButtonClick()
     {
+
         cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Exit Game");
         Application.Quit();
@@ -242,14 +254,17 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void Failure_RestartButtonClick()
     {
+        cm.TransitionToGameplaySnapshot();
         cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Restart Game");
         customerData.ResetEverything();
         GameSceneManager.instance.BackToMainMenu();
     }
 
+    // Need to find out if scripts are refrenceing this 
     public void CloseFailureUI()
     {
+
         Debug.Log("[Settings]  CloseFailureUI called");
         DefaultView();
     }

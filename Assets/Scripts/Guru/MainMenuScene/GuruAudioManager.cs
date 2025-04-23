@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Audio;
+
 // alias Unity’s SceneManager so we can keep our class name
 using UnityEngine.SceneManagement;
 // This is jsut for KitchenSceneManager.cs
@@ -8,6 +10,8 @@ public class GuruAudioManager : MonoBehaviour
     public AudioSource SFXSource;
     public AudioClip ButtonClickClip;
 
+    public AudioMixerSnapshot gameplaySnapshot;
+    public AudioMixerSnapshot pauseSnapshot;
 
     private AudioClip[] musicClips;
     void Awake()
@@ -21,6 +25,15 @@ public class GuruAudioManager : MonoBehaviour
             Debug.LogWarning("MainMenuManager: No background tracks found in Resources!");
     }
 
+    public void TransitionToDimmedSnapshot()
+    {
+        pauseSnapshot.TransitionTo(0.5f);  // 0.5 seconds transition
+    }
+
+    public void TransitionToGameplaySnapshot()
+    {
+        gameplaySnapshot.TransitionTo(0.5f);
+    }
 
     void Start()
     {

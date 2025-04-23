@@ -26,8 +26,8 @@ public class FoodManager : MonoBehaviour
     {
 
         //decide if food or drinik
-        // int randomFoodOrDrink = Random.Range(0, 2); // 0 for food, 1 for drink
-        int randomFoodOrDrink = 1; // 0 for food, 1 for drink
+        int randomFoodOrDrink = Random.Range(0, 2); // 0 for food, 1 for drink
+
 
         //decide if food or drink
         if (randomFoodOrDrink == 0) //if food

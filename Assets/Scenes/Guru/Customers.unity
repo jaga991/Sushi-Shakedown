@@ -1796,6 +1796,8 @@ MonoBehaviour:
   SFXSource: {fileID: 1281837147}
   ButtonClickClip: {fileID: 8300000, guid: 9344acccead421243afea352947e2d45, type: 3}
   CoinsClip: {fileID: 8300000, guid: e929509ef6e327546b2a0ff8276504b5, type: 3}
+  gameplaySnapshot: {fileID: 24500006, guid: 0d82fe62aded846c39f4ca23d1de8bec, type: 2}
+  pauseSnapshot: {fileID: 7215589156450155842, guid: 0d82fe62aded846c39f4ca23d1de8bec, type: 2}
 --- !u!4 &150946722
 Transform:
   m_ObjectHideFlags: 0
@@ -7264,7 +7266,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138867779}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &1138867781
 Camera:
   m_ObjectHideFlags: 0

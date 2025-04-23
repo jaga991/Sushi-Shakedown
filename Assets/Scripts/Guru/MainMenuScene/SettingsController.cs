@@ -70,6 +70,7 @@ public class SettingsController : MonoBehaviour
     /// </summary>
     public void ShowSettings()
     {
+        gm.TransitionToDimmedSnapshot();
         CreateLocalCopy();
         RefreshUI();
         mainMenuPanel?.SetActive(false);
@@ -90,6 +91,8 @@ public class SettingsController : MonoBehaviour
         CloseSettings();
         Destroy(localCustomerData);
         localCustomerData = null;
+
+        gm.TransitionToGameplaySnapshot();
     }
 
     /// <summary>
@@ -103,6 +106,8 @@ public class SettingsController : MonoBehaviour
         CloseSettings();
         Destroy(localCustomerData);
         localCustomerData = null;
+
+        gm.TransitionToGameplaySnapshot();
     }
 
     public void CloseSettings()
