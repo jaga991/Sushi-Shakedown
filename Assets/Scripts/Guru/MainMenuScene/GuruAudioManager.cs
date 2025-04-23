@@ -8,6 +8,52 @@ public class GuruAudioManager : MonoBehaviour
     public AudioSource SFXSource;
     public AudioClip ButtonClickClip;
 
+
+    private AudioClip[] musicClips;
+    void Awake()
+    {
+        // Load all clips in that Resources folder
+        musicClips = Resources.LoadAll<AudioClip>(
+            "Audio/Guru/MainMenu/BackgroundTracks"
+        );
+
+        if (musicClips == null || musicClips.Length == 0)
+            Debug.LogWarning("MainMenuManager: No background tracks found in Resources!");
+    }
+
+
+    void Start()
+    {
+
+        Debug.Log("Starting Main Menu…");
+        PlayRandomMusic();
+    }
+
+    private void PlayRandomMusic()
+    {
+        if (BackgroundMusicSource == null || musicClips == null || musicClips.Length == 0)
+            return;
+
+        // pick one clip at random
+        int idx = Random.Range(0, musicClips.Length);
+        AudioClip chosen = musicClips[idx];
+        BackgroundMusicSource.clip = chosen;
+        BackgroundMusicSource.loop = true;
+        BackgroundMusicSource.Play();
+
+        Debug.Log($"Now playing: {chosen.name}");
+
+        // unload all other clips to free memory
+        for (int i = 0; i < musicClips.Length; i++)
+        {
+            if (i == idx) continue;
+            Resources.UnloadAsset(musicClips[i]);
+        }
+
+        // keep only the chosen clip in the array
+        musicClips = new AudioClip[] { chosen };
+    }
+
     public void PlayButtonClickSound()
     {
         Debug.Log("Button click sound played.");

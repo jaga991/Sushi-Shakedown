@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Playables;
+
 using UnityEngine.UI;
 using UnityEngine.SceneManagement; // for loading scenes
 
@@ -15,6 +15,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public GameObject Pause_Screen;
     public GameObject Info_Screen;
     public GameObject PreDay_Screen;
+
+    public CustomerAudioManager cm;
 
     public GameObject Final_Day_Screen;
 
@@ -48,6 +50,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     void Start()
     {
+        cm = GameObject.Find("CustomerAudioManager").GetComponent<CustomerAudioManager>();
         // Initialize the UI to show the game screen by default
         DefaultView();
     }
@@ -71,10 +74,12 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void PauseButtonClick()
     {
+
         CreateLocalCopy();
         RefreshUI();
         HideAllScreens();
 
+        cm.PlayButtonClickSound();
         Pause_Screen.SetActive(true);
         Time.timeScale = 0f; // Pause the game
 
@@ -102,7 +107,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void Accept()
     {
-        // Copy selected settings (here, just gameMode) from local to global.
+        // Copy selected
+        cm.PlayButtonClickSound();
         customerData.SetGameMode(Pause_CustomerData_Local.gameMode);
         customerData.SetDifficulty(Pause_CustomerData_Local.difficulty);
         DefaultView();
@@ -118,6 +124,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     /// </summary>
     public void Decline()
     {
+        cm.PlayButtonClickSound();
         Log("Settings Declined. Changes discarded.");
         DefaultView();
         // Resume game speed when returning to game
@@ -129,12 +136,14 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void ToggleModeButton(int value)
     {
+        cm.PlayButtonClickSound();
         Pause_CustomerData_Local.SetGameMode((GameMode)value);
         RefreshUI();
     }
 
     public void ToggleDifficultyButton(int value)
     {
+        cm.PlayButtonClickSound();
         Log("Tn called with value: " + (Difficulty)value);
         Pause_CustomerData_Local.SetDifficulty((Difficulty)value);
     }
@@ -188,6 +197,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void FinalDayScreen_ExitButtonClick()
     {
+        cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Exit Game");
         Application.Quit();
         // (in the Editor this won’t do anything, but in a build it will quit)
@@ -195,6 +205,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void FinalDayScreen_RestartButtonClick()
     {
+        cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Restart Game");
         customerData.ResetEverything();
         GameSceneManager.instance.BackToMainMenu();

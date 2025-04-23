@@ -14,6 +14,7 @@ public class ScoreCounter : MonoBehaviour
 
     // Add reference to the WaveManager to listen for wave events.
     [Tooltip("Assign the WaveManager here")]
+
     public WaveManager waveManager;
 
     void OnEnable()
@@ -57,7 +58,10 @@ public class ScoreCounter : MonoBehaviour
     public void AddScore(int amount)
     {
         if (customerData != null)
+        {
+
             customerData.AddScore(amount);
+        }
         else
             Debug.LogWarning("ScoreCounter: CustomerData is not assigned!");
     }

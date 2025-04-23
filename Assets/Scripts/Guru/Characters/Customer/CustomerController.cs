@@ -4,102 +4,47 @@ using UnityEngine.UI; // Kept for Text component on textBubble
 
 public class CustomerController : DebuggableMonoBehaviour
 {
+    // === Movement ===
     public float speed = 3f;
     public Vector2 targetPosition; // Will be assigned from OrderArea
+    private bool hasArrived = false;
+    private bool isWalkingOffScreen = false;
+    private Vector2 offScreenTarget;
+
+    // === UI Elements ===
     public GameObject textBubble;
-
-    public CustomerData customerData;
+    public PatienceBar patienceBar;
     public GameObject OrderBubble;
+    public OrderBubble orderBubble;
+    private Text bubbleText;
 
+    // === Customer Data ===
+    public CustomerData customerData;
     public CustomerData CustomerData;
 
-    public PatienceBar patienceBar;
-
+    // === Audio ===
     public AudioClip orderCompletedSound;
     public AudioClip orderFailedSound;
     public AudioSource audioSource;
 
-    public OrderBubble orderBubble;
-
-
+    // === Sprite / Visuals ===
     private SpriteRenderer spriteRenderer;
     public Sprite happySprite;
     public Sprite frustratedSprite;
     public Sprite angrySprite;
 
-    // Maximum patience value (e.g., 100)
+    // === Patience System ===
     public int maxPatience = 100;
-    private Text bubbleText;
-    public OrderArea assignedOrderArea; // Exposed if you still want to check later
+    public int patienceBoostOnCorrect = 10;
+    private int currentPatience;
     private Coroutine progressRoutine;
 
-    public int patienceBoostOnCorrect = 10;
+    // === Order Assignment ===
+    public OrderArea assignedOrderArea; // Exposed if you still want to check later
 
-    // internal tracker
-    private int currentPatience;
-    private bool hasArrived = false;
-
-    // State flag for off-screen movement
-    private bool isWalkingOffScreen = false;
-    private Vector2 offScreenTarget;
-
+    // === Difficulty ===
     private readonly int[] DifficultyMultiplierArr = { 1, 2 };
-
     private int difficultyMultiplier = 1; // Default to Easy
-
-    /// <summary>
-    /// Called by OrderBubble when the player delivers the right item.
-    /// </summary>
-    public void OnCorrectDelivery()
-    {
-        Log("CustomerController: Correct delivery! , boosted patience.");
-
-        currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
-
-        patienceBar.SetHealth(currentPatience);
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable(); // Call the base class method to set up logging
-        customerData.OnDifficultyChanged += OnDifficultyChanged;
-    }
-    protected override void OnDisable()
-    {
-        base.OnDisable(); // Call the base class method to clean up logging
-        customerData.OnDifficultyChanged -= OnDifficultyChanged;
-    }
-
-    protected override void UpdateLogStatus()
-    {
-        isDebugEnabled = logSettings.CustomerControllerLogs;
-    }
-
-    private void OnDifficultyChanged(Difficulty difficulty)
-    {
-        // Update the speed based on the difficulty level
-        Log($"CustomerController: Difficulty changed to {difficulty}");
-        Log("New Difficulaty multiplier is " + DifficultyMultiplierArr[(int)difficulty]);
-        difficultyMultiplier = DifficultyMultiplierArr[(int)difficulty];
-
-    }
-
-    /// <summary>
-    /// Called by OrderBubble when the player delivers the wrong item.
-    /// Shows feedback, deducts a bit of patience, then reverts.
-    /// </summary>
-    public void OnWrongDelivery(string foodName)
-    {
-        Log($"CustomerController: Wrong delivery of {foodName}!");
-        OrderFailed(2);
-    }
-
-    public void SetOrderArea(OrderArea area)
-    {
-        assignedOrderArea = area;
-        targetPosition = area.GetCoordinates();
-    }
-
     protected override void Awake()
     {
         base.Awake(); // Call the base class method to set up logging
@@ -131,8 +76,38 @@ public class CustomerController : DebuggableMonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable(); // Call the base class method to set up logging
+        customerData.OnDifficultyChanged += OnDifficultyChanged;
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable(); // Call the base class method to clean up logging
+        customerData.OnDifficultyChanged -= OnDifficultyChanged;
+    }
+    protected override void UpdateLogStatus()
+    {
+        isDebugEnabled = logSettings.CustomerControllerLogs;
+    }
+    private void OnDifficultyChanged(Difficulty difficulty)
+    {
+        // Update the speed based on the difficulty level
+        Log($"CustomerController: Difficulty changed to {difficulty}");
+        Log("New Difficulaty multiplier is " + DifficultyMultiplierArr[(int)difficulty]);
+        difficultyMultiplier = DifficultyMultiplierArr[(int)difficulty];
 
     }
+
+
+    public void SetOrderArea(OrderArea area)
+    {
+        assignedOrderArea = area;
+        targetPosition = area.GetCoordinates();
+    }
+
 
     void Update()
     {
@@ -149,7 +124,6 @@ public class CustomerController : DebuggableMonoBehaviour
                 hasArrived = true;
             }
         }
-        // Handle off-screen movement.
         else if (isWalkingOffScreen)
         {
             Vector2 currentPosition = transform.position;
@@ -160,26 +134,12 @@ public class CustomerController : DebuggableMonoBehaviour
             {
                 Log("Customer has walked off screen.");
                 isWalkingOffScreen = false;
-                // Optionally, destroy the customer:
                 Destroy(gameObject);
             }
         }
-
     }
 
-    void ArrivedAtCounter()
-    {
-        textBubble.SetActive(false);
-        OrderBubble.SetActive(true);
 
-        // orderBubble.StartOrder(Random.Range(1, 4));
-        orderBubble.StartOrder(1);
-        currentPatience = maxPatience;
-
-        // Start the fake progress count (0 to 100) over 10 seconds.\
-        if (progressRoutine != null) StopCoroutine(progressRoutine);
-        progressRoutine = StartCoroutine(PatienceCountdown());
-    }
     private IEnumerator PatienceCountdown()
     {
         float waitPerPoint = 0.1f / difficultyMultiplier;
@@ -200,6 +160,65 @@ public class CustomerController : DebuggableMonoBehaviour
         // out of patience!
         OrderFailed(1);
     }
+
+
+    void SetOffScreenTarget()
+    {
+        Camera cam = Camera.main;
+        Vector3 viewportPos = cam.WorldToViewportPoint(transform.position);
+        Vector3 targetViewportPos;
+
+        // If the customer is in the left half, target a point off-screen to the left.
+        if (viewportPos.x < 0.5f)
+        {
+            targetViewportPos = new Vector3(-0.1f, viewportPos.y, viewportPos.z);
+        }
+        // Otherwise, target a point off-screen to the right.
+        else
+        {
+            targetViewportPos = new Vector3(1.1f, viewportPos.y, viewportPos.z);
+        }
+
+        // Convert the target viewport position back to world space.
+        Vector3 worldTarget = cam.ViewportToWorldPoint(targetViewportPos);
+        // Preserve current Z position.
+        worldTarget.z = transform.position.z;
+        offScreenTarget = worldTarget;
+    }
+
+    void ArrivedAtCounter()
+    {
+        textBubble.SetActive(false);
+        OrderBubble.SetActive(true);
+
+        // orderBubble.StartOrder(Random.Range(1, 4));
+        orderBubble.StartOrder(1);
+        currentPatience = maxPatience;
+
+        // Start the fake progress count (0 to 100) over 10 seconds.\
+        if (progressRoutine != null) StopCoroutine(progressRoutine);
+        progressRoutine = StartCoroutine(PatienceCountdown());
+    }
+
+    public void OnCorrectDelivery()
+    {
+        Log("CustomerController: Correct delivery! , boosted patience.");
+
+        currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
+
+        patienceBar.SetHealth(currentPatience);
+    }
+
+    public void OnWrongDelivery(string foodName)
+    {
+        Log($"CustomerController: Wrong delivery of {foodName}!");
+        OrderFailed(2);
+    }
+
+    /// <summary>
+    /// Called by OrderBubble when the player delivers the wrong item.
+    /// Shows feedback, deducts a bit of patience, then reverts.
+    /// </summary>
 
     public void OnAllOrdersFulfilled()
     {
@@ -234,37 +253,7 @@ public class CustomerController : DebuggableMonoBehaviour
     }
 
     // Updated method to set the off-screen target based on viewport bounds.
-    void SetOffScreenTarget()
-    {
-        Camera cam = Camera.main;
-        Vector3 viewportPos = cam.WorldToViewportPoint(transform.position);
-        Vector3 targetViewportPos;
-
-        // If the customer is in the left half, target a point off-screen to the left.
-        if (viewportPos.x < 0.5f)
-        {
-            targetViewportPos = new Vector3(-0.1f, viewportPos.y, viewportPos.z);
-        }
-        // Otherwise, target a point off-screen to the right.
-        else
-        {
-            targetViewportPos = new Vector3(1.1f, viewportPos.y, viewportPos.z);
-        }
-
-        // Convert the target viewport position back to world space.
-        Vector3 worldTarget = cam.ViewportToWorldPoint(targetViewportPos);
-        // Preserve current Z position.
-        worldTarget.z = transform.position.z;
-        offScreenTarget = worldTarget;
-    }
-
-    void OnMouseDown()
-    {
-        if (hasArrived)
-        {
-            OrderCompleted();
-        }
-    }
+    // debugging thing , remove this 
 
     void OrderCompleted()
     {
@@ -278,7 +267,7 @@ public class CustomerController : DebuggableMonoBehaviour
             _ => spriteRenderer.sprite
         };
 
-        PlayOrderSuccess();
+        PlayOrderSuccess(patiencePercent);
 
         CustomerData.Increment();
 
@@ -312,7 +301,8 @@ public class CustomerController : DebuggableMonoBehaviour
         }
     }
 
-    public void PlayOrderSuccess()
+    // helper functions
+    public void PlayOrderSuccess(int patiencePercent)
     {
         if (orderCompletedSound != null)
         {
@@ -327,4 +317,16 @@ public class CustomerController : DebuggableMonoBehaviour
             audioSource.PlayOneShot(orderFailedSound);
         }
     }
+
+
+
+    // debugging thing , remove this
+    void OnMouseDown()
+    {
+        if (hasArrived)
+        {
+            OrderCompleted();
+        }
+    }
+
 }

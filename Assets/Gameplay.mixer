@@ -124,6 +124,7 @@ AudioMixerGroupController:
   - {fileID: -8941474306339287319}
   - {fileID: -7765040927820395861}
   - {fileID: 9120219700749451296}
+  - {fileID: 838394105508070365}
   m_Volume: 49f5b31a782a7254cba6962ffc14ba22
   m_Pitch: ecd33c1424b5c0e4cbddd5b73a73a426
   m_Send: 00000000000000000000000000000000
@@ -223,6 +224,7 @@ AudioMixerController:
     - 20fc84b47469ee1429a3cce7b56a4504
     - 3c3587a52b5b2d84c97a17a9a7556d2e
     - 187bbcef3f1e68a47b15e03c0da4e6ef
+    - 2462e84b611d67a4296adf6f3d3ae5ce
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -272,8 +274,41 @@ AudioMixerSnapshotController:
   m_SnapshotID: 702c3781c5df145198cc1d6a86e61954
   m_FloatValues:
     fcaf01f0baa7a4f44bc243bf1483d6b6: 0.10800299
-    b572137706f9e45fc8db87448fc3e5cf: -7.8940816
+    b572137706f9e45fc8db87448fc3e5cf: -15.421314
   m_TransitionOverrides: {}
+--- !u!243 &838394105508070365
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CoinsSFX
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 2462e84b611d67a4296adf6f3d3ae5ce
+  m_Children: []
+  m_Volume: bcc69b8d2f4b5284c8399baa86678703
+  m_Pitch: 4e9349ef23270ee4bb3fc0974797ea5b
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 2070210063654129262}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &2070210063654129262
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 06dee8677e06f2342bf3c90484083460
+  m_EffectName: Attenuation
+  m_MixLevel: 2ee7539b3629053438c48e96c8e277cc
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &3679094570225500976
 AudioMixerGroupController:
   m_ObjectHideFlags: 0

@@ -6,9 +6,15 @@ public class ScoreParent : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private int score = 0;
     public TextMeshProUGUI scoreText; // Reference to the TextMeshProUGUI component
+    public AudioClip coinClip;
+
+    public AudioSource CoinAudioSource;
+
+    public CustomerAudioManager cm;
     public CustomerData CustomerData; // Reference to the CustomerData scriptable object
     void Start()
     {
+        cm = GameObject.Find("CustomerAudioManager").GetComponent<CustomerAudioManager>();
         // Initialize the score text UI with the initial score
         UpdateScoreUI();
     }
@@ -23,6 +29,7 @@ public class ScoreParent : MonoBehaviour
     {
         HandleScore(1);
         Destroy(coin);
+        cm.PlayCoinsSound();
     }
 
     public void ResetScore()
@@ -49,6 +56,10 @@ public class ScoreParent : MonoBehaviour
     {
         CustomerData.OnScoreChanged -= HandleScoreChanged;
     }
+
+
+
+
 
     public void HandleScoreChanged(int newScore)
     {

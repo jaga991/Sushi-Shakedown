@@ -9,72 +9,17 @@ using UnityEditor;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [Header("Music")]
-    [Tooltip("Reference to an AudioSource in the scene")]
-    public AudioSource musicSource;
-    public AudioSource sfxSource;
-    public AudioClip buttonClickClip;
-    // we'll load these at runtime instead of via Inspector
-    private AudioClip[] musicClips;
 
+    public event System.Action ButtonClicked;
     public GuruAudioManager gm;
-
-
     public event System.Action OnSettingsOpened;
-
-    void Awake()
-    {
-        // Load all clips in that Resources folder
-        musicClips = Resources.LoadAll<AudioClip>(
-            "Audio/Guru/MainMenu/BackgroundTracks"
-        );
-
-        if (musicClips == null || musicClips.Length == 0)
-            Debug.LogWarning("MainMenuManager: No background tracks found in Resources!");
-    }
-
-    void Start()
-    {
-        gm = GameObject.Find("GuruAudioManager").GetComponent<GuruAudioManager>();
-
-        Debug.Log("Starting Main Menu…");
-        PlayRandomMusic();
-    }
-
-    private void PlayRandomMusic()
-    {
-        if (musicSource == null || musicClips == null || musicClips.Length == 0)
-            return;
-
-        // pick one clip at random
-        int idx = Random.Range(0, musicClips.Length);
-        AudioClip chosen = musicClips[idx];
-
-        musicSource.clip = chosen;
-        musicSource.loop = true;
-        musicSource.Play();
-
-        Debug.Log($"Now playing: {chosen.name}");
-
-        // unload all other clips to free memory
-        for (int i = 0; i < musicClips.Length; i++)
-        {
-            if (i == idx) continue;
-            Resources.UnloadAsset(musicClips[i]);
-        }
-
-        // keep only the chosen clip in the array
-        musicClips = new AudioClip[] { chosen };
-    }
 
     public void OnPlayButtonClicked()
     {
-
         gm.PlayButtonClickSound();
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
         GameSceneManager.instance.StartGame();
-
     }
 
     public void OnSettingsButtonClicked()
