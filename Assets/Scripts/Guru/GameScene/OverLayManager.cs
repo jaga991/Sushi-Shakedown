@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,14 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
     public CustomerData customerData;
     private CustomerData Pause_CustomerData_Local;
+    public static event Action<bool> OnUIBlockToggle;
+
+
+    private void BlockUI(bool isBlocked)
+    {
+        OnUIBlockToggle?.Invoke(isBlocked);
+    }
+
 
     // Screens
     public GameObject Game_Screen;
@@ -92,6 +101,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Time.timeScale = 0f; // Pause the game
 
         cm.TransitionToDimmedSnapshot();  // ADD HERE
+        BlockUI(true); // Block UI interactions
 
     }
     private void CreateLocalCopy()
@@ -127,6 +137,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Pause_CustomerData_Local = null;
         Time.timeScale = 1f; // Resume the game speed
         cm.TransitionToGameplaySnapshot();
+
     }
 
     /// <summary>
@@ -143,7 +154,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Pause_CustomerData_Local = null;
 
         Time.timeScale = 1f; // Resume the game speed
-        cm.TransitionToGameplaySnapshot();  // AD
+        cm.TransitionToGameplaySnapshot();
+
     }
 
     public void ToggleModeButton(int value)
@@ -165,9 +177,11 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     {
         HideAllScreens();
         Game_Screen.SetActive(true);
+        BlockUI(false); // Unblock UI interactions
     }
     public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry, int TotalCoins, int Ransom)
     {
+        BlockUI(true); // Block UI interactions
         cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Info_Screen.SetActive(true);
@@ -185,6 +199,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void CloseInfoUI()
     {
+
         cm.TransitionToGameplaySnapshot();
         Debug.Log("[Settings]  CloseInfoUI called");
         DefaultView();
@@ -192,6 +207,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     public void ShowPreDayUI(int day)
     {
+        BlockUI(true); // Block UI interactions
         cm.TransitionToDimmedSnapshot();
         // Debug.Log($"[Overlay] ShowPreDayUI: starting day {day}");
         PreDay_DayText.text = $"Day {day} Starting";
@@ -210,6 +226,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     public void ShowFinalDayUI()
     {
+        BlockUI(true); // Block UI interactions
         cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Final_Day_Screen.SetActive(true);
@@ -236,6 +253,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void ShowFailureUI(int day, int EarnedCoins, int YakuzaDeduction)
     {
+        BlockUI(true); // Block UI interactions
         cm.TransitionToDimmedSnapshot();
         HideAllScreens();
         Failure_Screen.SetActive(true);
@@ -245,7 +263,6 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public void Failure_QuitButtonClick()
     {
-
         cm.PlayButtonClickSound();
         Debug.Log("[Overlay] Exit Game");
         Application.Quit();

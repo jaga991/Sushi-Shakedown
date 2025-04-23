@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
+    private bool uiIsBlockingInput = false;
     private Camera mainCamera;
 
     [SerializeField] public DraggableObject currentlyDragging = null;
@@ -20,6 +21,17 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // optional: keep this GameManager across scenes
+        OverLayManager.OnUIBlockToggle += OnUIBlockToggle;
+    }
+
+    private void OnDestroy()
+    {
+        OverLayManager.OnUIBlockToggle -= OnUIBlockToggle;
+    }
+
+    private void OnUIBlockToggle(bool blocked)
+    {
+        uiIsBlockingInput = blocked;
     }
     [SerializeField]
     private GameDataSO gameDataSO;
@@ -31,7 +43,8 @@ public class GameManager : MonoBehaviour
         if (mainCamera == null)
         {
             Debug.LogError("MainCamera not found! Make sure your main camera is tagged 'MainCamera'.");
-        } else
+        }
+        else
         {
             Debug.Log("MainCamera set in GameManager");
         }
@@ -43,17 +56,22 @@ public class GameManager : MonoBehaviour
         //always keep mouse position updated
         UpdateGameDataSOMousePosition();
         //if left mouse button down
+        if (Input.GetMouseButtonUp(0))
+        {
+            HandleLeftMouseUp();
+        }
+
+
+        if (uiIsBlockingInput)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             HandleLeftMouseDown();
         }
 
-        if(Input.GetMouseButtonUp(0))
-        {
-            HandleLeftMouseUp();
-        }
 
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             HandleRightMouseDown();
         }
@@ -61,6 +79,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleRightMouseDown()
     {
+
         Debug.Log("HandleRightMouseDown Triggered");
         //first execute a raycast hit
         RaycastHit2D[] hits = Physics2D.RaycastAll(gameDataSO.mousePosition, Vector2.zero, Mathf.Infinity, gameDataSO.interactableLayers);
@@ -74,7 +93,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if(cuttingBoard != null)
+        if (cuttingBoard != null)
         {
             cuttingBoard.HandleRightClick();
         }
@@ -83,7 +102,6 @@ public class GameManager : MonoBehaviour
 
     private void HandleLeftMouseUp()
     {
-        Debug.Log("HandleLeftMouseUp Triggered");
 
         if (currentlyDragging != null)
         {
