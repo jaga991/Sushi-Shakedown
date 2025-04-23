@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4600635342187005813}
   - component: {fileID: -8544392020798394217}
   - component: {fileID: -8294882435327693432}
+  - component: {fileID: 8929930616801245419}
   m_Layer: 8
   m_Name: plate
   m_TagString: Untagged
@@ -149,6 +150,20 @@ MonoBehaviour:
   riceSprite: {fileID: 1199777587069215415}
   fishSprite: {fileID: 8942838852487317636}
   condimentSprite: {fileID: 1644485379895835320}
+--- !u!114 &8929930616801245419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296487094403694516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a795e15ace0a4098b77d4291ff93cc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  foodName: 
 --- !u!1 &3023674466040917689
 GameObject:
   m_ObjectHideFlags: 0

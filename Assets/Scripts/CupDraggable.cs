@@ -6,17 +6,20 @@ public class CupDraggable : DraggableObject
     [SerializeField] private CupIngredientSO[] cupIngredientSOArray;
     [SerializeField] private List<DraggableObjectSO> currentIngredients = new List<DraggableObjectSO>(); // actual ingredients
 
-    [SerializeField] private SpriteRenderer bottomDrinkSprite;
-    [SerializeField] private SpriteRenderer middleDrinkSprite;
-    [SerializeField] private SpriteRenderer topDrinkSprite;
+    [SerializeField] public SpriteRenderer bottomDrinkSprite;
+    [SerializeField] public SpriteRenderer middleDrinkSprite;
+    [SerializeField] public SpriteRenderer topDrinkSprite;
 
-    [SerializeField] private List<SpriteRenderer> drinkSpriteArray;
+    [SerializeField] public List<SpriteRenderer> drinkSpriteArray;
 
-    private void Start()
+    private void Awake()
     {
+        Debug.Log("CupDraggable Start() called. OOOOOOOOOGA ");
         drinkSpriteArray.Add(bottomDrinkSprite);
         drinkSpriteArray.Add(middleDrinkSprite);
         drinkSpriteArray.Add(topDrinkSprite);
+        Debug.Log($"DrinkSpriteArray count: {drinkSpriteArray.Count}");
+
     }
 
     public bool TryHandleIngredient(DraggableObject draggableObject)
@@ -30,7 +33,7 @@ public class CupDraggable : DraggableObject
         }
 
         //check the amount of drink ingredient already present, add drink if length < 3
-        string ingredientType = ingredientInfo.ingredientType;
+
 
         if (currentIngredients.Count < 3)
         {
@@ -77,6 +80,18 @@ public class CupDraggable : DraggableObject
     }
 
     public List<DraggableObjectSO> GetCurrentIngredients()
+    {
+        return new List<DraggableObjectSO>(currentIngredients);
+    }
+    public List<SpriteRenderer> GetDrinkSpriteArray()
+    {
+        return drinkSpriteArray;
+    }
+    public void SetDrinkSprite(Sprite drinkSprite, int index)
+    {
+        drinkSpriteArray[index].sprite = drinkSprite;
+    }
+    public List<DraggableObjectSO> GetCurrentIngredientsList()
     {
         return new List<DraggableObjectSO>(currentIngredients);
     }

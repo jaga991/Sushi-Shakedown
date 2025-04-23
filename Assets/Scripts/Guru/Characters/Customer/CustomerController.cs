@@ -142,7 +142,7 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private IEnumerator PatienceCountdown()
     {
-        float waitPerPoint = 0.1f / difficultyMultiplier;
+        float waitPerPoint = 2f / difficultyMultiplier;
         // Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
 
         while (currentPatience > 0)
@@ -192,6 +192,7 @@ public class CustomerController : DebuggableMonoBehaviour
         OrderBubble.SetActive(true);
 
         // orderBubble.StartOrder(Random.Range(1, 4));
+        // orderBubble.StartOrder(1, 3); // Randomly choose between 1 and 3 orders
         orderBubble.StartOrder(1);
         currentPatience = maxPatience;
 

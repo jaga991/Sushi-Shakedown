@@ -8,9 +8,9 @@ public class PlateDraggable : DraggableObject
     [SerializeField] private List<string> currentIngredientTypes = new List<string>(); // tracks types like "rice", "fish"
     [SerializeField] private List<DraggableObjectSO> currentIngredients = new List<DraggableObjectSO>(); // actual ingredients
 
-    [SerializeField] private SpriteRenderer riceSprite;
-    [SerializeField] private SpriteRenderer fishSprite;
-    [SerializeField] private SpriteRenderer condimentSprite;
+    [SerializeField] public SpriteRenderer riceSprite;
+    [SerializeField] public SpriteRenderer fishSprite;
+    [SerializeField] public SpriteRenderer condimentSprite;
 
     //An array to track items currently on it (bluff, no actual gameobject, use sprite to simulate)
 
@@ -40,7 +40,7 @@ public class PlateDraggable : DraggableObject
 
 
         // Add to plate
-        if(ingredientType == "rice" || ingredientType == "fish" || ingredientType == "condiment")
+        if (ingredientType == "rice" || ingredientType == "fish" || ingredientType == "condiment")
         {
             currentIngredientTypes.Add(ingredientType);
             currentIngredients.Add(incomingSO);
@@ -88,5 +88,37 @@ public class PlateDraggable : DraggableObject
     public int GetIngredientCount()
     {
         return currentIngredients.Count;
+    }
+
+    public List<DraggableObjectSO> GetCurrentIngredientsList()
+    {
+        return new List<DraggableObjectSO>(currentIngredients);
+    }
+    public string GetCurrentIngredientsListString()
+    {
+        if (currentIngredients.Count == 0)
+        {
+            return "Empty plate";
+        }
+
+        List<string> ingredientNames = new List<string>();
+        foreach (var ingredient in currentIngredients)
+        {
+            ingredientNames.Add(ingredient.name);
+        }
+
+        return string.Join(", ", ingredientNames);
+    }
+    public void SetRiceSprite(Sprite sprite)
+    {
+        riceSprite.sprite = sprite;
+    }
+    public void SetFishSprite(Sprite sprite)
+    {
+        fishSprite.sprite = sprite;
+    }
+    public void SetCondimentSprite(Sprite sprite)
+    {
+        condimentSprite.sprite = sprite;
     }
 }

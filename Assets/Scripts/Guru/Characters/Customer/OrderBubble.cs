@@ -106,47 +106,103 @@ public class OrderBubble : DebuggableMonoBehaviour
     {
         if (other == null) return;
 
-        if (other.TryGetComponent<FoodDraggable>(out var foodDraggable))
+        Debug.Log("What is this? " + other.name);
+
+        if (other.GetComponent<PlateDraggable>() != null)
         {
-            Log($"Food draggable entered order bubble: {foodDraggable.foodName}");
-            ProcessFoodDelivery(foodDraggable);
+
+            // Debug.Log("Plate draggable entered order bubble: " + other.GetComponent<PlateDraggable>().GetCurrentIngredientsListString());
+            ProcessFoodDelivery(other.GetComponent<PlateDraggable>());
         }
+
+        if (other.GetComponent<CupDraggable>() != null)
+        {
+            // Debug.Log("Cup draggable entered order bubble: " + other.GetComponent<CupDraggable>().GetCurrentIngredientsListString());
+            ProcessFoodDeliveryCup(other.GetComponent<CupDraggable>());
+        }
+
+
+
+
+        // if (other.TryGetComponent<FoodDraggable>(out var foodDraggable))
+        // {
+        //     Log($"Food draggable entered order bubble: {foodDraggable.foodName}");
+        //     ProcessFoodDelivery(foodDraggable);
+        // }
     }
 
-    private bool ValidateOrder(string foodName, out Food matchedFood, out int index)
+    // private bool ValidateOrder(List<DraggableObjectSO> inputList, out Food matchedFood, out int index)
+    // {
+    //     Debug.Log("Validating  Order Called");
+    //     for (index = 0; index < orderedFoods.Count; index++)
+    //     {
+    //     }
+    //     matchedFood = null;
+    //     return false;
+    // }
+
+    private bool ValidateOrder(
+        List<DraggableObjectSO> inputList,
+        out Food matchedFood,
+        out int index)
     {
+        Debug.Log("Validating Order Called");
+
+        // Loop over every possible order in your queued list
         for (index = 0; index < orderedFoods.Count; index++)
         {
-            if (orderedFoods[index].foodName == foodName)
+            var order = orderedFoods[index];
+            var ingredients = order.ingredientsDraggableObjectSOArray;
+
+            // Quick check: must have same number of ingredients
+            if (inputList.Count != ingredients.Count)
+                continue;
+
+            // Make a temp copy we can remove matches from
+            var temp = new List<DraggableObjectSO>(ingredients);
+            bool allFound = true;
+
+            // Try to find each submitted ingredient in the temp list
+            foreach (var submitted in inputList)
             {
-                matchedFood = orderedFoods[index];
+                if (temp.Contains(submitted))
+                {
+                    temp.Remove(submitted);
+                }
+                else
+                {
+                    allFound = false;
+                    break;
+                }
+            }
+
+            // If we removed every expected ingredient, it's a match
+            if (allFound)
+            {
+                matchedFood = order;
                 return true;
             }
         }
+
+        // No match found
         matchedFood = null;
+        index = -1;
         return false;
     }
 
-
-
-    private void ProcessFoodDelivery(FoodDraggable delivered)
+    private void ProcessFoodDeliveryCup(CupDraggable delivered)
     {
-        string name = delivered.foodName;
+        List<DraggableObjectSO> Ling = delivered.GetCurrentIngredientsList();
         bool isFinal = (orderedFoods.Count == 1);
 
-        // 1) validation/extraction
-        if (ValidateOrder(name, out var matchedFood, out var idx))
+        // 1) validation / extraction
+        if (ValidateOrderCup(Ling, out var matchedFood, out var idx))
         {
             // 2) remove from list & reposition
             orderedFoods.RemoveAt(idx);
             // delivered.CancelDrag();
             // 3) animate & cleanup
             StartCoroutine(AnimateDeliveryAndCleanup(delivered.gameObject, matchedFood.gameObject, isFinal));
-
-            delivered.InformSpawner();
-
-            // 5) if it was the last order, fire final callback
-
         }
         else
         {
@@ -154,6 +210,71 @@ public class OrderBubble : DebuggableMonoBehaviour
             Log($"OrderBubble: No matching order found for '{name}'");
             customerController.OnWrongDelivery(name);
         }
+    }
+
+    private bool ValidateOrderCup(
+    List<DraggableObjectSO> inputList,
+    out Food matchedFood,
+    out int index)
+    {
+        Debug.Log("Validating Cup Order Called");
+
+        for (index = 0; index < orderedFoods.Count; index++)
+        {
+            var order = orderedFoods[index];
+            var ingredients = order.ingredientsDraggableObjectSOArray;
+
+            // must have same length
+            if (inputList.Count != ingredients.Count)
+                continue;
+
+            // element-by-element comparison
+            bool allMatch = true;
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i] != ingredients[i])
+                {
+                    allMatch = false;
+                    break;
+                }
+            }
+
+            if (allMatch)
+            {
+                matchedFood = order;
+                return true;
+            }
+        }
+
+        // no exact-order match found
+        matchedFood = null;
+        index = -1;
+        return false;
+    }
+
+
+    private void ProcessFoodDelivery(PlateDraggable delivered)
+    {
+        List<DraggableObjectSO> Ling = delivered.GetCurrentIngredientsList();
+        bool isFinal = (orderedFoods.Count == 1);
+
+        // 1) validation / extraction
+        if (ValidateOrder(Ling, out var matchedFood, out var idx))
+        {
+            // 2) remove from list & reposition
+            orderedFoods.RemoveAt(idx);
+            // delivered.CancelDrag();
+            // 3) animate & cleanup
+            StartCoroutine(AnimateDeliveryAndCleanup(delivered.gameObject, matchedFood.gameObject, isFinal));
+        }
+        else
+        {
+            // wrong item
+            Log($"OrderBubble: No matching order found for '{name}'");
+            customerController.OnWrongDelivery(name);
+        }
+        // Debug print all ordered foods
+
     }
 
 
