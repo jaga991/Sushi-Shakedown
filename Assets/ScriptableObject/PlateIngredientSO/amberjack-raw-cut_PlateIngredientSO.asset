@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ceba4c7aecd914f8f62d2112381a73, type: 3}
   m_Name: amberjack-raw-cut_PlateIngredientSO
   m_EditorClassIdentifier: 
-  draggableObjectSO: {fileID: 0}
-  ingredientType: 
+  draggableObjectSO: {fileID: 11400000, guid: 462a0be210535cf4eac2686a6106c91b, type: 2}
+  ingredientType: fish
