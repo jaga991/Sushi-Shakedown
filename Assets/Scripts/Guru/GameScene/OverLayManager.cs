@@ -4,13 +4,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // for loading scenes
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting; // for loading scenes
 
 public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 {
     public CustomerData customerData;
     private CustomerData Pause_CustomerData_Local;
     public static event Action<bool> OnUIBlockToggle;
+
+
 
 
     private void BlockUI(bool isBlocked)
@@ -25,6 +28,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public GameObject Info_Screen;
     public GameObject PreDay_Screen;
 
+    public GameObject UpgradeScreen;
     public GameObject Failure_Screen;
     public CustomerAudioManager cm;
 
@@ -59,6 +63,21 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     public TextMeshProUGUI Failure_Title;
     public TextMeshProUGUI Failure_Description;
+
+    public TextMeshProUGUI Upgrade_CointCount;
+
+    public TextMeshProUGUI Upgrade_FoodAssemblyCount;
+    public TextMeshProUGUI Upgrade_RequiredCoinsCount;
+
+    [SerializeField] private TextMeshProUGUI Upgrade_GrillCount;
+    [SerializeField] private TextMeshProUGUI Upgrade_GrillCost;
+
+    private int[] FAA_Cost = { 2, 3 };
+    private int[] GrillAreaCost = { 2, 3 };
+
+    public int FoodAssemblyAreaMaxCount = 4;
+    public int GrillAreaMaxCount = 4;
+
 
     protected override void Awake()
     {
@@ -188,9 +207,9 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry} , TotalCoins={TotalCoins}");
         Info_DayText.text = $"Day: {day} Completed!";
         Info_ScoreText.text = $"{score}";
-        Info_StashText.text = $"Hidden Stash: {TotalCoins + Ransom - score} COINS";
-        Info_RansomText.text = $"Ransom: {Ransom} COINS";
-        Info_NewTotalStashText.text = $"New Stash: {TotalCoins} COINS";
+        Info_StashText.text = $"{TotalCoins + Ransom - score} ";
+        Info_RansomText.text = $"{Ransom}";
+        Info_NewTotalStashText.text = $"{TotalCoins}";
 
         Info_TotalServedText.text = $"Customers Served: {totalServed}";
         Info_HappyText.text = $"Happy Customers: {happy}";
@@ -301,5 +320,111 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         PreDay_Screen.SetActive(false);
         Final_Day_Screen.SetActive(false);
         Failure_Screen.SetActive(false);
+        UpgradeScreen.SetActive(false);
     }
+
+    public void ShowUpgradeScreen()
+    {
+        BlockUI(true); // Block UI interactions
+        HideAllScreens();
+        Upgrade_RefreshUI();
+        cm.TransitionToDimmedSnapshot();
+        UpgradeScreen.SetActive(true);
+        Upgrade_CointCount.text = $"{customerData.CustomerCoins}";
+        // Upgrade_FoodAssemblyCount.text = $"{customerData.FoodAssemblyLevel}";
+        // Upgrade_RequiredCoinsCount.text = $"{customerData.GetUpgradeCost()}";
+    }
+    public void CloseUpgradeScreen()
+    {
+        cm.TransitionToGameplaySnapshot();
+        Debug.Log("[Settings]  CloseUpgradeScreen called");
+        DefaultView();
+        OnInfoClosed?.Invoke();
+    }
+
+    public void Upgrade_IncremenetFAA_ButtonClick()
+    {
+        int currentValue = customerData.FoodAssemblyAreaCount;
+        if (currentValue < FoodAssemblyAreaMaxCount)
+        {
+            int requiredCoins = GetFAAUpgradeCost();
+            if (customerData.CustomerCoins >= requiredCoins)
+            {
+                customerData.CustomerCoins -= requiredCoins;
+                customerData.IncrementFAA();
+                Upgrade_RefreshUI();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade Food Assembly Area Count!");
+            }
+        }
+        else
+        {
+            Debug.Log("Max Food Assembly Area Count reached!");
+        }
+    }
+
+
+    public void Upgrade_IncremenetGrill_ButtonClick()
+    {
+        int currentValue = customerData.GrillAreaCount;
+        if (currentValue < GrillAreaMaxCount)
+        {
+            int requiredCoins = GetGrillAreaUpgradeCost();
+
+            if (customerData.CustomerCoins >= requiredCoins)
+            {
+                customerData.CustomerCoins -= requiredCoins;
+                customerData.IncrementGrillArea();
+                Upgrade_RefreshUI();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade Grill Assembly Area Count!");
+            }
+        }
+        else
+        {
+            Debug.Log("Max Grill Assembly Count reached!");
+        }
+    }
+
+
+    public void Upgrade_RefreshUI()
+    {
+        Upgrade_CointCount.text = $"{customerData.CustomerCoins}";
+        Upgrade_FoodAssemblyCount.text = $"{customerData.FoodAssemblyAreaCount}";
+        if (customerData.FoodAssemblyAreaCount < FoodAssemblyAreaMaxCount)
+        {
+            Upgrade_RequiredCoinsCount.text = $"{GetFAAUpgradeCost()}";
+        }
+        else
+        {
+            Upgrade_RequiredCoinsCount.text = $"Max";
+        }
+
+        Upgrade_GrillCount.text = $"{customerData.GrillAreaCount}";
+        if (customerData.GrillAreaCount < GrillAreaMaxCount)
+        {
+            Upgrade_GrillCost.text = $"{GetGrillAreaUpgradeCost()}";
+        }
+        else
+        {
+            Upgrade_GrillCost.text = $"Max";
+        }
+
+    }
+
+    public int GetFAAUpgradeCost()
+    {
+        return FAA_Cost[customerData.FoodAssemblyAreaCount - 2];
+    }
+
+    public int GetGrillAreaUpgradeCost()
+    {
+        return GrillAreaCost[customerData.GrillAreaCount - 2];
+    }
+
+
 }

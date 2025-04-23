@@ -67,7 +67,8 @@ public class DayManager : DebuggableMonoBehaviour
         ScoreParent.ResetScore();
 
         if (customerDataSO.gameMode == GameMode.Waves)
-            OM.ShowPreDayUI(customerDataSO.Day);
+            // OM.ShowPreDayUI(customerDataSO.Day);
+            OM.ShowUpgradeScreen();
         else
             OnModeChanged(GameMode.FreePlay); // Start FreePlay mode immediately
     }

@@ -14,10 +14,11 @@ public class CustomerData : ScriptableObject
     public Difficulty difficulty = Difficulty.Easy;
     public event Action<Difficulty> OnDifficultyChanged;
 
-    private int[] Ransom = { 100, 2, 3, 4, 5, 6, 7 };
+    public int[] Ransom = { 1, 2, 3, 4, 5, 6, 7 };
 
     public int Day = 1;
     public int WaveCount = 0;
+
 
     public int maxDays = 7;
 
@@ -41,12 +42,35 @@ public class CustomerData : ScriptableObject
     public void ResetDay() => Day = 1;
     public void ResetWaveCount() => WaveCount = 0;
 
+
+
+    public event Action<int> OnFAA_Increased;
+    public event Action<int> OnGrillArea_Increased;
+
+    public int GrillAreaCount = 2;
+    public int FoodAssemblyAreaCount = 2;
+
+    public void IncrementFAA()
+    {
+        FoodAssemblyAreaCount++;
+        OnFAA_Increased?.Invoke(FoodAssemblyAreaCount);
+    }
+
+    public void IncrementGrillArea()
+    {
+        GrillAreaCount++;
+        OnGrillArea_Increased?.Invoke(GrillAreaCount);
+    }
+
+
     private void OnEnable()
     {
         // Initialize the data when the scriptable object is enabled.
         OnStartup();
         // gameMode = GameMode.Waves; // Default mode
     }
+
+
 
     public int GetRansom(int day)
     {

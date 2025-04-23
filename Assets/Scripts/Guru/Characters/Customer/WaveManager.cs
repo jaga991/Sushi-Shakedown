@@ -8,7 +8,7 @@ public class WaveManager : DebuggableMonoBehaviour
     public NPCSpawner npcSpawner;
     public float waveCountdownDuration = 1f;
     public CustomerData customerData;
-    public int[] waveSizes = { 1, 1 };
+    public int[] waveSizes = { 1 };
     private int tempWaveLimit = 1;
     private Coroutine _endlessRoutine;
     private bool _wavesRunning;
