@@ -69,7 +69,7 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log("Play button clicked! Loading Game scene...");
         EventSystem.current.SetSelectedGameObject(null);
         SceneManager.LoadScene("Customers", LoadSceneMode.Single);
-        // SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
 
     }
 

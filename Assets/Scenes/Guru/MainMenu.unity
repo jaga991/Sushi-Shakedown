@@ -3938,7 +3938,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &1191405645
 Canvas:
   m_ObjectHideFlags: 0
@@ -4291,7 +4291,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -4946,8 +4946,8 @@ Canvas:
   m_GameObject: {fileID: 1525103326}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_RenderMode: 0
+  m_Camera: {fileID: 1261486996}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -4959,7 +4959,7 @@ Canvas:
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 10
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
 --- !u!1 &1538424857
 GameObject:
   m_ObjectHideFlags: 0
@@ -6245,8 +6245,8 @@ Canvas:
   m_GameObject: {fileID: 2007045203}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_RenderMode: 0
+  m_Camera: {fileID: 1261486996}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -6258,7 +6258,7 @@ Canvas:
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 9
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
 --- !u!1 &2010922195
 GameObject:
   m_ObjectHideFlags: 0
@@ -7081,7 +7081,7 @@ Canvas:
   m_GameObject: {fileID: 2110115591}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -7094,7 +7094,7 @@ Canvas:
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
 --- !u!224 &2110115595
 RectTransform:
   m_ObjectHideFlags: 0
