@@ -107,20 +107,21 @@ MonoBehaviour:
   speed: 3
   targetPosition: {x: 0, y: 0}
   textBubble: {fileID: 7694083021823872009}
-  customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
-  OrderBubble: {fileID: 3239254254607974306}
-  CustomerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   patienceBar: {fileID: 3285532191880464430}
+  OrderBubble: {fileID: 3239254254607974306}
+  orderBubble: {fileID: 2543995445548076220}
+  customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
+  CustomerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   orderCompletedSound: {fileID: 8300000, guid: 94934d10155ded04baa08cafee32367f, type: 3}
   orderFailedSound: {fileID: 8300000, guid: f9672fa80ea7b4a81b1b517855ca6a31, type: 3}
   audioSource: {fileID: 8701546849306260434}
-  orderBubble: {fileID: 2543995445548076220}
   happySprite: {fileID: 1865927953273470641, guid: 8c7b104719ba64fbf960cf88dd636886, type: 3}
   frustratedSprite: {fileID: -8415703017015358207, guid: 19e71244541f3485f9436b50b84486e7, type: 3}
   angrySprite: {fileID: -2857071427163950762, guid: ce362d113c3f34eef81474a77a904506, type: 3}
   maxPatience: 100
-  assignedOrderArea: {fileID: 0}
   patienceBoostOnCorrect: 10
+  assignedOrderArea: {fileID: 0}
+  cs: {fileID: 0}
 --- !u!61 &2584946290778633212
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -293,7 +294,7 @@ Transform:
   m_GameObject: {fileID: 3239254254607974306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: 0, w: -1}
-  m_LocalPosition: {x: -0.709, y: 0.785, z: 0}
+  m_LocalPosition: {x: -0.718, y: 0.785, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.0882353}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -405,7 +406,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.067884, y: -0.0000019520521}
+  m_Offset: {x: -0.43, y: 0.02}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -415,7 +416,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.44260043, y: 0.83178914}
+  m_Size: {x: 4.05, y: 7.55}
   m_EdgeRadius: 0
 --- !u!50 &7600679366935725858
 Rigidbody2D:

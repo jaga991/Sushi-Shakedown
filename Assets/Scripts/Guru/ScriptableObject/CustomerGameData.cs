@@ -46,9 +46,21 @@ public class CustomerData : ScriptableObject
 
     public event Action<int> OnFAA_Increased;
     public event Action<int> OnGrillArea_Increased;
+    public event Action<int> OnGrillSpeed_Increased;
+    public event Action<int> OnPatienceLevel_Increased;
+
 
     public int GrillAreaCount = 2;
     public int FoodAssemblyAreaCount = 2;
+    public int GrillSpeedCount = 1;
+
+    public int PatienceLevel = 1;
+
+    public void IncrementPatienceLevel()
+    {
+        PatienceLevel++;
+        OnPatienceLevel_Increased?.Invoke(PatienceLevel);
+    }
 
     public void IncrementFAA()
     {
@@ -62,6 +74,11 @@ public class CustomerData : ScriptableObject
         OnGrillArea_Increased?.Invoke(GrillAreaCount);
     }
 
+    public void IncrementGrillSpeed()
+    {
+        GrillSpeedCount++;
+        OnGrillSpeed_Increased?.Invoke(GrillAreaCount);
+    }
 
     private void OnEnable()
     {
@@ -69,8 +86,6 @@ public class CustomerData : ScriptableObject
         OnStartup();
         // gameMode = GameMode.Waves; // Default mode
     }
-
-
 
     public int GetRansom(int day)
     {

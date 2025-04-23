@@ -13,9 +13,6 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     private CustomerData Pause_CustomerData_Local;
     public static event Action<bool> OnUIBlockToggle;
 
-
-
-
     private void BlockUI(bool isBlocked)
     {
         OnUIBlockToggle?.Invoke(isBlocked);
@@ -67,6 +64,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI Upgrade_CointCount;
 
     public TextMeshProUGUI Upgrade_FoodAssemblyCount;
+
+
     public TextMeshProUGUI Upgrade_RequiredCoinsCount;
 
     [SerializeField] private TextMeshProUGUI Upgrade_GrillCount;
@@ -74,11 +73,21 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     private int[] FAA_Cost = { 2, 3 };
     private int[] GrillAreaCost = { 2, 3 };
-
+    private int[] GrillSpeedCost = { 2, 3 };
+    private int[] PatienceLevelCost = { 2, 3 };
     public int FoodAssemblyAreaMaxCount = 4;
     public int GrillAreaMaxCount = 4;
+    public int GrillMaxSpeedCount = 3;
+
+    public int FoodAssemblyLevelMaxCount = 3;
+    public int PatienceLevelMaxCount = 3;
+
+    [SerializeField] private TextMeshProUGUI Upgrade_GrillSpeed;
+    [SerializeField] private TextMeshProUGUI Upgrade_GrillSpeedCost;
 
 
+    [SerializeField] private TextMeshProUGUI Upgrade_CustomerPatience;
+    [SerializeField] private TextMeshProUGUI Upgrade_CustomerPatienceCost;
     protected override void Awake()
     {
         base.Awake();
@@ -224,6 +233,22 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         DefaultView();
         OnInfoClosed?.Invoke();
     }
+
+
+    public void Info_UpgradeMenu_ButtonClick()
+    {
+        cm.PlayButtonClickSound();
+        Debug.Log("[Settings]  Upgrade Menu Button Clicked");
+        HideAllScreens();
+        ShowUpgradeScreen();
+    }
+
+    public void Info_ContinueButtonClick()
+    {
+        cm.TransitionToGameplaySnapshot();
+        DefaultView();
+        OnInfoClosed?.Invoke();
+    }
     public void ShowPreDayUI(int day)
     {
         BlockUI(true); // Block UI interactions
@@ -334,6 +359,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         // Upgrade_FoodAssemblyCount.text = $"{customerData.FoodAssemblyLevel}";
         // Upgrade_RequiredCoinsCount.text = $"{customerData.GetUpgradeCost()}";
     }
+
     public void CloseUpgradeScreen()
     {
         cm.TransitionToGameplaySnapshot();
@@ -414,6 +440,74 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
             Upgrade_GrillCost.text = $"Max";
         }
 
+        Upgrade_GrillSpeed.text = $"{customerData.GrillSpeedCount}";
+        if (customerData.GrillSpeedCount < FoodAssemblyLevelMaxCount)
+        {
+            Upgrade_GrillSpeedCost.text = $"{GetGrillSpeedUpgradeCost()}";
+        }
+        else
+        {
+            Upgrade_GrillSpeedCost.text = $"Max";
+        }
+        Upgrade_CustomerPatience.text = $"{customerData.PatienceLevel}";
+        if (customerData.PatienceLevel < PatienceLevelMaxCount)
+        {
+            Upgrade_CustomerPatienceCost.text = $"{GetPatienceLevelUpgradeCost()}";
+        }
+        else
+        {
+            Upgrade_CustomerPatienceCost.text = $"Max";
+        }
+
+    }
+
+
+    public void Upgrade_GrillSpeed_ButtonClick()
+    {
+        int currentValue = customerData.GrillSpeedCount;
+        if (currentValue < GrillMaxSpeedCount)
+        {
+            int requiredCoins = GetGrillSpeedUpgradeCost();
+
+            if (customerData.CustomerCoins >= requiredCoins)
+            {
+                customerData.CustomerCoins -= requiredCoins;
+                customerData.IncrementGrillArea();
+                Upgrade_RefreshUI();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade GrillSpeed Area Count!");
+            }
+        }
+        else
+        {
+            Debug.Log("Max GrillSpeed Count reached!");
+        }
+    }
+
+    public void Upgrade_CustomerPatience_ButtonClick()
+    {
+        int currentValue = customerData.PatienceLevel;
+        if (currentValue < PatienceLevelMaxCount)
+        {
+            int requiredCoins = GetPatienceLevelUpgradeCost();
+
+            if (customerData.CustomerCoins >= requiredCoins)
+            {
+                customerData.CustomerCoins -= requiredCoins;
+                customerData.IncrementPatienceLevel();
+                Upgrade_RefreshUI();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade  Customer Patience Count!");
+            }
+        }
+        else
+        {
+            Debug.Log("Max Customer Patience!");
+        }
     }
 
     public int GetFAAUpgradeCost()
@@ -426,5 +520,13 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         return GrillAreaCost[customerData.GrillAreaCount - 2];
     }
 
+    public int GetGrillSpeedUpgradeCost()
+    {
+        return GrillSpeedCost[customerData.GrillSpeedCount - 1];
+    }
 
+    public int GetPatienceLevelUpgradeCost()
+    {
+        return PatienceLevelCost[customerData.PatienceLevel - 1];
+    }
 }

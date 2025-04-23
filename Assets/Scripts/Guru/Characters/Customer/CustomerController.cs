@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.UI; // Kept for Text component on textBubble
 
 public class CustomerController : DebuggableMonoBehaviour
@@ -45,6 +46,10 @@ public class CustomerController : DebuggableMonoBehaviour
     // === Difficulty ===
     private readonly int[] DifficultyMultiplierArr = { 1, 2 };
     private int difficultyMultiplier = 1; // Default to Easy
+
+    private int patienceLevelMultiplier = 1;
+
+    public CustomerData cs; // assign via the Inspector
     protected override void Awake()
     {
         base.Awake(); // Call the base class method to set up logging
@@ -78,15 +83,22 @@ public class CustomerController : DebuggableMonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        currentPatience = cs.PatienceLevel; // Set initial patience level from CustomerData
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable(); // Call the base class method to set up logging
         customerData.OnDifficultyChanged += OnDifficultyChanged;
+        customerData.OnPatienceLevel_Increased += OnPatienceLevelIncreased;
     }
     protected override void OnDisable()
     {
         base.OnDisable(); // Call the base class method to clean up logging
         customerData.OnDifficultyChanged -= OnDifficultyChanged;
+        customerData.OnPatienceLevel_Increased -= OnPatienceLevelIncreased;
     }
     protected override void UpdateLogStatus()
     {
@@ -101,12 +113,17 @@ public class CustomerController : DebuggableMonoBehaviour
 
     }
 
+    private void OnPatienceLevelIncreased(int newValue)
+    {
+        patienceLevelMultiplier = newValue;
+    }
 
     public void SetOrderArea(OrderArea area)
     {
         assignedOrderArea = area;
         targetPosition = area.GetCoordinates();
     }
+
 
 
     void Update()
@@ -142,7 +159,9 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private IEnumerator PatienceCountdown()
     {
-        float waitPerPoint = 2f / difficultyMultiplier;
+        float adjustedMultiplier = 1f + (patienceLevelMultiplier - 1) * 0.1f;
+
+        float waitPerPoint = adjustedMultiplier / difficultyMultiplier;
         // Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
 
         while (currentPatience > 0)
@@ -239,7 +258,6 @@ public class CustomerController : DebuggableMonoBehaviour
         }
         else if (reason == 2)
         {
-            CustomerData.DeductScore(5);
             CustomerData.DeductScore(5);
             Log("Customer Received Wrong Order !!");
             // on wrong delivery 

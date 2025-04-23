@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UI;
 
 public class GrillContainer : BaseContainer
@@ -12,13 +13,33 @@ public class GrillContainer : BaseContainer
     private float grillingProgress = 0f;
     private bool isGrilling = false;
     private GrillingRecipeSO activeRecipe;
+    public CustomerData cs; // assign via the Inspector
 
+    private int grillingMultiplier = 1; // default multiplier
+    private void OnEnable()
+    {
+        cs.OnGrillSpeed_Increased += HandleGrillSpeedIncreased;
+    }
+    private void OnDisable()
+    {
+        cs.OnGrillSpeed_Increased -= HandleGrillSpeedIncreased;
+    }
 
+    private void Start()
+    {
+        // set the initial visibility based on your SO's starting counts
+        grillingMultiplier = cs.GrillSpeedCount; // default multiplier
+    }
+
+    private void HandleGrillSpeedIncreased(int newValue)
+    {
+        grillingMultiplier = newValue;
+    }
 
     private void Update()
     {
         HandleHoverAndDrop();
-        //NEW: if we have an owned draggable, but aren’t cooking, kick off a new cycle
+        //NEW: if we have an owned draggable, but arenï¿½t cooking, kick off a new cycle
         TryResumeCooking();
 
         HandleGrillingProgress();
@@ -27,8 +48,8 @@ public class GrillContainer : BaseContainer
     {
         // only when:
         // 1) something is back in the grill
-        // 2) we’re not already grilling
-        // 3) we don’t have an activeRecipe yet
+        // 2) weï¿½re not already grilling
+        // 3) we donï¿½t have an activeRecipe yet
         var held = GetOwnedDraggable();
         if (held != null && !isGrilling && activeRecipe == null && HasRecipeWithInput(held.GetDraggableObjectSO()))
         {
@@ -96,7 +117,10 @@ public class GrillContainer : BaseContainer
         if (!isGrilling || GetOwnedDraggable() == null) return;
 
         // advance
-        grillingProgress += Time.deltaTime;
+        float adjustedMultiplier = 1f + (grillingMultiplier - 1) * 0.1f;
+        grillingProgress += Time.deltaTime * adjustedMultiplier;
+
+
         float normalized = grillingProgress / activeRecipe.grillingProgressMax;
 
         // update bar every frame
@@ -127,7 +151,7 @@ public class GrillContainer : BaseContainer
             grillingProgress = 0f;
             isGrilling = true;
 
-            // reset bar to zero (we’re still showing)
+            // reset bar to zero (weï¿½re still showing)
             EventManager.Instance.Trigger("updateProgressUI",
                 new ProgressBarUpdateData(grillingProgressUI, 0f));
         }

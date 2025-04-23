@@ -4,6 +4,8 @@ public class TrashBin : MonoBehaviour
 {
     [SerializeField] private DraggableObject draggableInZone = null;
 
+    public CustomerData cd;
+
     private void Start()
     {
     }
@@ -13,6 +15,7 @@ public class TrashBin : MonoBehaviour
         {
             draggableInZone = other.GetComponent<DraggableObject>();
             Debug.Log($"[TrashBin] {other.name} entered trash zone.");
+            cd.DeductScore(3); // Deduct score when an object enters the trash bin
         }
     }
 
@@ -36,10 +39,10 @@ public class TrashBin : MonoBehaviour
             {
                 //dont allow ingredientdispenser to be trashed, return it to parent container
 
-                if(draggableInZone.GetComponent<IngredientDispenserDraggable>() != null)
+                if (draggableInZone.GetComponent<IngredientDispenserDraggable>() != null)
                 {
                     draggableInZone.ReturnToParentContainer();
-                }   
+                }
                 else
                 {
                     Debug.Log($"[TrashBin] Destroying {draggableInZone.name}");
@@ -56,5 +59,5 @@ public class TrashBin : MonoBehaviour
             EventManager.Instance.Trigger<TrashBin>("trashbinDeselectedVisual", this);
 
         }
-    } 
+    }
 }
