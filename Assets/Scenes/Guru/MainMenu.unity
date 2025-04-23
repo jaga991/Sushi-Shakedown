@@ -3826,7 +3826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6fbba73eb31420db59efb63fda0f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 2071430817}
 --- !u!1 &1144906394
 GameObject:
   m_ObjectHideFlags: 0
@@ -5389,7 +5389,7 @@ MonoBehaviour:
   mainMenuManager: {fileID: 1129446997}
   customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   gameModeToggle: {fileID: 958542222}
-  gm: {fileID: 0}
+  gm: {fileID: 2071430817}
   DifficultyModeToggle: {fileID: 490956677}
 --- !u!1 &1683083279
 GameObject:

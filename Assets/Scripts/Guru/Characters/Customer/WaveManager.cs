@@ -83,7 +83,6 @@ public class WaveManager : DebuggableMonoBehaviour
 
     IEnumerator RunWaves()
     {
-        // Loop over the configured wave sizes.
         for (int i = 0; i < waveSizes.Length; i++)
         {
             int waveNumber = i + 1;
@@ -97,7 +96,7 @@ public class WaveManager : DebuggableMonoBehaviour
             // Countdown.
             yield return StartCoroutine(WaveCountdown(waveCountdownDuration));
 
-            // Update the global dnumber.
+            // Update the global number.
             customerData.WaveCount = waveNumber;
 
             msg = $"Wave {waveNumber} started!";

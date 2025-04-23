@@ -40,7 +40,14 @@ public class DayManager : DebuggableMonoBehaviour
         OM.OnPreDayClosed -= HandleStartWaves;
         OM.OnInfoClosed -= OnInfoClosed;
     }
-    // encapsulate starting each day
+    public void Start()
+    {
+        ScoreParent = GameObject.Find("Score").GetComponent<ScoreParent>();
+        Debug.Log("DayManager: Start() called.");
+        Debug.Log("Day is " + customerDataSO.Day + " in Start() method.");
+        StartDay();
+        // OnModeChanged(customerDataSO.gameMode);
+    }
     void StartDay()
     {
 
@@ -62,7 +69,7 @@ public class DayManager : DebuggableMonoBehaviour
         if (customerDataSO.gameMode == GameMode.Waves)
             OM.ShowPreDayUI(customerDataSO.Day);
         else
-            OnModeChanged(customerDataSO.gameMode);
+            OnModeChanged(GameMode.FreePlay); // Start FreePlay mode immediately
     }
 
     public void HandleStartWaves()
@@ -74,7 +81,7 @@ public class DayManager : DebuggableMonoBehaviour
             return;
         }
 
-        OnModeChanged(customerDataSO.gameMode);
+        OnModeChanged(GameMode.Waves);
     }
 
 
@@ -87,14 +94,13 @@ public class DayManager : DebuggableMonoBehaviour
             waveManager.StopEndlessCustomers();
             waveManager.StartWaves();
         }
-        else // FreePlay
+        else
         {
             waveManager.StopWaves();
             waveManager.StartEndlessCustomers();
-            // OnWavesCompleted();
         }
     }
-    // fired by OverLayManager.CloseInfoUI()
+
     private void OnInfoClosed()
     {
 
@@ -121,37 +127,41 @@ public class DayManager : DebuggableMonoBehaviour
     }
 
 
-
     protected override void UpdateLogStatus()
     {
         isDebugEnabled = logSettings.DayManagerLogs;
     }
 
-    public void Start()
-    {
-        Debug.Log("DayManager: Start() called.");
-        ScoreParent = GameObject.Find("Score").GetComponent<ScoreParent>();
-        Debug.Log("Day is " + customerDataSO.Day + " in Start() method.");
-        StartDay();
-        // OnModeChanged(customerDataSO.gameMode);
-    }
+
     private void OnWavesCompleted()
     {
         Log("Waves completed. Summarizing the day...");
         PrintDaySummary();
-        customerDataSO.IncrementCustomerCoins(customerDataSO.score);
-        int dailyRansom = customerDataSO.GetRansom(customerDataSO.Day);
-        customerDataSO.DecrementCustomerCoins(dailyRansom);
-        if (customerDataSO.Day == customerDataSO.maxDays)
-        {
-            OM.ShowFinalDayUI();
 
-            // OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount, customerDataSO.CustomerCoins);
+        int EarnedCoins = customerDataSO.score;
+
+        int YakuzaDeduction = customerDataSO.GetRansom(customerDataSO.Day);
+        Debug.Log($"Yakuza deduction for day {customerDataSO.Day} is {YakuzaDeduction} coins.");
+        if (EarnedCoins < YakuzaDeduction)
+        {
+            Debug.Log("Not enough coins to pay the Yakuza! Game over.");
+            OM.ShowFailureUI(customerDataSO.Day, EarnedCoins, YakuzaDeduction);
+
         }
         else
         {
+            customerDataSO.IncrementCustomerCoins(customerDataSO.score);
+            customerDataSO.DecrementCustomerCoins(YakuzaDeduction);
 
-            OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount, customerDataSO.CustomerCoins);
+            if (customerDataSO.Day == customerDataSO.maxDays)
+            {
+                OM.ShowFinalDayUI();
+            }
+            else
+            {
+
+                OM.ShowInfoUI(customerDataSO.Day, customerDataSO.score, customerDataSO.customersServed, customerDataSO.HappyCustomerCount, customerDataSO.angryCustomersCount, customerDataSO.CustomerCoins, YakuzaDeduction);
+            }
         }
     }
 

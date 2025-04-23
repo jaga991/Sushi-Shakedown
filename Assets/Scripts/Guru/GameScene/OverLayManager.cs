@@ -16,6 +16,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public GameObject Info_Screen;
     public GameObject PreDay_Screen;
 
+    public GameObject Failure_Screen;
     public CustomerAudioManager cm;
 
     public GameObject Final_Day_Screen;
@@ -27,10 +28,14 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     // InfoUI elements
     public TextMeshProUGUI Info_DayText;
     public TextMeshProUGUI Info_ScoreText;
+
+    public TextMeshProUGUI Info_StashText;
+    public TextMeshProUGUI Info_RansomText;
+    public TextMeshProUGUI Info_NewTotalStashText;
     public TextMeshProUGUI Info_TotalServedText;
     public TextMeshProUGUI Info_HappyText;
 
-    public TextMeshProUGUI Info_CustomerCoinsText;
+
     public event System.Action OnInfoClosed;
 
 
@@ -40,9 +45,12 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public TextMeshProUGUI PreDay_ScoreText;
 
     public TextMeshProUGUI PreDay_HiddenStashText;
-
-
     public event System.Action OnPreDayClosed;
+
+
+    public TextMeshProUGUI Failure_Title;
+    public TextMeshProUGUI Failure_Description;
+
     protected override void Awake()
     {
         base.Awake();
@@ -154,16 +162,20 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         HideAllScreens();
         Game_Screen.SetActive(true);
     }
-    public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry, int TotalCoins)
+    public void ShowInfoUI(int day, int score, int totalServed, int happy, int angry, int TotalCoins, int Ransom)
     {
         HideAllScreens();
         Info_Screen.SetActive(true);
         Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry} , TotalCoins={TotalCoins}");
         Info_DayText.text = $"Day: {day} Completed!";
-        Info_ScoreText.text = $"Coins Earned Today: {score} ";
+        Info_ScoreText.text = $"{score}";
+        Info_StashText.text = $"Hidden Stash: {TotalCoins + Ransom - score} COINS";
+        Info_RansomText.text = $"Ransom: {Ransom} COINS";
+        Info_NewTotalStashText.text = $"New Stash: {TotalCoins} COINS";
+
         Info_TotalServedText.text = $"Customers Served: {totalServed}";
         Info_HappyText.text = $"Happy Customers: {happy}";
-        Info_CustomerCoinsText.text = $"Total Coins: {TotalCoins}";
+        // Info_CustomerCoinsText.text = $"Total Coins: {TotalCoins}";
     }
 
     public void CloseInfoUI()
@@ -211,7 +223,40 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         GameSceneManager.instance.BackToMainMenu();
     }
 
+
+    public void ShowFailureUI(int day, int EarnedCoins, int YakuzaDeduction)
+    {
+        HideAllScreens();
+        Failure_Screen.SetActive(true);
+        Failure_Title.text = $"Day {day} Failed!";
+        Failure_Description.text = $"You were short {YakuzaDeduction - EarnedCoins} COINS TODAY !";
+    }
+
+    public void Failure_QuitButtonClick()
+    {
+        cm.PlayButtonClickSound();
+        Debug.Log("[Overlay] Exit Game");
+        Application.Quit();
+        // (in the Editor this won’t do anything, but in a build it will quit)
+    }
+
+    public void Failure_RestartButtonClick()
+    {
+        cm.PlayButtonClickSound();
+        Debug.Log("[Overlay] Restart Game");
+        customerData.ResetEverything();
+        GameSceneManager.instance.BackToMainMenu();
+    }
+
+    public void CloseFailureUI()
+    {
+        Debug.Log("[Settings]  CloseFailureUI called");
+        DefaultView();
+    }
+
+
     public void OnPointerClick(PointerEventData eventData)
+
     {
         Debug.Log("[Settings]  Settings UI received click");
     }
@@ -223,5 +268,6 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Info_Screen.SetActive(false);
         PreDay_Screen.SetActive(false);
         Final_Day_Screen.SetActive(false);
+        Failure_Screen.SetActive(false);
     }
 }

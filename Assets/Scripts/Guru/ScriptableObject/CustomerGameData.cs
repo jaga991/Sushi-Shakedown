@@ -14,7 +14,7 @@ public class CustomerData : ScriptableObject
     public Difficulty difficulty = Difficulty.Easy;
     public event Action<Difficulty> OnDifficultyChanged;
 
-    private int[] Ransom = { 1, 2, 3, 4, 5, 6, 7 };
+    private int[] Ransom = { 100, 2, 3, 4, 5, 6, 7 };
 
     public int Day = 1;
     public int WaveCount = 0;
@@ -62,7 +62,6 @@ public class CustomerData : ScriptableObject
             Debug.Log($"Game mode set to: {gameMode}");
             OnGameModeChanged?.Invoke(gameMode);
         }
-
     }
 
     public void SetDifficulty(Difficulty diff)
@@ -98,8 +97,6 @@ public class CustomerData : ScriptableObject
         OnCustomerServed?.Invoke(customersServed);
     }
 
-
-    // NEW METHODS:
     public void AddScore(int amount = 1)
     {
 
