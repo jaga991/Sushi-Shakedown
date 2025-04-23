@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5788498697616819682}
@@ -136,12 +136,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a5dcd7c34647364d82f25956525ebc3, type: 2}
   - {fileID: 11400000, guid: 2a648bcd76a41ae4db33f336bfad0319, type: 2}
   - {fileID: 11400000, guid: f110ce319faded24ead0dea8540cfe74, type: 2}
-  - {fileID: 11400000, guid: f81c5d72915ca38489fb8db53bab54af, type: 2}
   - {fileID: 11400000, guid: 2f8d38139603a5d4c906f6b4140dce2a, type: 2}
   - {fileID: 11400000, guid: afea9ee08222f4140aa8e7186d76bfbf, type: 2}
+  - {fileID: 11400000, guid: 547d680207e05ad45bd81e7d6a0efe2e, type: 2}
+  - {fileID: 11400000, guid: d8e6085448eebcf4c81c69300f11ef37, type: 2}
+  - {fileID: 11400000, guid: f73333c580e758a4883cdf3a33493caa, type: 2}
   - {fileID: 11400000, guid: 5e033fa7531e6da4789f611ad4120e71, type: 2}
   - {fileID: 11400000, guid: 234cdf7ae03d2f64580e3b4fc3f8b161, type: 2}
-  - {fileID: 11400000, guid: f73333c580e758a4883cdf3a33493caa, type: 2}
+  - {fileID: 11400000, guid: f81c5d72915ca38489fb8db53bab54af, type: 2}
   currentIngredientTypes: []
   currentIngredients: []
   riceSprite: {fileID: 1199777587069215415}
