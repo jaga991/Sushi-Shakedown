@@ -40,12 +40,16 @@ public class OrderAreaGroup : MonoBehaviour
 
             foreach (var hit in hits)
             {
-                if (hit.CompareTag("Customer"))
+                if (hit.GetComponent<CustomerController>() != null)
                 {
-                    var ctrl = hit.GetComponent<CustomerController>();
-                    if (ctrl != null)
-                        ctrl.ForceTimeout();    // see addition below
+                    // if the collider is a customer, boot them out
+                    hit.GetComponent<CustomerController>().ForceTimeout();
                 }
+                // {
+                //     var ctrl = hit.GetComponent<CustomerController>();
+                //     if (ctrl != null)
+                //         ctrl.ForceTimeout();    // see addition below
+                // }
             }
 
             // free up the spot
