@@ -1,7 +1,5 @@
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "CustomerData", menuName = "ScriptableObjects/CustomerData")]
 public class CustomerData : ScriptableObject
@@ -116,7 +114,7 @@ public class CustomerData : ScriptableObject
 
     public void OnStartup()
     {
-        maxDays = 2;
+        maxDays = 7;
         customersServed = 0;
         WaveCount = 0;
         score = 0;

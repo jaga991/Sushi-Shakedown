@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: CustomerData
   m_EditorClassIdentifier: 
   gameMode: 1
-  customersServed: 2
+  customersServed: 0
   difficulty: 0
   Ransom: 01000000020000000300000004000000050000000600000007000000
   Day: 1
-  WaveCount: 3
-  maxDays: 2
-  score: 9
-  normalCustomersCount: 2
+  WaveCount: 0
+  maxDays: 7
+  score: 0
+  normalCustomersCount: 0
   HappyCustomerCount: 0
   angryCustomersCount: 0
-  CustomerCoins: 10
+  CustomerCoins: 0
   GrillAreaCount: 2
   FoodAssemblyAreaCount: 2
   GrillSpeedCount: 1

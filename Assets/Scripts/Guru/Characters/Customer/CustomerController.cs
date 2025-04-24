@@ -1,16 +1,26 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
 using UnityEngine.UI; // Kept for Text component on textBubble
 
 public class CustomerController : DebuggableMonoBehaviour
 {
     // === Movement ===
+
+    public GameObject redexclaim;
+
+    public GameObject Meh;
+    public GameObject Wow;
     public float speed = 3f;
     public Vector2 targetPosition; // Will be assigned from OrderArea
     private bool hasArrived = false;
     private bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
+
+    public Animator customerAnimator; // Animator for the customer
+
+    public AnimatorOverrideController overrideController;
+
+    private RuntimeAnimatorController originalController;
 
     // === UI Elements ===
     public GameObject textBubble;
@@ -81,11 +91,26 @@ public class CustomerController : DebuggableMonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        if (customerAnimator == null)
+            customerAnimator = GetComponent<Animator>();
+
+        // 2) stash the base controller that's currently assigned
+        originalController = customerAnimator.runtimeAnimatorController;
+
+        // 3) randomly pick one of the two
+        bool pickOverride = Random.Range(0, 2) == 0;  // 50/50 chance
+        customerAnimator.runtimeAnimatorController =
+            pickOverride
+              ? (RuntimeAnimatorController)overrideController
+              : originalController;
+
     }
 
     private void Start()
     {
         currentPatience = cs.PatienceLevel; // Set initial patience level from CustomerData
+        customerAnimator.SetBool("isWalking", true);
     }
 
     protected override void OnEnable()
@@ -126,36 +151,68 @@ public class CustomerController : DebuggableMonoBehaviour
 
 
 
+    // void Update()
+    // {
+    //     // Move towards the assigned order area if not arrived.
+    //     if (!hasArrived && !isWalkingOffScreen)
+    //     {
+    //         Vector2 currentPosition = transform.position;
+    //         Vector2 direction = (targetPosition - currentPosition).normalized;
+    //         transform.Translate(direction * speed * Time.deltaTime);
+
+    //         if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+    //         {
+    //             ArrivedAtCounter();
+    //             hasArrived = true;
+    //         }
+    //     }
+    //     else if (isWalkingOffScreen)
+    //     {
+    //         Vector2 currentPosition = transform.position;
+    //         Vector2 direction = (offScreenTarget - currentPosition).normalized;
+    //         transform.Translate(direction * speed * Time.deltaTime);
+
+    //         if (Vector2.Distance(currentPosition, offScreenTarget) < 0.1f)
+    //         {
+    //             Log("Customer has walked off screen.");
+    //             isWalkingOffScreen = false;
+    //             Destroy(gameObject);
+    //         }
+    //     }
+    // }
+
     void Update()
     {
-        // Move towards the assigned order area if not arrived.
-        if (!hasArrived && !isWalkingOffScreen)
+        // — are we walking at all? —
+        if ((!hasArrived && !isWalkingOffScreen) || isWalkingOffScreen)
         {
             Vector2 currentPosition = transform.position;
-            Vector2 direction = (targetPosition - currentPosition).normalized;
+            Vector2 dest = !hasArrived && !isWalkingOffScreen
+                ? targetPosition
+                : offScreenTarget;
+            Vector2 direction = (dest - currentPosition).normalized;
+
+            // ① flip sprite based on x‐direction
+            //    true  = face left,  false = face right
+            spriteRenderer.flipX = (direction.x < 0);
+
+            // ② actually move
             transform.Translate(direction * speed * Time.deltaTime);
 
-            if (Vector2.Distance(currentPosition, targetPosition) < 0.1f)
+            // ③ arrival checks
+            if (!hasArrived && !isWalkingOffScreen &&
+                Vector2.Distance(currentPosition, targetPosition) < 0.1f)
             {
                 ArrivedAtCounter();
                 hasArrived = true;
             }
-        }
-        else if (isWalkingOffScreen)
-        {
-            Vector2 currentPosition = transform.position;
-            Vector2 direction = (offScreenTarget - currentPosition).normalized;
-            transform.Translate(direction * speed * Time.deltaTime);
-
-            if (Vector2.Distance(currentPosition, offScreenTarget) < 0.1f)
+            else if (isWalkingOffScreen &&
+                     Vector2.Distance(currentPosition, offScreenTarget) < 0.1f)
             {
-                Log("Customer has walked off screen.");
-                isWalkingOffScreen = false;
                 Destroy(gameObject);
             }
         }
     }
-
 
     private IEnumerator PatienceCountdown()
     {
@@ -209,7 +266,7 @@ public class CustomerController : DebuggableMonoBehaviour
     {
         textBubble.SetActive(false);
         OrderBubble.SetActive(true);
-
+        customerAnimator.SetBool("isWalking", false);
         // orderBubble.StartOrder(Random.Range(1, 4));
         orderBubble.StartOrder(Random.Range(1, 4)); // Randomly choose between 1 and 3 orders
         // orderBubble.StartOrder(1);
@@ -262,7 +319,8 @@ public class CustomerController : DebuggableMonoBehaviour
             Log("Customer Received Wrong Order !!");
             // on wrong delivery 
         }
-        spriteRenderer.sprite = angrySprite;
+        // spriteRenderer.sprite = angrySprite;
+        redexclaim.SetActive(true);
         PlayOrderFailed();
 
         OrderBubble.SetActive(false);
@@ -279,12 +337,22 @@ public class CustomerController : DebuggableMonoBehaviour
         // Determine customer mood based on patience level
         int patiencePercent = patienceBar.GetHealth();
 
-        spriteRenderer.sprite = patiencePercent switch
+        // Update sprite based on patience level
+        if (patiencePercent > 75)
         {
-            > 75 => happySprite,
-            < 35 => frustratedSprite,
-            _ => spriteRenderer.sprite
-        };
+            Wow.SetActive(true);
+        }
+        else if (patiencePercent < 35)
+        {
+
+        }
+        else
+        {
+            // Middle range            
+            Meh.SetActive(true);
+            redexclaim.SetActive(false);
+            Wow.SetActive(false);
+        }
 
         PlayOrderSuccess(patiencePercent);
 

@@ -10,6 +10,13 @@ public class NPCController : MonoBehaviour
     private readonly float minScale = 0.6f;
     private readonly float maxScale = 0.8f;
     private readonly float NormalScale = 3f;
+    public Animator customerAnimator; // Animator for the customer
+
+    public AnimatorOverrideController overrideController;
+
+    private RuntimeAnimatorController originalController;
+
+
 
     void Awake()
     {
@@ -20,7 +27,18 @@ public class NPCController : MonoBehaviour
             Debug.Log("NPCController: No SpriteRenderer found!");
         }
         speed = Random.Range(.7f, 1.0f) * speed;
+        if (customerAnimator == null)
+            customerAnimator = GetComponent<Animator>();
 
+        // 2) stash the base controller that's currently assigned
+        originalController = customerAnimator.runtimeAnimatorController;
+
+        // 3) randomly pick one of the two
+        bool pickOverride = Random.Range(0, 2) == 0;  // 50/50 chance
+        customerAnimator.runtimeAnimatorController =
+            pickOverride
+              ? (RuntimeAnimatorController)overrideController
+              : originalController;
     }
 
     public void SetDirection(Vector2 direction)
@@ -29,7 +47,7 @@ public class NPCController : MonoBehaviour
         // Flip sprite based on horizontal direction
         if (spriteRenderer != null)
         {
-            spriteRenderer.flipX = moveDirection.x > 0;
+            spriteRenderer.flipX = moveDirection.x < 0;
         }
         else
         {
@@ -67,7 +85,7 @@ public class NPCController : MonoBehaviour
     {
         // 1) Movement direction & sprite flip
         moveDirection = new Vector2(direction, 0f);
-        spriteRenderer.flipX = direction > 0;
+        spriteRenderer.flipX = direction < 0;
 
         // 2) Depth‐based scale
         float t = Mathf.InverseLerp(minY, maxY, spawnY);
@@ -76,6 +94,7 @@ public class NPCController : MonoBehaviour
 
         // 3) Align bottom of sprite to spawnY
         AlignBottomToY(spawnY);
+        customerAnimator.SetBool("isWalking", true);
     }
 
     public void AlignBottomToY(float spawnY)
