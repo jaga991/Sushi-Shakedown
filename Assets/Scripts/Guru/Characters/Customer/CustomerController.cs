@@ -12,8 +12,8 @@ public class CustomerController : DebuggableMonoBehaviour
     public GameObject Wow;
     public float speed = 3f;
     public Vector2 targetPosition; // Will be assigned from OrderArea
-    private bool hasArrived = false;
-    private bool isWalkingOffScreen = false;
+    public bool hasArrived = false;
+    public bool isWalkingOffScreen = false;
     private Vector2 offScreenTarget;
 
     public Animator customerAnimator; // Animator for the customer

@@ -243,6 +243,8 @@ public class WaveManager : DebuggableMonoBehaviour
     public OrderAreaGroup orderAreaGroup;  // assign via Inspector
     private bool endlessModeActive = false;
 
+    public Hypno hypno;
+
     // ─────────────────────────── NEW time-wave settings ──────────────────────
     [Header("Time-based wave settings")]
     [SerializeField] private float waveDurationSeconds = 120f;  // N seconds
@@ -300,8 +302,8 @@ public class WaveManager : DebuggableMonoBehaviour
 
         //    while (!orderAreaGroup.AreAllOrderAreasFree())
         //         yield return new WaitForSeconds(0.5f);     // Wait until all order areas are free before finishing
-        orderAreaGroup.BootAllCustomers();
-
+        //orderAreaGroup.BootAllCustomers();
+        hypno.SpawnDestroyer();
         PrintWaveSummary(startStats, GetWaveStats());
 
         Log("Wave complete!");

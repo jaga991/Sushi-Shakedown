@@ -170,6 +170,7 @@ public class CustomerData : ScriptableObject
         score = 0;
         normalCustomersCount = 0;
         angryCustomersCount = 0;
+        HappyCustomerCount = 0;
         Debug.Log("Score data reset.");
         OnScoreChanged?.Invoke(score);
     }

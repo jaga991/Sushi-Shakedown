@@ -17,13 +17,13 @@ MonoBehaviour:
   difficulty: 0
   Ransom: 1e0000003200000046000000640000007800000096000000c8000000
   Day: 1
-  WaveCount: 0
+  WaveCount: 1
   maxDays: 7
-  score: 0
+  score: 42
   normalCustomersCount: 0
-  HappyCustomerCount: 0
+  HappyCustomerCount: 2
   angryCustomersCount: 0
-  CustomerCoins: 10
+  CustomerCoins: 42
   CuttingSpeed: 1
   GrillAreaCount: 2
   FoodAssemblyAreaCount: 2
