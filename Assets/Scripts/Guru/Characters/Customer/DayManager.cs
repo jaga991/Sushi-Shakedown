@@ -61,10 +61,10 @@ public class DayManager : DebuggableMonoBehaviour
         // reset daily stats
         customerDataSO.WaveCount = 0;
         customerDataSO.customersServed = 0;
-        customerDataSO.score = 0;
+        customerDataSO.score = customerDataSO.CustomerCoins;
         customerDataSO.normalCustomersCount = 0;
         customerDataSO.angryCustomersCount = 0;
-        ScoreParent.ResetScore();
+        ScoreParent.SetScore(customerDataSO.score);
 
         if (customerDataSO.gameMode == GameMode.Waves)
             OM.ShowPreDayUI(customerDataSO.Day);
@@ -139,7 +139,7 @@ public class DayManager : DebuggableMonoBehaviour
         Log("Waves completed. Summarizing the day...");
         PrintDaySummary();
 
-        int EarnedCoins = customerDataSO.score;
+        int EarnedCoins = customerDataSO.CustomerCoins;
 
         int YakuzaDeduction = customerDataSO.GetRansom(customerDataSO.Day);
         Debug.Log($"Yakuza deduction for day {customerDataSO.Day} is {YakuzaDeduction} coins.");
@@ -151,7 +151,7 @@ public class DayManager : DebuggableMonoBehaviour
         }
         else
         {
-            customerDataSO.IncrementCustomerCoins(customerDataSO.score);
+            // customerDataSO.IncrementCustomerCoins(customerDataSO.score);
             customerDataSO.DecrementCustomerCoins(YakuzaDeduction);
 
             if (customerDataSO.Day == customerDataSO.maxDays)

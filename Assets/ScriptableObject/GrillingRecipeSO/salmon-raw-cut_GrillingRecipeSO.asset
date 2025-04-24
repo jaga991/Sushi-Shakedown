@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: salmon-raw-cut_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: 72721e0b4e0619c49beb432891608c6d, type: 2}
-  grillingProgressMax: 2
+  grillingProgressMax: 10
   outputIngredient: {fileID: 11400000, guid: ec96a4ec609215b45bb39a0ba3cb1a96, type: 2}

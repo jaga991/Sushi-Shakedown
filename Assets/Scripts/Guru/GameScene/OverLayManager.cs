@@ -224,8 +224,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         Info_Screen.SetActive(true);
         Debug.Log($"[Overlay] ShowInfoUI: day={day}, score={score}, served={totalServed}, happy={happy}, angry={angry} , TotalCoins={TotalCoins}");
         Info_DayText.text = $"Day: {day} Completed!";
-        Info_ScoreText.text = $"{score}";
-        Info_StashText.text = $"{TotalCoins + Ransom - score} ";
+        Info_ScoreText.text = $"{TotalCoins + Ransom}";
         Info_RansomText.text = $"{Ransom}";
         Info_NewTotalStashText.text = $"{TotalCoins}";
 
@@ -294,6 +293,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         // (in the Editor this won’t do anything, but in a build it will quit)
     }
 
+
+    // called by close in Pause menu causes the massive fuckinng error 
     public void FinalDayScreen_RestartButtonClick()
     {
         cm.TransitionToGameplaySnapshot();
@@ -322,6 +323,8 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         // (in the Editor this won’t do anything, but in a build it will quit)
     }
 
+
+    // Success button to exit to main menu 
     public void Failure_RestartButtonClick()
     {
         cm.TransitionToGameplaySnapshot();

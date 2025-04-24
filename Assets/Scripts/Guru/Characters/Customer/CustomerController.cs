@@ -226,7 +226,7 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private IEnumerator PatienceCountdown()
     {
-        float totalSeconds = 30f + (patienceLevelMultiplier - 1) * 10f;
+        float totalSeconds = 50f + (patienceLevelMultiplier - 1) * 10f;
 
         float waitPerPoint = totalSeconds / maxPatience / difficultyMultiplier;
 
@@ -274,11 +274,10 @@ public class CustomerController : DebuggableMonoBehaviour
         OrderBubble.SetActive(true);
         customerAnimator.SetBool("isWalking", false);
         // orderBubble.StartOrder(Random.Range(1, 4));
-        // OrderMultiplier = Random.Range(1, 4);
+        OrderMultiplier = Random.Range(1, 3);
         orderBubble.StartOrder(OrderMultiplier);
         // orderBubble.StartOrder(1);
         currentPatience = maxPatience;
-
         // Start the fake progress count (0 to 100) over 10 seconds.\
         if (progressRoutine != null) StopCoroutine(progressRoutine);
         progressRoutine = StartCoroutine(PatienceCountdown());
@@ -291,7 +290,7 @@ public class CustomerController : DebuggableMonoBehaviour
         float totalSeconds = 30f + (patienceLevelMultiplier - 1) * 10f;
         float pointsPerSecond = maxPatience / totalSeconds;
 
-        float boostSeconds = 10f;
+        float boostSeconds = 20f;
         int boostPoints = Mathf.RoundToInt(pointsPerSecond * boostSeconds);
         currentPatience = Mathf.Min(maxPatience, currentPatience + boostPoints);
         patienceBar.SetHealth(currentPatience);
@@ -317,12 +316,14 @@ public class CustomerController : DebuggableMonoBehaviour
 
         OrderCompleted();
     }
+
     void OrderFailed(int reason)
     {
         if (reason == 1)
         {
             // customer ran out of patience 
             CustomerData.DeductScore(1);
+
             Log("Times up! Order failed.");
         }
         else if (reason == 2)

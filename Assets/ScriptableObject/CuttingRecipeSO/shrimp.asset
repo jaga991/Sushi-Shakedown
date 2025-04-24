@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: shrimp
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: b30e66c131f3e374d9e809dc409ebce8, type: 2}
-  cuttingProgressMax: 20
+  cuttingProgressMax: 8
   outputIngredient: {fileID: 11400000, guid: df2a10a99ee9f3545b5659a5f2654147, type: 2}

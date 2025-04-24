@@ -38,6 +38,12 @@ public class ScoreParent : MonoBehaviour
         UpdateScoreUI();
     }
 
+    public void SetScore(int score)
+    {
+        this.score = score; // Set the score to the specified value
+        UpdateScoreUI(); // Update the UI to reflect the new score
+    }
+
     public void HandleScore(int amount)
     {
         score += amount;

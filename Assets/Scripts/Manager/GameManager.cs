@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     private bool uiIsBlockingInput = false;
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
 
     [SerializeField] public DraggableObject currentlyDragging = null;
 
@@ -24,15 +24,28 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // optional: keep this GameManager across scenes
         OverLayManager.OnUIBlockToggle += OnUIBlockToggle;
 
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
     }
+
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        mainCamera = Camera.main;
+        if (mainCamera == null)
+            Debug.LogError("MainCamera not found after scene load!");
+    }
+
 
     private void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         OverLayManager.OnUIBlockToggle -= OnUIBlockToggle;
-
     }
+
+
+
 
     private void OnUIBlockToggle(bool blocked)
     {
@@ -51,7 +64,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("MainCamera set in GameManager");
+            Debug.Log($"GameManager: CameraCheck grabbed camera → {mainCamera.name}");
         }
     }
 
@@ -68,7 +81,11 @@ public class GameManager : MonoBehaviour
 
 
         if (uiIsBlockingInput)
+        {
+            Debug.Log("RUn for your livese , UI is being blocked");
             return;
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -165,6 +182,7 @@ public class GameManager : MonoBehaviour
 
     private Vector3 GetMousePosition()
     {
+
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0;
         return mouseWorldPos;

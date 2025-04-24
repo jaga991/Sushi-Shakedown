@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: seabream-grilled_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: d8113620d998c1a4c892eec4d8eec01e, type: 2}
-  grillingProgressMax: 6
+  grillingProgressMax: 8
   outputIngredient: {fileID: 11400000, guid: fdc36c520d337c74eb646499e84c1d84, type: 2}

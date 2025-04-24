@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: amberjack-raw-cut_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: 462a0be210535cf4eac2686a6106c91b, type: 2}
-  grillingProgressMax: 2
+  grillingProgressMax: 15
   outputIngredient: {fileID: 11400000, guid: b423325a1c695d64997aa65ddac11183, type: 2}

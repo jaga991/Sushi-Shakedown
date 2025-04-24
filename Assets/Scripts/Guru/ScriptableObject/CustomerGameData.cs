@@ -24,7 +24,6 @@ public class CustomerData : ScriptableObject
     public int score = 0;
     public int normalCustomersCount = 0;
     public int HappyCustomerCount = 0;
-
     public int angryCustomersCount = 0;
     public event Action<int> OnScoreChanged;
     public event Action<GameMode> OnGameModeChanged;
@@ -147,6 +146,7 @@ public class CustomerData : ScriptableObject
     {
 
         score += amount;
+        IncrementCustomerCoins(amount);
         // Debug.Log("Score is " + score);
         if (amount > 5)
             HappyCustomerCount++;
@@ -159,6 +159,7 @@ public class CustomerData : ScriptableObject
     public void DeductScore(int amount)
     {
         score -= amount;
+        DecrementCustomerCoins(amount);
         angryCustomersCount++;
         // Debug.Log($"Score –{amount}. Total: {score}. Angry served: {angryCustomersCount}");
         OnScoreChanged?.Invoke(score);

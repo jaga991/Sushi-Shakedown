@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: shrimp-grilled_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: a6258a4b7c2d6dd4ba0822410b56e3e5, type: 2}
-  grillingProgressMax: 6
+  grillingProgressMax: 8
   outputIngredient: {fileID: 11400000, guid: bdb2373c21051ba41b60e96cbecd4eff, type: 2}
