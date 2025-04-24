@@ -71,10 +71,10 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI Upgrade_GrillCount;
     [SerializeField] private TextMeshProUGUI Upgrade_GrillCost;
 
-    private int[] FAA_Cost = { 2, 3 };
-    private int[] GrillAreaCost = { 2, 3 };
-    private int[] GrillSpeedCost = { 2, 3 };
-    private int[] PatienceLevelCost = { 2, 3 };
+    private int[] FAA_Cost = { 20, 30 };
+    private int[] GrillAreaCost = { 20, 30 };
+    private int[] GrillSpeedCost = { 20, 30 };
+    private int[] PatienceLevelCost = { 20, 30 };
     public int FoodAssemblyAreaMaxCount = 4;
     public int GrillAreaMaxCount = 4;
     public int GrillMaxSpeedCount = 3;

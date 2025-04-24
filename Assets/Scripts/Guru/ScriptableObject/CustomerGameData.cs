@@ -12,7 +12,7 @@ public class CustomerData : ScriptableObject
     public Difficulty difficulty = Difficulty.Easy;
     public event Action<Difficulty> OnDifficultyChanged;
 
-    public int[] Ransom = { 1, 2, 3, 4, 5, 6, 7 };
+    public int[] Ransom = { 10, 26, 34, 4, 5, 6, 7 };
 
     public int Day = 1;
     public int WaveCount = 0;
