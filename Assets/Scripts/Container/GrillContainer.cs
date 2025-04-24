@@ -117,7 +117,7 @@ public class GrillContainer : BaseContainer
         if (!isGrilling || GetOwnedDraggable() == null) return;
 
         // advance
-        float adjustedMultiplier = 1f + (grillingMultiplier - 1) * 0.1f;
+        float adjustedMultiplier = 1f + (grillingMultiplier - 1) * 1.0f;
         grillingProgress += Time.deltaTime * adjustedMultiplier;
 
 

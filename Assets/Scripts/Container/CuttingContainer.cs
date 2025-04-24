@@ -11,7 +11,29 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
 
     [SerializeField] private GameObject cuttingProgressUI;  // Still keep the GameObject reference
 
+    public CustomerData cs; // assign via the Inspector
 
+    private int CuttingMultiplier = 1; // default multiplier
+
+    private void OnEnable()
+    {
+        cs.OnCuttingSpeed_Increased += HandleCuttingSpeedIncreased;
+    }
+    private void OnDisable()
+    {
+        cs.OnCuttingSpeed_Increased -= HandleCuttingSpeedIncreased;
+    }
+
+    private void HandleCuttingSpeedIncreased(int newValue)
+    {
+        CuttingMultiplier = newValue;
+    }
+
+    private void Start()
+    {
+        // set the initial visibility based on your SO's starting counts
+        CuttingMultiplier = cs.CuttingSpeed;
+    }
 
     private void Update()
     {
@@ -97,7 +119,7 @@ public class CuttingContainer : BaseContainer   //cutting board will inherit bas
         //check cutting board has ingredient and valid to cut
         if (GetOwnedDraggable() && HasRecipeWithInput(GetOwnedDraggable().GetDraggableObjectSO()))
         {
-            cuttingProgress += 1;
+            cuttingProgress += CuttingMultiplier;
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetOwnedDraggable().GetDraggableObjectSO());
             Debug.Log($"cutting progress: {cuttingProgress}");
             //audio

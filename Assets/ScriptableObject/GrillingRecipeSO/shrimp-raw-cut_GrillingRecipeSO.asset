@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: shrimp-raw-cut_GrillingRecipeSO
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: df2a10a99ee9f3545b5659a5f2654147, type: 2}
-  grillingProgressMax: 2
+  grillingProgressMax: 15
   outputIngredient: {fileID: 11400000, guid: a6258a4b7c2d6dd4ba0822410b56e3e5, type: 2}

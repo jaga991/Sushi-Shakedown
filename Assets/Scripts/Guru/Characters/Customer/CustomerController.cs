@@ -226,26 +226,22 @@ public class CustomerController : DebuggableMonoBehaviour
 
     private IEnumerator PatienceCountdown()
     {
-        float adjustedMultiplier = 1f + (patienceLevelMultiplier - 1) * 0.1f;
+        float totalSeconds = 30f + (patienceLevelMultiplier - 1) * 10f;
 
-        float waitPerPoint = adjustedMultiplier / difficultyMultiplier;
-        // Log($"CustomerController: Patience countdown started. Wait time per point: {waitPerPoint} seconds.");
+        float waitPerPoint = totalSeconds / maxPatience / difficultyMultiplier;
 
         while (currentPatience > 0)
         {
             // update the UI
             patienceBar.SetHealth(currentPatience);
 
-            // wait scaled by difficulty
             yield return new WaitForSeconds(waitPerPoint);
-
-            // then lose one point
             currentPatience--;
         }
 
-        // out of patience!
         OrderFailed(1);
     }
+
 
 
     void SetOffScreenTarget()
@@ -287,15 +283,20 @@ public class CustomerController : DebuggableMonoBehaviour
         if (progressRoutine != null) StopCoroutine(progressRoutine);
         progressRoutine = StartCoroutine(PatienceCountdown());
     }
-
     public void OnCorrectDelivery()
     {
-        Log("CustomerController: Correct delivery! , boosted patience.");
+        Log("CustomerController: Correct delivery! boosted patience.");
 
-        currentPatience = Mathf.Min(maxPatience, currentPatience + patienceBoostOnCorrect);
 
+        float totalSeconds = 30f + (patienceLevelMultiplier - 1) * 10f;
+        float pointsPerSecond = maxPatience / totalSeconds;
+
+        float boostSeconds = 10f;
+        int boostPoints = Mathf.RoundToInt(pointsPerSecond * boostSeconds);
+        currentPatience = Mathf.Min(maxPatience, currentPatience + boostPoints);
         patienceBar.SetHealth(currentPatience);
     }
+
 
     public void OnWrongDelivery(string foodName)
     {

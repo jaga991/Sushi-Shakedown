@@ -47,6 +47,9 @@ public class CustomerData : ScriptableObject
     public event Action<int> OnGrillSpeed_Increased;
     public event Action<int> OnPatienceLevel_Increased;
 
+    public event Action<int> OnCuttingSpeed_Increased;
+    public int CuttingSpeed = 1;
+
 
     public int GrillAreaCount = 2;
     public int FoodAssemblyAreaCount = 2;
@@ -64,6 +67,12 @@ public class CustomerData : ScriptableObject
     {
         FoodAssemblyAreaCount++;
         OnFAA_Increased?.Invoke(FoodAssemblyAreaCount);
+    }
+
+    public void IncrementCuttingSpeed()
+    {
+        CuttingSpeed++;
+        OnCuttingSpeed_Increased?.Invoke(CuttingSpeed);
     }
 
     public void IncrementGrillArea()
@@ -172,6 +181,11 @@ public class CustomerData : ScriptableObject
         ResetScore();
         ResetCustomerCoins();
         Debug.Log("All data reset.");
+        GrillAreaCount = 2;
+        FoodAssemblyAreaCount = 2;
+        GrillSpeedCount = 1;
+        PatienceLevel = 1;
+        CuttingSpeed = 1;
     }
 }
 

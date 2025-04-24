@@ -75,11 +75,16 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     private int[] GrillAreaCost = { 20, 30 };
     private int[] GrillSpeedCost = { 20, 30 };
     private int[] PatienceLevelCost = { 20, 30 };
+
+    private int[] CuttingSpeedCost = { 20, 30 };
     public int FoodAssemblyAreaMaxCount = 4;
     public int GrillAreaMaxCount = 4;
     public int GrillMaxSpeedCount = 3;
 
     public int FoodAssemblyLevelMaxCount = 3;
+
+
+    public int CuttingSpeedMaxLevel = 3;
     public int PatienceLevelMaxCount = 3;
 
     [SerializeField] private TextMeshProUGUI Upgrade_GrillSpeed;
@@ -88,6 +93,9 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
 
     [SerializeField] private TextMeshProUGUI Upgrade_CustomerPatience;
     [SerializeField] private TextMeshProUGUI Upgrade_CustomerPatienceCost;
+
+    [SerializeField] private TextMeshProUGUI Upgrade_CuttingSpeed;
+    [SerializeField] private TextMeshProUGUI Upgrade_CuttingSpeedCost;
     protected override void Awake()
     {
         base.Awake();
@@ -145,6 +153,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     }
     private void RefreshUI()
     {
+
         bool isWaves = Pause_CustomerData_Local.gameMode == GameMode.Waves;
 
         GameMode_Toggle.CurrentValue = isWaves;
@@ -356,8 +365,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         cm.TransitionToDimmedSnapshot();
         UpgradeScreen.SetActive(true);
         Upgrade_CointCount.text = $"{customerData.CustomerCoins}";
-        // Upgrade_FoodAssemblyCount.text = $"{customerData.FoodAssemblyLevel}";
-        // Upgrade_RequiredCoinsCount.text = $"{customerData.GetUpgradeCost()}";
+
     }
 
     public void CloseUpgradeScreen()
@@ -388,6 +396,29 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
         else
         {
             Debug.Log("Max Food Assembly Area Count reached!");
+        }
+    }
+
+    public void Upgrade_CuttingSpeed_ButtonClick()
+    {
+        int currentValue = customerData.CuttingSpeed;
+        if (currentValue < CuttingSpeedMaxLevel)
+        {
+            int requiredCoins = GetCuttingSpeedUpgradeCost();
+            if (customerData.CustomerCoins >= requiredCoins)
+            {
+                customerData.CustomerCoins -= requiredCoins;
+                customerData.IncrementCuttingSpeed();
+                Upgrade_RefreshUI();
+            }
+            else
+            {
+                Debug.Log("Not enough coins to upgrade Cutting Speed!");
+            }
+        }
+        else
+        {
+            Debug.Log("Max Cutting Speed reached!");
         }
     }
 
@@ -459,6 +490,15 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
             Upgrade_CustomerPatienceCost.text = $"Max";
         }
 
+        Upgrade_CuttingSpeed.text = $"{customerData.CuttingSpeed}";
+        if (customerData.CuttingSpeed < CuttingSpeedMaxLevel)
+        {
+            Upgrade_CuttingSpeedCost.text = $"{GetCuttingSpeedUpgradeCost()}";
+        }
+        else
+        {
+            Upgrade_CuttingSpeedCost.text = $"Max";
+        }
     }
 
 
@@ -472,7 +512,7 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
             if (customerData.CustomerCoins >= requiredCoins)
             {
                 customerData.CustomerCoins -= requiredCoins;
-                customerData.IncrementGrillArea();
+                customerData.IncrementGrillSpeed();
                 Upgrade_RefreshUI();
             }
             else
@@ -528,5 +568,10 @@ public class OverLayManager : DebuggableMonoBehaviour, IPointerClickHandler
     public int GetPatienceLevelUpgradeCost()
     {
         return PatienceLevelCost[customerData.PatienceLevel - 1];
+    }
+
+    public int GetCuttingSpeedUpgradeCost()
+    {
+        return CuttingSpeedCost[customerData.CuttingSpeed - 1];
     }
 }
