@@ -12,7 +12,7 @@ public class NPCController : MonoBehaviour
     private readonly float NormalScale = 3f;
     public Animator customerAnimator; // Animator for the customer
 
-    public AnimatorOverrideController overrideController;
+    public System.Collections.Generic.List<AnimatorOverrideController> overrideControllers;
 
     private RuntimeAnimatorController originalController;
 
@@ -33,12 +33,9 @@ public class NPCController : MonoBehaviour
         // 2) stash the base controller that's currently assigned
         originalController = customerAnimator.runtimeAnimatorController;
 
-        // 3) randomly pick one of the two
-        bool pickOverride = Random.Range(0, 2) == 0;  // 50/50 chance
-        customerAnimator.runtimeAnimatorController =
-            pickOverride
-              ? (RuntimeAnimatorController)overrideController
-              : originalController;
+        int t = Random.Range(0, overrideControllers.Count);  // 50/50 chance
+        customerAnimator.runtimeAnimatorController = overrideControllers[t];
+
     }
 
     public void SetDirection(Vector2 direction)

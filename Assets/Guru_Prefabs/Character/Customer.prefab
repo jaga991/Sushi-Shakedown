@@ -198,12 +198,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redexclaim: {fileID: 4834604323365685246}
+  OrderMultiplier: 1
   Meh: {fileID: 262641909873981598}
   Wow: {fileID: 6781268120191091777}
   speed: 3
   targetPosition: {x: 0, y: 0}
+  hasArrived: 0
+  isWalkingOffScreen: 0
   customerAnimator: {fileID: 6095343319530272046}
   overrideController: {fileID: 22100000, guid: f7619406155104b4185b3595b8d0beb7, type: 2}
+  overrideController2: {fileID: 22100000, guid: dd860d3a0d60c6e41819c644c26cebeb, type: 2}
+  overrideController3: {fileID: 22100000, guid: 063b6749fcc156348852bafee545f118, type: 2}
+  overrideControllers:
+  - {fileID: 22100000, guid: f7619406155104b4185b3595b8d0beb7, type: 2}
+  - {fileID: 22100000, guid: dd860d3a0d60c6e41819c644c26cebeb, type: 2}
+  - {fileID: 22100000, guid: 063b6749fcc156348852bafee545f118, type: 2}
   textBubble: {fileID: 7694083021823872009}
   patienceBar: {fileID: 3285532191880464430}
   OrderBubble: {fileID: 3239254254607974306}

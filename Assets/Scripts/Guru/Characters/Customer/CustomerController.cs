@@ -1,4 +1,5 @@
 using System.Collections;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI; // Kept for Text component on textBubble
 
@@ -19,7 +20,10 @@ public class CustomerController : DebuggableMonoBehaviour
     public Animator customerAnimator; // Animator for the customer
 
     public AnimatorOverrideController overrideController;
+    public AnimatorOverrideController overrideController2;
+    public AnimatorOverrideController overrideController3;
 
+    public System.Collections.Generic.List<AnimatorOverrideController> overrideControllers;
     private RuntimeAnimatorController originalController;
 
     // === UI Elements ===
@@ -99,11 +103,8 @@ public class CustomerController : DebuggableMonoBehaviour
         originalController = customerAnimator.runtimeAnimatorController;
 
         // 3) randomly pick one of the two
-        bool pickOverride = Random.Range(0, 2) == 0;  // 50/50 chance
-        customerAnimator.runtimeAnimatorController =
-            pickOverride
-              ? (RuntimeAnimatorController)overrideController
-              : originalController;
+        int t = Random.Range(0, overrideControllers.Count);  // 50/50 chance
+        customerAnimator.runtimeAnimatorController = overrideControllers[t];
 
     }
 
@@ -419,12 +420,12 @@ public class CustomerController : DebuggableMonoBehaviour
 
 
     // debugging thing , remove this
-    void OnMouseDown()
-    {
-        if (hasArrived)
-        {
-            OrderCompleted();
-        }
-    }
+    //void OnMouseDown()
+    //{
+    //    if (hasArrived)
+    //    {
+    //        OrderCompleted();
+    //    }
+    //}
 
 }

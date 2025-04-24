@@ -104,7 +104,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   customerAnimator: {fileID: 7574004073729995608}
-  overrideController: {fileID: 22100000, guid: f7619406155104b4185b3595b8d0beb7, type: 2}
+  overrideControllers:
+  - {fileID: 22100000, guid: dd860d3a0d60c6e41819c644c26cebeb, type: 2}
+  - {fileID: 22100000, guid: 063b6749fcc156348852bafee545f118, type: 2}
+  - {fileID: 22100000, guid: f7619406155104b4185b3595b8d0beb7, type: 2}
 --- !u!61 &8364975428633947334
 BoxCollider2D:
   m_ObjectHideFlags: 0

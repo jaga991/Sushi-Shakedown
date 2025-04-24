@@ -16509,7 +16509,7 @@ MonoBehaviour:
   customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
   orderAreaGroup: {fileID: 372772242}
   hypno: {fileID: 127084994}
-  waveDurationSeconds: 15
+  waveDurationSeconds: 120
   spawnInterval: 1
   spawnJitter: {x: 0, y: 0.3}
 --- !u!114 &1932379690
