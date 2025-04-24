@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System.Runtime.CompilerServices;
-using UnityEngine.Rendering.Universal;
+
 public class WaveManager : DebuggableMonoBehaviour
 {
 
@@ -223,3 +223,139 @@ public class WaveManager : DebuggableMonoBehaviour
         );
     }
 }
+// public class WaveManager : DebuggableMonoBehaviour
+// {
+//     // ──────────────────────────── existing fields ────────────────────────────
+//     public NPCSpawner npcSpawner;
+//     public float waveCountdownDuration = 1f;
+//     public CustomerData customerData;
+//     /*  OLD: int[] waveSizes = { 1 };       */
+//     /*  OLD: private int tempWaveLimit = 1; */
+//     // ^― no longer needed for time-based waves
+
+//     private Coroutine _endlessRoutine;
+//     private bool _wavesRunning;
+//     private Coroutine currentWaveRoutine = null;
+
+//     public event System.Action OnWavesCompleted;
+//     public event System.Action<string> OnWaveStatusChanged;
+//     public OrderAreaGroup orderAreaGroup;  // assign via Inspector
+//     private bool endlessModeActive = false;
+
+//     // ─────────────────────────── NEW time-wave settings ──────────────────────
+//     [Header("Time-based wave settings")]
+//     [SerializeField] private float waveDurationSeconds = 30f;  // N seconds
+//     [SerializeField] private float spawnInterval = 1.0f; // seconds between spawns
+//     [SerializeField] private Vector2 spawnJitter = new Vector2(0f, 0.3f); // optional random extra delay
+
+//     // ─────────────────────────── life-cycle boilerplate (unchanged) ──────────
+//     protected override void OnEnable() { base.OnEnable(); }
+//     protected override void OnDisable() { base.OnDisable(); }
+//     protected override void Awake() { base.Awake(); }
+
+//     protected override void UpdateLogStatus()
+//     {
+//         isDebugEnabled = logSettings.WaveManagerLogs;
+//     }
+
+//     // ─────────────────────────── PUBLIC API ──────────────────────────────────
+//     public void StartWaves()
+//     {
+//         if (_wavesRunning) return;
+
+//         StopWaves();
+//         _wavesRunning = true;
+
+//         Debug.Log("WaveManager: Starting timed wave.");
+//         currentWaveRoutine = StartCoroutine(RunTimedWave());   // MODIFIED
+//         OnWaveStatusChanged?.Invoke("Wave is starting!");
+//     }
+
+//     public void StopWaves()
+//     {
+//         if (currentWaveRoutine != null)
+//             StopCoroutine(currentWaveRoutine);
+
+//         currentWaveRoutine = null;
+//         _wavesRunning = false;
+//     }
+
+//     // ─────────────────────────── WAVE LOGIC (REWRITTEN) ──────────────────────
+//     private IEnumerator RunTimedWave()                                  // NEW
+//     {
+//         int waveNumber = customerData.WaveCount + 1;  // increment logically
+//         WaveStats startStats = GetWaveStats();        // capture pre-wave stats
+
+//         // Countdown before the wave starts.
+//         yield return StartCoroutine(WaveCountdown(waveCountdownDuration));
+
+//         customerData.WaveCount = waveNumber;
+//         string msg = $"Wave {waveNumber} started (time-based, {waveDurationSeconds} s)!";
+//         Log(msg);
+//         OnWaveStatusChanged?.Invoke(msg);
+
+//         // Spawn continuously for the configured duration
+//         yield return StartCoroutine(SpawnForDuration(waveDurationSeconds, spawnInterval, waveNumber));
+
+//         // Wait until all order areas are free before finishing
+//         while (!orderAreaGroup.AreAllOrderAreasFree())
+//             yield return new WaitForSeconds(0.5f);
+
+//         PrintWaveSummary(startStats, GetWaveStats());
+
+//         Log("Wave complete!");
+//         OnWaveStatusChanged?.Invoke("Wave over!");
+//         StopWaves();
+//         OnWavesCompleted?.Invoke();
+//     }
+
+//     // Spawns customers every <interval ± jitter> until <duration> seconds elapse
+//     private IEnumerator SpawnForDuration(float duration, float interval, int waveNumber)   // NEW
+//     {
+//         float endTime = Time.time + duration;
+//         int spawnedCount = 0;
+
+//         while (Time.time < endTime)
+//         {
+//             bool didSpawn = npcSpawner.SpawnCustomer();
+//             if (didSpawn)
+//             {
+//                 spawnedCount++;
+//                 string spawnMsg = $"Wave {waveNumber}: {spawnedCount} customers so far";
+//                 OnWaveStatusChanged?.Invoke(spawnMsg);
+//                 Log(spawnMsg);
+//             }
+//             else
+//             {
+//                 Log("Spawn failed — retrying next tick.");
+//             }
+
+//             float wait = interval + Random.Range(spawnJitter.x, spawnJitter.y);
+//             yield return new WaitForSeconds(wait);
+//         }
+//     }
+
+//     // ─────────────────────────── ENDLESS / FREE-PLAY (unchanged) ─────────────
+//     public void StartEndlessCustomers() { /* … unchanged … */ }
+//     public void StopEndlessCustomers() { /* … unchanged … */ }
+//     private IEnumerator EndlessCustomersRoutine() { /* … unchanged … */ }
+
+//     // ─────────────────────────── HELPERS (mostly unchanged) ──────────────────
+//     private IEnumerator WaveCountdown(float seconds) { /* … unchanged … */ }
+
+//     // OLD SpawnWave(int count…) remains for reference but is unused
+//     /* public IEnumerator SpawnWave(int customerCount, float interval, int waveNumber) { … } pri*/
+
+//     private WaveStats GetWaveStats() { /* … unchanged … */ }
+//     private void PrintWaveSummary(WaveStats startStats, WaveStats currentStats) { /* … unchanged … */ }
+
+//     // ─────────────────────────── NESTED TYPE ─────────────────────────────────
+//     public class WaveStats
+//     {
+//         public int waveNumber;
+//         public int customersServed;
+//         public int score;
+//         public int normalCustomersCount;
+//         public int angryCustomersCount;
+//     }
+// }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,11 +23,15 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject); // optional: keep this GameManager across scenes
         OverLayManager.OnUIBlockToggle += OnUIBlockToggle;
+
+
+
     }
 
     private void OnDestroy()
     {
         OverLayManager.OnUIBlockToggle -= OnUIBlockToggle;
+
     }
 
     private void OnUIBlockToggle(bool blocked)

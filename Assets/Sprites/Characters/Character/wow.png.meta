@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wow_0: 5349411819524617394
+      wow_1: 1086444766473883378
+      wow_2: 5257186803602760809
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
