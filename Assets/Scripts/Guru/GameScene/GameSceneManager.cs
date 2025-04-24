@@ -9,36 +9,11 @@ public class GameSceneManager : Singleton<GameSceneManager>
     {
         base.Awake();
 
-        if (Display.displays.Length > 1)
-        {
-            Debug.Log("Activating Display 2");
-            Display.displays[1].Activate();
-        }
-        else
-        {
-            Debug.LogWarning("Display 2 not available");
-        }
+        Debug.Log("Displays is " + Display.displays.Length);
+        // e.g. ensure Display2 is activated, if you’re using multi-display:
+        // if (Display.displays.Length > 1) Display.displays[1].Activate();
     }
 
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log($"Scene loaded: {scene.name} – assigning cameras to Display 2");
-
-        foreach (Camera cam in Camera.allCameras)
-        {
-            cam.targetDisplay = 1; // 0 = Display 1, 1 = Display 2
-        }
-    }
     public void PrintActiveScreens()
     {
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -58,8 +33,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
         // 2) Immediately add KitchenScene on top
         SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
-
-
     }
 
     /// <summary>
@@ -76,8 +49,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        // Reset target display to main display (1) when returning to main menu
-        Display.displays[0].Activate();
     }
 
     /// <summary>
