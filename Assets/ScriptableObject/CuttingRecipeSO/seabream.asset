@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: seabream
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: 4533298e2f304cc4ba4bbfa6c81a036e, type: 2}
-  cuttingProgressMax: 5
+  cuttingProgressMax: 8
   outputIngredient: {fileID: 11400000, guid: f9e087d6b1d698842bd7352042c342b3, type: 2}

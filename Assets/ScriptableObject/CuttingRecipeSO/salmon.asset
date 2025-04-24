@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: salmon
   m_EditorClassIdentifier: 
   inputIngredient: {fileID: 11400000, guid: 8475d0b0fa6300447bb321f2c142505e, type: 2}
-  cuttingProgressMax: 2
+  cuttingProgressMax: 8
   outputIngredient: {fileID: 11400000, guid: 72721e0b4e0619c49beb432891608c6d, type: 2}

@@ -274,7 +274,7 @@ public class CustomerController : DebuggableMonoBehaviour
         OrderBubble.SetActive(true);
         customerAnimator.SetBool("isWalking", false);
         // orderBubble.StartOrder(Random.Range(1, 4));
-        // OrderMultiplier = Random.Range(1, 4);
+        OrderMultiplier = Random.Range(1, 4);
         orderBubble.StartOrder(OrderMultiplier);
         // orderBubble.StartOrder(1);
         currentPatience = maxPatience;

@@ -15,17 +15,17 @@ MonoBehaviour:
   gameMode: 1
   customersServed: 0
   difficulty: 0
-  Ransom: 0a0000001a0000002200000004000000050000000600000007000000
-  Day: 2
+  Ransom: 280000003c00000050000000640000007800000096000000c8000000
+  Day: 1
   WaveCount: 1
   maxDays: 7
   score: 0
   normalCustomersCount: 0
   HappyCustomerCount: 0
   angryCustomersCount: 0
-  CustomerCoins: 267
-  CuttingSpeed: 3
-  GrillAreaCount: 3
+  CustomerCoins: 10
+  CuttingSpeed: 1
+  GrillAreaCount: 2
   FoodAssemblyAreaCount: 2
-  GrillSpeedCount: 3
-  PatienceLevel: 3
+  GrillSpeedCount: 1
+  PatienceLevel: 1

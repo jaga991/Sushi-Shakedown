@@ -245,7 +245,7 @@ public class WaveManager : DebuggableMonoBehaviour
 
     // ─────────────────────────── NEW time-wave settings ──────────────────────
     [Header("Time-based wave settings")]
-    [SerializeField] private float waveDurationSeconds = 30f;  // N seconds
+    [SerializeField] private float waveDurationSeconds = 120.0f;  // N seconds
     [SerializeField] private float spawnInterval = 1.0f; // seconds between spawns
     [SerializeField] private Vector2 spawnJitter = new Vector2(0f, 0.3f); // optional random extra delay
 
