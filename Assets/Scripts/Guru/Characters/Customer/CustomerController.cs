@@ -107,6 +107,16 @@ public class CustomerController : DebuggableMonoBehaviour
 
     }
 
+    public void ForceTimeout()
+    {
+        // stop the existing patience coroutine (if any)
+        if (progressRoutine != null)
+            StopCoroutine(progressRoutine);
+
+        // call your existing failure logic
+        OrderFailed(1);
+    }
+
     private void Start()
     {
         currentPatience = cs.PatienceLevel; // Set initial patience level from CustomerData

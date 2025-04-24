@@ -298,9 +298,9 @@ public class WaveManager : DebuggableMonoBehaviour
         // Spawn continuously for the configured duration
         yield return StartCoroutine(SpawnForDuration(waveDurationSeconds, spawnInterval, waveNumber));
 
-        // Wait until all order areas are free before finishing
-        while (!orderAreaGroup.AreAllOrderAreasFree())
-            yield return new WaitForSeconds(0.5f);
+        //    while (!orderAreaGroup.AreAllOrderAreasFree())
+        //         yield return new WaitForSeconds(0.5f);     // Wait until all order areas are free before finishing
+        orderAreaGroup.BootAllCustomers();
 
         PrintWaveSummary(startStats, GetWaveStats());
 
@@ -310,26 +310,19 @@ public class WaveManager : DebuggableMonoBehaviour
         OnWavesCompleted?.Invoke();
     }
 
-    // Spawns customers every <interval ± jitter> until <duration> seconds elapse
-    private IEnumerator SpawnForDuration(float duration, float interval, int waveNumber)   // NEW
+
+    // Spawn customers for <duration> seconds; UI shows "XX s left" only.
+    private IEnumerator SpawnForDuration(float duration, float interval, int waveNumber)
     {
         float endTime = Time.time + duration;
-        int spawnedCount = 0;
 
         while (Time.time < endTime)
         {
-            bool didSpawn = npcSpawner.SpawnCustomer();
-            if (didSpawn)
-            {
-                spawnedCount++;
-                string spawnMsg = $"Wave {waveNumber}: {spawnedCount} customers so far";
-                OnWaveStatusChanged?.Invoke(spawnMsg);
-                Log(spawnMsg);
-            }
-            else
-            {
-                Log("Spawn failed — retrying next tick.");
-            }
+            npcSpawner.SpawnCustomer();   // ignore return; we just keep trying
+
+            float timeLeft = Mathf.Max(0f, endTime - Time.time);
+            OnWaveStatusChanged?.Invoke($"{timeLeft:0}s left");
+            Log($"Wave timer: {timeLeft:0}s remaining");
 
             float wait = interval + Random.Range(spawnJitter.x, spawnJitter.y);
             yield return new WaitForSeconds(wait);

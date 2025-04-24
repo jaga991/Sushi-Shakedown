@@ -30,6 +30,29 @@ public class OrderAreaGroup : MonoBehaviour
         return null; // No free area available.
     }
 
+    public void BootAllCustomers()
+    {
+        foreach (var area in orderAreas)
+        {
+            // find any “Customer” colliders at this area’s position
+            Vector2 pos = area.GetCoordinates();
+            Collider2D[] hits = Physics2D.OverlapPointAll(pos);
+
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("Customer"))
+                {
+                    var ctrl = hit.GetComponent<CustomerController>();
+                    if (ctrl != null)
+                        ctrl.ForceTimeout();    // see addition below
+                }
+            }
+
+            // free up the spot
+            area.UpdateState(false);
+        }
+    }
+
     public void ReleaseOrderArea(OrderArea area)
     {
         if (orderAreas.Contains(area))
