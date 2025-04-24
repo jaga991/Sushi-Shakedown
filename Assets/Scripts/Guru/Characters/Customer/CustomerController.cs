@@ -5,9 +5,9 @@ using UnityEngine.UI; // Kept for Text component on textBubble
 public class CustomerController : DebuggableMonoBehaviour
 {
     // === Movement ===
-
     public GameObject redexclaim;
 
+    public int OrderMultiplier = 1; // 1 to 3 orders
     public GameObject Meh;
     public GameObject Wow;
     public float speed = 3f;
@@ -278,7 +278,8 @@ public class CustomerController : DebuggableMonoBehaviour
         OrderBubble.SetActive(true);
         customerAnimator.SetBool("isWalking", false);
         // orderBubble.StartOrder(Random.Range(1, 4));
-        orderBubble.StartOrder(Random.Range(1, 4)); // Randomly choose between 1 and 3 orders
+        // OrderMultiplier = Random.Range(1, 4);
+        orderBubble.StartOrder(OrderMultiplier);
         // orderBubble.StartOrder(1);
         currentPatience = maxPatience;
 
@@ -371,12 +372,10 @@ public class CustomerController : DebuggableMonoBehaviour
         Log("Order Completed!");
         // Calculate score based on patience percentage (1-10)
         int score = Mathf.Clamp(1 + Mathf.FloorToInt(patiencePercent * 9f / 100f), 1, 10);
-
+        score *= OrderMultiplier;
         CustomerData.AddScore(score);
-        // Log("Added Score is " + score);
 
         CoinHandler.Instance.SpawnCoins(score, transform.position);
-
 
         if (progressRoutine != null)
         {

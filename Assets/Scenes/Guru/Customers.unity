@@ -8676,7 +8676,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -15625,8 +15625,10 @@ MonoBehaviour:
   npcSpawner: {fileID: 657353901}
   waveCountdownDuration: 5
   customerData: {fileID: 11400000, guid: 7d331a6a33ff24ec4b364a57269a07b1, type: 2}
-  waveSizes: 010000000100000002000000
   orderAreaGroup: {fileID: 372772242}
+  waveDurationSeconds: 30
+  spawnInterval: 1
+  spawnJitter: {x: 0, y: 0.3}
 --- !u!114 &1932379690
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ public class FoodManager : MonoBehaviour
             cup.GetComponent<BoxCollider2D>().enabled = false;
             Food foodComponent = cup.GetComponent<Food>();
             //choose a random int from 1 to 3 to decide how many drinks to add (from 1 to 3)
-            int randomDrinkCount = Random.Range(0, 3); // 1 to 3 drinks
+            int randomDrinkCount = Random.Range(1, 4); // 1 to 3 drinks
             for (int i = 0; i < randomDrinkCount; i++)
             {
                 //choose a random drinkDraggableObjectSO from the array
